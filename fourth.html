@@ -4,20 +4,22 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fourth Day &mdash; Reproducible research and data analysis using Nextflow pipelines  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Fourth Day &mdash; PHIND_course_nextflow_Feb_2022  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="https://biocorecrg.github.io/PHIND_course_nextflow_Feb_2022/fourth.html" />
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="GRADING EXERCISE" href="Final_exercise.html" />
     <link rel="prev" title="Third Day" href="third.html" /> 
 </head>
@@ -27,10 +29,10 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> Reproducible research and data analysis using Nextflow pipelines
+            <a href="index.html" class="icon icon-home"> PHIND_course_nextflow_Feb_2022
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -67,7 +69,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Reproducible research and data analysis using Nextflow pipelines</a>
+          <a href="index.html">PHIND_course_nextflow_Feb_2022</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -77,6 +79,7 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>Fourth Day</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/fourth.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -549,7 +552,7 @@ Let’s inspect the <strong>fastqc</strong> module:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test5.nf -with-docker -bg -with-report &gt; log</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/report.png"><img alt="../_images/report.png" src="../_images/report.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/report.png"><img alt="_images/report.png" src="_images/report.png" style="width: 800px;" /></a>
 <p><strong>Nextflow Tower</strong> is an open source monitoring and managing platform for Nextflow workflows. There are two versions:</p>
 <ul class="simple">
 <li><p>Open source for monitoring of single pipelines.</p></li>
@@ -557,12 +560,12 @@ Let’s inspect the <strong>fastqc</strong> module:</p>
 </ul>
 <p>We will show the open source one.</p>
 <p>First, you need to access the <a class="reference external" href="https://tower.nf/">tower.nf</a> website and login.</p>
-<a class="reference internal image-reference" href="../_images/tower.png"><img alt="../_images/tower.png" src="../_images/tower.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/tower.png"><img alt="_images/tower.png" src="_images/tower.png" style="width: 800px;" /></a>
 <p>If you selected the email for receiving the instructions and the token to be used.</p>
-<a class="reference internal image-reference" href="../_images/tower0.png"><img alt="../_images/tower0.png" src="../_images/tower0.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/tower0.png"><img alt="_images/tower0.png" src="_images/tower0.png" style="width: 800px;" /></a>
 <p>check the email:</p>
-<a class="reference internal image-reference" href="../_images/tower1.png"><img alt="../_images/tower1.png" src="../_images/tower1.png" style="width: 800px;" /></a>
-<a class="reference internal image-reference" href="../_images/tower2.png"><img alt="../_images/tower2.png" src="../_images/tower2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/tower1.png"><img alt="_images/tower1.png" src="_images/tower1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/tower2.png"><img alt="_images/tower2.png" src="_images/tower2.png" style="width: 800px;" /></a>
 <p>You can generate your token at <a class="reference external" href="https://tower.nf/tokens">https://tower.nf/tokens</a> and copy paste it in your pipeline using this snippet in the configuration file:</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">tower</span> <span class="o">{</span>
   <span class="n">accessToken</span> <span class="o">=</span> <span class="s1">&#39;&lt;YOUR TOKEN&gt;&#39;</span>
@@ -591,9 +594,9 @@ Let’s inspect the <strong>fastqc</strong> module:</p>
 </pre></div>
 </div>
 <p>and go to the tower website again:</p>
-<a class="reference internal image-reference" href="../_images/tower3.png"><img alt="../_images/tower3.png" src="../_images/tower3.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/tower3.png"><img alt="_images/tower3.png" src="_images/tower3.png" style="width: 800px;" /></a>
 <p>When the pipeline is finished we can also receive a mail.</p>
-<a class="reference internal image-reference" href="../_images/tower4.png"><img alt="../_images/tower4.png" src="../_images/tower4.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/tower4.png"><img alt="_images/tower4.png" src="_images/tower4.png" style="width: 800px;" /></a>
 </section>
 <section id="share-nextflow-pipelines-and-good-practices">
 <h2>Share Nextflow pipelines and good practices<a class="headerlink" href="#share-nextflow-pipelines-and-good-practices" title="Permalink to this headline"></a></h2>
@@ -601,10 +604,10 @@ Let’s inspect the <strong>fastqc</strong> module:</p>
 This feature allows to run pipelines by just pointing to an online repository without caring about downloading etc.</p>
 <p>The default platform is <strong>GitHub</strong>, so we will use this repository as an example.</p>
 <p>Let’s create a new repository with a unique name:</p>
-<a class="reference internal image-reference" href="../_images/git_1.png"><img alt="../_images/git_1.png" src="../_images/git_1.png" style="width: 800px;" /></a>
-<a class="reference internal image-reference" href="../_images/git_2.png"><img alt="../_images/git_2.png" src="../_images/git_2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/git_1.png"><img alt="_images/git_1.png" src="_images/git_1.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/git_2.png"><img alt="_images/git_2.png" src="_images/git_2.png" style="width: 800px;" /></a>
 <p>And then let’s clone it in one of our test folder. Let’s choose <strong>test5</strong>. We can get the url path by clicking like on the figure:</p>
-<a class="reference internal image-reference" href="../_images/git_3.png"><img alt="../_images/git_3.png" src="../_images/git_3.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/git_3.png"><img alt="_images/git_3.png" src="_images/git_3.png" style="width: 800px;" /></a>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/lucacozzuto/test_course.git</span>
 <span class="go">Cloning into &#39;test_course&#39;...</span>
 <span class="go">remote: Enumerating objects: 3, done.</span>
@@ -672,7 +675,7 @@ To https://github.com/lucacozzuto/test_course.git
 </pre></div>
 </div>
 <p>If we go back to the GitHub website we can see that everything has been uploaded.</p>
-<a class="reference internal image-reference" href="../_images/git_2.png"><img alt="../_images/git_2.png" src="../_images/git_2.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/git_2.png"><img alt="_images/git_2.png" src="_images/git_2.png" style="width: 800px;" /></a>
 <p>Now we can remove that folder and go in the home folder.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">rm -fr test_course</span>
 <span class="go">cd $HOME</span>
@@ -769,7 +772,7 @@ To https://github.com/lucacozzuto/test_course.git
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, CRG.</p>
+    <p>&#169; Copyright .</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
