@@ -63,6 +63,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#container-registries">Container registries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#running-and-executing-containers">Running and executing containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#singularity-recipes">Singularity recipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#singularity-tips">Singularity tips</a></li>
 </ul>
 </li>
 </ul>
@@ -438,8 +440,10 @@
 <span class="go">ls -l testdir</span>
 </pre></div>
 </div>
-<p><strong>Singularity recipes</strong></p>
-<p>-Docker bootstrap</p>
+</section>
+<section id="singularity-recipes">
+<h3>Singularity recipes<a class="headerlink" href="#singularity-recipes" title="Permalink to this headline"></a></h3>
+<p><strong>Docker bootstrap</strong></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">BootStrap: docker</span>
 <span class="go">From: biocontainers/fastqc:v0.11.9_cv7</span>
 
@@ -454,7 +458,7 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo singularity build fastqc.sif docker.singularity</span>
 </pre></div>
 </div>
-<p>-Debian bootstrap</p>
+<p><strong>Debian bootstrap</strong></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">BootStrap: debootstrap</span>
 <span class="go">OSVersion: bionic</span>
 <span class="go">MirrorURL:  http://fr.archive.ubuntu.com/ubuntu/</span>
@@ -496,6 +500,9 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo singularity build fastqc-multi-bowtie.sif debootstrap.singularity</span>
 </pre></div>
 </div>
+</section>
+<section id="singularity-tips">
+<h3>Singularity tips<a class="headerlink" href="#singularity-tips" title="Permalink to this headline"></a></h3>
 <p><strong>Troubleshooting</strong></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">singularity --help</span>
 </pre></div>
