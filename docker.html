@@ -123,6 +123,341 @@
 <p>When you start an image, you have a running container of this image. You can have many running containers of the same image.</p>
 <p><em>“The image is the recipe, the container is the cake; you can make as many cakes as you like with a given recipe.”</em></p>
 <p><a class="reference external" href="https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container">https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container</a></p>
+<a class="reference internal image-reference" href="_images/singularity_logo.svg"><img alt="_images/singularity_logo.svg" src="_images/singularity_logo.svg" width="300" /></a>
+<p><strong>Docker vocabulary</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span>
+<span class="pre">`</span></code></p>
+<p>&lt;img src=”images/docker_vocab.png” width=”550/”&gt;</p>
+<p>Get help:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--help</span>
+<span class="pre">`</span></code></p>
+<p>&lt;img src=”images/docker_run_help.png” width=”550/”&gt;</p>
+<p>## Using existing images</p>
+<p>### Explore Docker hub</p>
+<p>Images can be stored locally or shared in a registry.
+&lt;br&gt;
+[Docker hub](<a class="reference external" href="https://hub.docker.com/">https://hub.docker.com/</a>) is the main public registry for Docker images.
+&lt;br&gt;</p>
+<p>Let’s search the keyword <strong>ubuntu</strong>:</p>
+<p>&lt;img src=”images/dockerhub_ubuntu.png” width=”900/”&gt;</p>
+<p>### docker pull: import image</p>
+<ul class="simple">
+<li><p>get latest image / latest release</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">ubuntu</span>
+<span class="pre">`</span></code></p>
+<p>&lt;img src=”images/docker_pull.png” width=”650/”&gt;</p>
+<ul class="simple">
+<li><p>choose the version of Ubuntu you are fetching: check the different tags</p></li>
+</ul>
+<p>&lt;img src=”images/dockerhub_ubuntu_1804.png” width=”850/”&gt;</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">ubuntu:18.04</span>
+<span class="pre">`</span></code></p>
+<p>### Biocontainers</p>
+<p><a class="reference external" href="https://biocontainers.pro/">https://biocontainers.pro/</a></p>
+<p>Specific directory of Bioinformatics related entries</p>
+<ul class="simple">
+<li><p>Entries in [Docker hub](<a class="reference external" href="https://hub.docker.com/u/biocontainers">https://hub.docker.com/u/biocontainers</a>) and/or [Quay.io](<a class="reference external" href="https://quay.io">https://quay.io</a>) (RedHat registry)</p></li>
+<li><p>Normally created from [Bioconda](<a class="reference external" href="https://bioconda.github.io">https://bioconda.github.io</a>)</p></li>
+</ul>
+<p>Example: <strong>FastQC</strong></p>
+<p><a class="reference external" href="https://biocontainers.pro/#/tools/fastqc">https://biocontainers.pro/#/tools/fastqc</a></p>
+<blockquote>
+<div><p>docker pull biocontainers/fastqc:v0.11.9_cv7</p>
+</div></blockquote>
+<p>### docker images: list images</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">images</span>
+<span class="pre">`</span></code>
+&lt;img src=”images/docker_images_list.png” width=”650/”&gt;</p>
+<p>Each image has a unique <strong>IMAGE ID</strong>.</p>
+<p>### docker run: run image, i.e. start a container</p>
+<p>Now we want to use what is <strong>inside</strong> the image.
+&lt;br&gt;
+<strong>docker run</strong> creates a fresh container (active instance of the image) from a <strong>Docker (static) image</strong>, and runs it.</p>
+<p>&lt;br&gt;
+The format is:&lt;br&gt;
+docker run image:tag <strong>command</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">ubuntu:18.04</span> <span class="pre">/bin/ls</span>
+<span class="pre">`</span></code></p>
+<p>&lt;img src=”images/docker_run_ls.png” width=”200/”&gt;</p>
+<p>Now execute <strong>ls</strong> in your current working directory: is the result the same?</p>
+<p>&lt;br&gt;</p>
+<p>You can execute any program/command that is stored inside the image:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">ubuntu:18.04</span> <span class="pre">/bin/whoami</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">ubuntu:18.04</span> <span class="pre">cat</span> <span class="pre">/etc/issue</span>
+<span class="pre">`</span></code></p>
+<p>You can either execute programs in the image from the command line (see above) or <strong>execute a container interactively</strong>, i.e. <strong>“enter”</strong> the container.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">ubuntu:18.04</span> <span class="pre">/bin/bash</span>
+<span class="pre">`</span></code></p>
+<p>Run container as daemon (in background)</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--detach</span> <span class="pre">ubuntu:18.04</span> <span class="pre">tail</span> <span class="pre">-f</span> <span class="pre">/dev/null</span>
+<span class="pre">`</span></code></p>
+<p>Run container as daemon (in background) with a given name</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--detach</span> <span class="pre">--name</span> <span class="pre">myubuntu</span> <span class="pre">ubuntu:18.04</span> <span class="pre">tail</span> <span class="pre">-f</span> <span class="pre">/dev/null</span>
+<span class="pre">`</span></code></p>
+<p>### docker ps: check containers status</p>
+<p>List running containers:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">ps</span>
+<span class="pre">`</span></code></p>
+<p>List all containers (whether they are running or not):</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span>
+<span class="pre">`</span></code></p>
+<p>Each container has a unique ID.</p>
+<p>### docker exec: execute process in running container</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">myubuntu</span> <span class="pre">uname</span> <span class="pre">-a</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Interactively</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">myubuntu</span> <span class="pre">/bin/bash</span>
+<span class="pre">`</span></code></p>
+<p>### docker stop, start, restart: actions on container</p>
+<p>Stop a running container:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>bash
+docker stop myubuntu</p>
+<p>docker ps -a
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<p>Start a stopped container (does NOT create a new one):</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>bash
+docker start myubuntu</p>
+<p>docker ps -a
+<a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a></p>
+<p>Restart a running container:</p>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a>bash
+docker restart myubuntu</p>
+<p>docker ps -a
+<a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+<p>Run with restart enabled</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--restart=unless-stopped</span> <span class="pre">--detach</span> <span class="pre">--name</span> <span class="pre">myubuntu2</span> <span class="pre">ubuntu:18.04</span> <span class="pre">tail</span> <span class="pre">-f</span> <span class="pre">/dev/null</span>
+<span class="pre">`</span></code>
+* Restart policies: no (default), always, on-failure, unless-stopped</p>
+<p>Update restart policy</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">update</span> <span class="pre">--restart</span> <span class="pre">unless-stopped</span> <span class="pre">myubuntu</span>
+<span class="pre">`</span></code></p>
+<p>### docker rm, docker rmi: clean up!</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">myubuntu</span>
+<span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">-f</span> <span class="pre">myubuntu</span>
+<span class="pre">`</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">rmi</span> <span class="pre">ubuntu:18.04</span>
+<span class="pre">`</span></code></p>
+<p>#### Major clean</p>
+<p>Check used space
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">system</span> <span class="pre">df</span>
+<span class="pre">`</span></code></p>
+<p>Remove unused containers (and others) - <strong>DO WITH CARE</strong>
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">system</span> <span class="pre">prune</span>
+<span class="pre">`</span></code></p>
+<p>Remove ALL non-running containers, images, etc. - <strong>DO WITH MUCH MORE CARE!!!</strong>
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">system</span> <span class="pre">prune</span> <span class="pre">-a</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Reference: <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes">https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes</a></p></li>
+</ul>
+<p>## Volumes</p>
+<p>Docker containers are fully isolated. It is necessary to mount volumes in order to handle input/output files.</p>
+<p>Syntax: <strong>–volume/-v</strong> <em>host:container</em></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">mkdir</span> <span class="pre">datatest</span>
+<span class="pre">touch</span> <span class="pre">datatest/test</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--detach</span> <span class="pre">--volume</span> <span class="pre">$(pwd)/datatest:/scratch</span> <span class="pre">--name</span> <span class="pre">fastqc_container</span> <span class="pre">biocontainers/fastqc:v0.11.9_cv7</span> <span class="pre">tail</span> <span class="pre">-f</span> <span class="pre">/dev/null</span>
+<span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-ti</span> <span class="pre">fastqc_container</span> <span class="pre">/bin/bash</span>
+<span class="pre">&gt;</span> <span class="pre">ls</span> <span class="pre">-l</span> <span class="pre">/scratch</span>
+<span class="pre">&gt;</span> <span class="pre">exit</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Exercises:</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Copy the 2 fastq files from available datasets in Github repository and place them in mounted directory</p></li>
+<li><p>Run fastqc interactively (inside container): <code class="docutils literal notranslate"><span class="pre">`fastqc</span>&#160; <span class="pre">/scratch/*.gz`</span></code></p></li>
+<li><p>Run fastqc outside the container</p></li>
+</ol>
+<p>## Ports</p>
+<p>The same as with volumes, but with ports, to access Internet services.</p>
+<p>Syntax: <strong>–publish/-p</strong> <em>host:container</em></p>
+<p><a href="#id25"><span class="problematic" id="id26">``</span></a><a href="#id27"><span class="problematic" id="id28">`</span></a>bash
+docker run –detach –name webserver nginx
+curl localhost:80
+docker exec webserver curl localhost:80
+docker rm -f webserver</p>
+<p><a href="#id29"><span class="problematic" id="id30">``</span></a><a href="#id31"><span class="problematic" id="id32">`</span></a></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--detach</span> <span class="pre">--name</span> <span class="pre">webserver</span> <span class="pre">--publish</span> <span class="pre">80:80</span> <span class="pre">nginx</span>
+<span class="pre">curl</span> <span class="pre">localhost:80</span>
+<span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">-f</span> <span class="pre">webserver</span>
+<span class="pre">`</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--detach</span> <span class="pre">--name</span> <span class="pre">webserver</span> <span class="pre">-p</span> <span class="pre">8080:80</span> <span class="pre">nginx</span>
+<span class="pre">curl</span> <span class="pre">localhost:80</span>
+<span class="pre">curl</span> <span class="pre">localhost:8080</span>
+<span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">webserver</span> <span class="pre">curl</span> <span class="pre">localhost:80</span>
+<span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">webserver</span> <span class="pre">curl</span> <span class="pre">localhost:8080</span>
+<span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">-f</span> <span class="pre">webserver</span>
+<span class="pre">`</span></code></p>
+<p>## Docker recipes: build your own images</p>
+<p>### Building recipes</p>
+<p>All commands should be saved in a text file, named by default <strong>Dockerfile</strong>.</p>
+<p>#### Basic instructions</p>
+<p>Each row in the recipe corresponds to a <strong>layer</strong> of the final image.</p>
+<p><strong>FROM</strong>: parent image. Typically, an operating system. The <strong>base layer</strong>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`docker</span>
+<span class="pre">FROM</span> <span class="pre">ubuntu:18.04</span>
+<span class="pre">`</span></code></p>
+<p><strong>RUN</strong>: the command to execute inside the image filesystem.
+&lt;br&gt;
+Think about it this way: every <strong>RUN</strong> line is essentially what you would run to install programs on a freshly installed Ubuntu OS.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`docker</span>
+<span class="pre">RUN</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">wget</span>
+<span class="pre">`</span></code></p>
+<p>A basic recipe:</p>
+<p><a href="#id33"><span class="problematic" id="id34">``</span></a><a href="#id35"><span class="problematic" id="id36">`</span></a>docker
+FROM ubuntu:18.04</p>
+<p>RUN apt update &amp;&amp; apt -y upgrade
+RUN apt install -y wget
+<a href="#id37"><span class="problematic" id="id38">``</span></a><a href="#id39"><span class="problematic" id="id40">`</span></a></p>
+<p>#### More instructions</p>
+<p><strong>MAINTAINER</strong></p>
+<p>Who is maintaining the container?</p>
+<p><code class="docutils literal notranslate"><span class="pre">`docker</span>
+<span class="pre">MAINTAINER</span> <span class="pre">Toni</span> <span class="pre">Hermoso</span> <span class="pre">Pulido</span> <span class="pre">&lt;toni.hermoso&#64;crg.eu&gt;</span>
+<span class="pre">`</span></code></p>
+<p><strong>WORKDIR</strong>: all subsequent actions will be executed in that working directory</p>
+<p><code class="docutils literal notranslate"><span class="pre">`docker</span>
+<span class="pre">WORKDIR</span> <span class="pre">~</span>
+<span class="pre">`</span></code></p>
+<p><strong>ADD, COPY</strong>: add files to the image filesystem</p>
+<p>Difference between ADD and COPY explained [here](<a class="reference external" href="https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile">https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile</a>) and [here](<a class="reference external" href="https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile">https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile</a>)</p>
+<p><strong>COPY</strong>: lets you copy a local file or directory from your host (the machine from which you are building the image)</p>
+<p><strong>ADD</strong>: same, but ADD works also for URLs, and for .tar archives that will be automatically extracted upon being copied.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`docker</span>
+<span class="pre">#</span> <span class="pre">COPY</span> <span class="pre">source</span> <span class="pre">destination</span>
+<span class="pre">COPY</span> <span class="pre">~/.bashrc</span> <span class="pre">.</span>
+<span class="pre">`</span></code></p>
+<p><strong>ENV, ARG</strong>: run and build environment variables</p>
+<p>Difference between ARG and ENV explained [here](<a class="reference external" href="https://vsupalov.com/docker-arg-vs-env/">https://vsupalov.com/docker-arg-vs-env/</a>).</p>
+<ul class="simple">
+<li><p><strong>ARG</strong> values: available only while the image is built.</p></li>
+<li><p><strong>ENV</strong> values: available for the future running containers.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">`</span></code></p>
+<p><strong>CMD, ENTRYPOINT</strong>: command to execute when generated container starts</p>
+<p>The ENTRYPOINT specifies a command that will always be executed when the container starts. The CMD specifies arguments that will be fed to the ENTRYPOINT</p>
+<p>&lt;br&gt;</p>
+<p>In the example below, when the container is run without an argument, it will execute <cite>echo “hello world”</cite>.&lt;br&gt;
+If it is run with the argument <strong>nice</strong> it will execute <cite>echo “nice”</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">`docker</span>
+<span class="pre">FROM</span> <span class="pre">ubuntu:18.04</span>
+<span class="pre">ENTRYPOINT</span> <span class="pre">[&quot;/bin/echo&quot;]</span>
+<span class="pre">CMD</span> <span class="pre">[&quot;hello</span> <span class="pre">world&quot;]</span>
+<span class="pre">`</span></code></p>
+<p>A more complex recipe (save it in a text file named <strong>Dockerfile</strong>:</p>
+<blockquote>
+<div><p><a href="#id41"><span class="problematic" id="id42">``</span></a><a href="#id43"><span class="problematic" id="id44">`</span></a>docker</p>
+</div></blockquote>
+<p>FROM ubuntu:18.04</p>
+<p>MAINTAINER Toni Hermoso Pulido &lt;<a class="reference external" href="mailto:toni&#46;hermoso&#37;&#52;&#48;crg&#46;eu">toni<span>&#46;</span>hermoso<span>&#64;</span>crg<span>&#46;</span>eu</a>&gt;</p>
+<p>WORKDIR ~</p>
+<p>RUN apt-get update &amp;&amp; apt-get -y upgrade
+RUN apt-get install -y wget</p>
+<p>ENTRYPOINT [“/usr/bin/wget”]
+CMD [”<a class="reference external" href="https://cdn.wp.nginx.com/wp-content/uploads/2016/07/docker-swarm-hero2.png">https://cdn.wp.nginx.com/wp-content/uploads/2016/07/docker-swarm-hero2.png</a>”]
+<a href="#id45"><span class="problematic" id="id46">``</span></a><a href="#id47"><span class="problematic" id="id48">`</span></a></p>
+<p>### docker build</p>
+<p>Implicitely looks for a <strong>Dockerfile</strong> file in the current directory:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">build</span> <span class="pre">.</span>
+<span class="pre">`</span></code></p>
+<p>Same as:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">build</span> <span class="pre">--file</span> <span class="pre">Dockerfile</span> <span class="pre">.</span>
+<span class="pre">`</span></code></p>
+<p>Syntax: <strong>–file / -f</strong></p>
+<p><strong>.</strong> stands for the context (in this case, current directory) of the build process. This makes sense if copying files from filesystem, for instance. <strong>IMPORTANT</strong>: Avoid contexts (directories) overpopulated with files (even if not actually used in the recipe).</p>
+<p>You can define a specific name for the image during the build process.</p>
+<p>Syntax: <strong>-t</strong> <em>imagename:tag</em>. If not defined <code class="docutils literal notranslate"><span class="pre">`:tag`</span></code> default is latest.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-t</span> <span class="pre">mytestimage</span> <span class="pre">.</span>
+<span class="pre">`</span></code></p>
+<p>The last line of installation should be <strong>Successfully built …</strong>: then you are good to go.
+&lt;br&gt;
+Check with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code> that you see the newly built image in the list…</p>
+<p>Then let’s check the ID of the image and run it!</p>
+<p><a href="#id49"><span class="problematic" id="id50">``</span></a><a href="#id51"><span class="problematic" id="id52">`</span></a>bash
+docker images</p>
+<p>docker run f9f41698e2f8
+docker run mytestimage
+<a href="#id53"><span class="problematic" id="id54">``</span></a><a href="#id55"><span class="problematic" id="id56">`</span></a></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">run</span> <span class="pre">f9f41698e2f8</span> <span class="pre">https://cdn-images-1.medium.com/max/1600/1*_NQN6_YnxS29m8vFzWYlEg.png</span>
+<span class="pre">`</span></code></p>
+<p>### docker tag</p>
+<p>To tag a local image with ID “e23aaea5dff1” into the “ubuntu_wget” image name repository with version “1.0”:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">tag</span> <span class="pre">e23aaea5dff1</span> <span class="pre">--tag</span> <span class="pre">ubuntu_wget:1.0</span>
+<span class="pre">`</span></code></p>
+<p>### Build cache ###</p>
+<p>Every line of a Dockerfile is actually an image/layer by itself.</p>
+<p>Modify for instance the last bit of the previous image (let’s change the image URL) and rebuild it (even with a different name/tag):</p>
+<p><a href="#id57"><span class="problematic" id="id58">``</span></a><a href="#id59"><span class="problematic" id="id60">`</span></a>docker
+FROM ubuntu:18.04</p>
+<p>MAINTAINER Toni Hermoso Pulido &lt;<a class="reference external" href="mailto:toni&#46;hermoso&#37;&#52;&#48;crg&#46;eu">toni<span>&#46;</span>hermoso<span>&#64;</span>crg<span>&#46;</span>eu</a>&gt;</p>
+<p>WORKDIR ~</p>
+<p>RUN apt-get update &amp;&amp; apt-get -y upgrade
+RUN apt-get install -y wget</p>
+<p>ENTRYPOINT [“/usr/bin/wget”]
+CMD [”<a class="reference external" href="https://cdn-images-1.medium.com/max/1600/1*_NQN6_YnxS29m8vFzWYlEg.png">https://cdn-images-1.medium.com/max/1600/1*_NQN6_YnxS29m8vFzWYlEg.png</a>”]
+<a href="#id61"><span class="problematic" id="id62">``</span></a><a href="#id63"><span class="problematic" id="id64">`</span></a></p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-t</span> <span class="pre">mytestimage2</span> <span class="pre">.</span>
+<span class="pre">`</span></code></p>
+<p>It will start from the last line.
+This is OK most of the times and very convenient for testing and trying new steps, but it may lead to errors when versions are updated (either FROM image or included packages). For that it is benefitial to start from scratch with <code class="docutils literal notranslate"><span class="pre">`--no-cache`</span></code> tag.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">docker</span> <span class="pre">build</span> <span class="pre">--no-cache</span> <span class="pre">-t</span> <span class="pre">mytestimage2</span> <span class="pre">.</span>
+<span class="pre">`</span></code>
+### More advanced image building</p>
+<p>Different ways to build images.</p>
+<p>Know your base system and their packages. Popular ones:
+* [Debian](<a class="reference external" href="https://packages.debian.org">https://packages.debian.org</a>)
+* [CentOS](<a class="reference external" href="https://centos.pkgs.org/">https://centos.pkgs.org/</a>)
+* [Alpine](<a class="reference external" href="https://pkgs.alpinelinux.org/packages">https://pkgs.alpinelinux.org/packages</a>)
+* Conda. [Anaconda](<a class="reference external" href="https://anaconda.org/anaconda/repo">https://anaconda.org/anaconda/repo</a>), [Conda-forge](<a class="reference external" href="https://conda-forge.org/feedstocks/">https://conda-forge.org/feedstocks/</a>), [Bioconda](<a class="reference external" href="https://anaconda.org/bioconda/repo">https://anaconda.org/bioconda/repo</a>), etc.</p>
+<p>### Additional commands</p>
+<ul class="simple">
+<li><p><strong>docker inspect</strong>: Get details from containers (both running and stopped). Things such as IPs, volumes, etc.</p></li>
+<li><p><strong>docker logs</strong>: Get <em>console</em> messages from running containers. Useful when using with web services.</p></li>
+<li><p><strong>docker commit</strong>: Turn a container into an image. It make senses to use when modifying container interactively. However this is bad for reproducibility if no steps are saved.</p></li>
+</ul>
+<p>Good for long-term reproducibility and for critical production environments:</p>
+<ul class="simple">
+<li><p><strong>docker save</strong>: Save an image into a tar archive.</p></li>
+<li><p><strong>docker export</strong>: Save a container into a tar archive.</p></li>
+<li><p><strong>docker import</strong>: Import a tar archive into an image.</p></li>
+</ul>
+<p>#### Exercises</p>
+<p>We explore interactively the different examples in the container/docker folders.</p>
 </section>
 </section>
 </section>
