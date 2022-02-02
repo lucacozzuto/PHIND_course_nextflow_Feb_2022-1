@@ -424,6 +424,29 @@
 <li><p>Explore the inside contents of the image</p></li>
 <li><p>Execute in different ways <code class="docutils literal notranslate"><span class="pre">samtools</span></code> program (e. g., using <em>fqidx</em> option)</p></li>
 </ul>
+<p><strong>Troubleshooting</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">singularity --help</span>
+</pre></div>
+</div>
+<p><strong>Fakeroot</strong></p>
+<p>Singularity permissions are an evolving field. If you don’t have access to <code class="docutils literal notranslate"><span class="pre">sudo</span></code>, it might be worth considering using <strong>–fakeroot/-f</strong> parameter.</p>
+<ul class="simple">
+<li><p>More details at [<a class="reference external" href="https://apptainer.org/docs/user/main/fakeroot.html](https://apptainer.org/docs/user/main/fakeroot.html">https://apptainer.org/docs/user/main/fakeroot.html](https://apptainer.org/docs/user/main/fakeroot.html</a>)</p></li>
+</ul>
+<p><strong>Singularity cache directory</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>HOME/.singularity
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>It stores cached images from registries, instances, etc.</p></li>
+<li><p>If problems may be a good place to clean. When running <code class="docutils literal notranslate"><span class="pre">sudo</span></code>, $HOME is /root.</p></li>
+</ul>
+<p><strong>Global singularity configuration</strong></p>
+<p>Normally at <code class="docutils literal notranslate"><span class="pre">/etc/singularity/singularity.conf</span></code> or similar (e.g preceded by <code class="docutils literal notranslate"><span class="pre">/usr/local/</span></code>)</p>
+<ul class="simple">
+<li><p>It can only be modified by users with administration permissions</p></li>
+<li><p>Worth noting <code class="docutils literal notranslate"><span class="pre">bind</span> <span class="pre">path</span></code> lines, which point default mounted directories in containers</p></li>
+</ul>
 </section>
 </section>
 </section>
