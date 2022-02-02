@@ -64,6 +64,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#container-registries">Container registries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#running-and-executing-containers">Running and executing containers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#singularity-recipes">Singularity recipes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#singularity-advanced-aspects">Singularity advanced aspects</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#singularity-tips">Singularity tips</a></li>
 </ul>
 </li>
@@ -426,20 +429,6 @@
 <li><p>Explore the inside contents of the image</p></li>
 <li><p>Execute in different ways <code class="docutils literal notranslate"><span class="pre">samtools</span></code> program (e. g., using <em>fqidx</em> option)</p></li>
 </ul>
-<p><strong>Bind paths (aka volumes)</strong></p>
-<p>Paths of host system mounted in the container</p>
-<ul class="simple">
-<li><p>Default ones, no need to mount them explicitly (for 3.6.x): <code class="docutils literal notranslate"><span class="pre">`$HOME`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/sys:/sys`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/proc:/proc`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/tmp:/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/var/tmp:/var/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/resolv.conf:/etc/resolv.conf`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/passwd:/etc/passwd`</span></code>, and <code class="docutils literal notranslate"><span class="pre">`$PWD`</span></code> [<a class="reference external" href="https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html](https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html">https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html](https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html</a>)</p></li>
-</ul>
-<p>For others, need to be done explicitly (syntax: host:container)</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir testdir</span>
-<span class="go">touch testdir/testout</span>
-<span class="go">singularity shell -e -B ./testdir:/scratch fastqc-0.11.9.sif</span>
-<span class="go">&gt; touch /scratch/testin</span>
-<span class="go">&gt; exit</span>
-<span class="go">ls -l testdir</span>
-</pre></div>
-</div>
 </section>
 <section id="singularity-recipes">
 <h3>Singularity recipes<a class="headerlink" href="#singularity-recipes" title="Permalink to this headline"></a></h3>
@@ -501,6 +490,56 @@
 </pre></div>
 </div>
 </section>
+</section>
+<section id="singularity-advanced-aspects">
+<h2>Singularity advanced aspects<a class="headerlink" href="#singularity-advanced-aspects" title="Permalink to this headline"></a></h2>
+<p><strong>Sandboxing</strong></p>
+<p><strong>Bind paths (aka volumes)</strong></p>
+<p>Paths of host system mounted in the container</p>
+<ul class="simple">
+<li><p>Default ones, no need to mount them explicitly (for 3.6.x): <code class="docutils literal notranslate"><span class="pre">`$HOME`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/sys:/sys`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/proc:/proc`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/tmp:/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/var/tmp:/var/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/resolv.conf:/etc/resolv.conf`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/passwd:/etc/passwd`</span></code>, and <code class="docutils literal notranslate"><span class="pre">`$PWD`</span></code> [<a class="reference external" href="https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html](https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html">https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html](https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html</a>)</p></li>
+</ul>
+<p>For others, need to be done explicitly (syntax: host:container)</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir testdir</span>
+<span class="go">touch testdir/testout</span>
+<span class="go">singularity shell -e -B ./testdir:/scratch fastqc-0.11.9.sif</span>
+<span class="go">&gt; touch /scratch/testin</span>
+<span class="go">&gt; exit</span>
+<span class="go">ls -l testdir</span>
+</pre></div>
+</div>
+<p><strong>Instances</strong></p>
+<p>Also know as <strong>services</strong>. Despite Docker it is still more convenient for these tasks, it allows enabling thing such as webservices (e.g., via APIs) in HPC workflows.</p>
+<p>As a simple example, first we create a boostrapped image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Bootstrap: docker</span>
+<span class="go">From: library/mariadb:10.3</span>
+
+<span class="gp">%</span>startscript
+<span class="go">        mysqld</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo singularity build mariadb.sif mariadb.singularity</span>
+
+<span class="go">mkdir -p testdir</span>
+<span class="go">mkdir -p testdir/db</span>
+<span class="go">mkdir -p testdir/socket</span>
+
+<span class="go">singularity exec -B ./testdir/db:/var/lib/mysql mariadb.sif mysql_install_db</span>
+
+<span class="go">singularity instance start -B ./testdir/db:/var/lib/mysql -B ./testdir/socket:/run/mysqld mariadb.sif mydb</span>
+
+<span class="go">singularity instance list</span>
+
+<span class="go">singularity exec instance://mydb mysql -uroot</span>
+
+<span class="go">singularity instance stop mydb</span>
+</pre></div>
+</div>
+<p>More information:</p>
+<ul class="simple">
+<li><p>[<a class="reference external" href="https://apptainer.com/docs/user-guide/running_services.html](https://apptainer.com/docs/user-guide/running_services.html">https://apptainer.com/docs/user-guide/running_services.html](https://apptainer.com/docs/user-guide/running_services.html</a>)</p></li>
+<li><p>[<a class="reference external" href="https://apptainer.com/docs/3.6/user-guide/networking.html](https://apptainer.com/docs/user-guide/networking.html">https://apptainer.com/docs/3.6/user-guide/networking.html](https://apptainer.com/docs/user-guide/networking.html</a>)</p></li>
+</ul>
 <section id="singularity-tips">
 <h3>Singularity tips<a class="headerlink" href="#singularity-tips" title="Permalink to this headline"></a></h3>
 <p><strong>Troubleshooting</strong></p>
