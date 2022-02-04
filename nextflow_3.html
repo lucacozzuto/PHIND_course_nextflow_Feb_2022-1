@@ -46,17 +46,12 @@
 <li class="toctree-l1"><a class="reference internal" href="nextflow_1.html">Introduction to Nextflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nextflow_2.html">Nextflow 2</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Nextflow 3</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#using-singularity">Using Singularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-more-processes">Adding more processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#profiles">Profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#deployment-in-the-aws-cloud">Deployment in the AWS cloud</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#exercise">EXERCISE</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#modules-and-how-to-re-use-the-code">Modules and how to re-use the code</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">EXERCISE</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#deployment-in-the-aws-cloud">Deployment in the AWS cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercise">EXERCISE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules-and-how-to-re-use-the-code">Modules and how to re-use the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">EXERCISE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reporting-and-graphical-interface">Reporting and graphical interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#share-nextflow-pipelines-and-good-practices">Share Nextflow pipelines and good practices</a></li>
 </ul>
@@ -89,56 +84,6 @@
              
   <section id="nextflow-3">
 <span id="nextflow-3-page"></span><h1>Nextflow 3<a class="headerlink" href="#nextflow-3" title="Permalink to this headline"></a></h1>
-<section id="using-singularity">
-<h2>Using Singularity<a class="headerlink" href="#using-singularity" title="Permalink to this headline"></a></h2>
-<p>We recommend to use Singularity instead of Docker in a HPC environments.
-This can be done using the Nextflow parameter <cite>-with-singularity</cite> without changing the code.</p>
-<p>Nextflow will take care of <strong>pulling, converting and storing the image</strong> for you. This will be done only once and then Nextflow will use the stored image for further executions.</p>
-<p>Within an AWS main node both Docker and Singularity are available. While within the AWS batch system only Docker is available.</p>
-<p>Let’s inspect the folder <cite>singularity</cite>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ls singularity/</span>
-<span class="go">biocorecrg-c4lwg-2018-latest.img</span>
-</pre></div>
-</div>
-<p>This singularity image can be used to execute the code outside the pipeline <strong>exactly the same way</strong> as inside the pipeline.</p>
-<p>Sometimes we can be interested in launching only a specific job, because it might failed or for making a test. For that, we can go to the corresponding temporary folder; for example, one of the fastQC temporary folders:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd work/da/eb7564*/</span>
-</pre></div>
-</div>
-<p>Inspecting the <cite>.command.run</cite> file shows us this piece of code:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
-
-<span class="n">nxf_launch</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">set</span> <span class="o">+</span><span class="n">u</span><span class="o">;</span> <span class="n">env</span> <span class="o">-</span> <span class="n">PATH</span><span class="o">=</span><span class="s2">&quot;$PATH&quot;</span> <span class="n">SINGULARITYENV_TMP</span><span class="o">=</span><span class="s2">&quot;$TMP&quot;</span> <span class="n">SINGULARITYENV_TMPDIR</span><span class="o">=</span><span class="s2">&quot;$TMPDIR&quot;</span> <span class="n">singularity</span> <span class="n">exec</span> <span class="s">/home/</span><span class="n">ec2</span><span class="o">-</span><span class="n">user</span><span class="s">/git/</span><span class="n">CoursesCRG_Containers_Nextflow_May_2021</span><span class="s">/nextflow/</span><span class="n">test2</span><span class="s">/singularity/</span><span class="n">biocorecrg</span><span class="o">-</span><span class="n">c4lwg</span><span class="o">-</span><span class="mi">2018</span><span class="o">-</span><span class="n">latest</span><span class="o">.</span><span class="na">img</span> <span class="s">/bin/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;cd $PWD; /bin/bash -ue /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/test2/work/da/eb756433aa0881d25b20afb5b1366e/.command.sh&quot;</span>
-<span class="o">}</span>
-<span class="o">...</span>
-</pre></div>
-</div>
-<p>This means that Nextflow is running the code by using the <strong>singularity exec</strong> command.</p>
-<p>Thus we can launch this command outside the pipeline (locally):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bash .command.run</span>
-
-<span class="go">Started analysis of B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 5% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 10% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 15% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 20% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 25% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 30% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 35% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 40% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 45% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 50% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 55% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">Approx 60% complete for B7_H3K4me1_s_chr19.fastq.gz</span>
-<span class="go">...</span>
-</pre></div>
-</div>
-<p>If you have to submit a job to a HPC you need to use the corresponding program, <strong>qsub</strong> or <strong>sbatch</strong>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">qsub .command.run</span>
-</pre></div>
-</div>
-</section>
 <section id="adding-more-processes">
 <h2>Adding more processes<a class="headerlink" href="#adding-more-processes" title="Permalink to this headline"></a></h2>
 <p>We can build a pipeline incrementally adding more and more processes.
@@ -350,8 +295,9 @@ This is mandatory when running Nextflow on the cloud.</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">outdir</span> <span class="o">=</span> <span class="s2">&quot;s3://nf-class-bucket-NNNN/results&quot;</span>
 </pre></div>
 </div>
+</section>
 <section id="exercise">
-<h3>EXERCISE<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h3>
+<h2>EXERCISE<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h2>
 <p>Modify the <strong>test3.nf</strong> file to make two sub-workflows:</p>
 <ul class="simple">
 <li><p>for fastqc of fastq files and bowtie alignment;</p></li>
@@ -364,7 +310,6 @@ This is mandatory when running Nextflow on the cloud.</p>
 <div class="line"><br /></div>
 <div class="line"><br /></div>
 </div>
-</section>
 </section>
 <section id="modules-and-how-to-re-use-the-code">
 <h2>Modules and how to re-use the code<a class="headerlink" href="#modules-and-how-to-re-use-the-code" title="Permalink to this headline"></a></h2>
@@ -535,8 +480,9 @@ Let’s inspect the <strong>fastqc</strong> module:</p>
 <p class="admonition-title">Note</p>
 <p>IMPORTANT: You have to specify a default image to run nextflow -with-docker or -with-singularity and you have to have a container(s) defined inside modules.</p>
 </div>
+</section>
 <section id="id3">
-<h3>EXERCISE<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<h2>EXERCISE<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
 <p>Make a module wrapper for the bowtie tool and change the script in test3 accordingly.</p>
 <details>
 <summary><a>Solution</a></summary><p>Solution in the folder test5</p>
@@ -544,7 +490,6 @@ Let’s inspect the <strong>fastqc</strong> module:</p>
 <div class="line"><br /></div>
 <div class="line"><br /></div>
 </div>
-</section>
 </section>
 <section id="reporting-and-graphical-interface">
 <h2>Reporting and graphical interface<a class="headerlink" href="#reporting-and-graphical-interface" title="Permalink to this headline"></a></h2>
