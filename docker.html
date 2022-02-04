@@ -61,6 +61,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#docker-stop-start-restart-actions-on-container">docker stop, start, restart: actions on container</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#docker-rm-docker-rmi-clean-up">docker rm, docker rmi: clean up!</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#major-clean">Major clean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exercise">Exercise</a></li>
 </ul>
 </li>
 </ul>
@@ -273,6 +274,41 @@
 <ul class="simple">
 <li><p>Reference: <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes">https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes</a></p></li>
 </ul>
+</section>
+<section id="exercise">
+<h4>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p>Pull the imagemagick image that is official and that has the highest number of stars</p></li>
+<li><p>Check the version of the convert command.</p></li>
+<li><p>Start a container interactively.</p></li>
+<li><p>Inside the container: download this png image</p></li>
+<li><p>Convert it to .jpg using the convert command of imagemagick (format; convert image.png image.jpg).</p></li>
+<li><p>Exit the container.</p></li>
+<li><p>Copy the jpg image back from the stopped container! Try new command <cite>docker cp</cite>.</p></li>
+</ul>
+<details>
+<summary><a>Suggested solution</a></summary><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Pull image
+<span class="go">docker pull acleancoder/imagemagick-full</span>
+
+<span class="gp"># </span>Check version of <span class="sb">`</span>convert<span class="sb">`</span>
+<span class="go">docker run acleancoder/imagemagick-full convert --version</span>
+
+<span class="gp"># </span>Start interactive container
+<span class="go">docker run -it acleancoder/imagemagick-full</span>
+<span class="gp">  # </span>fetch png image
+<span class="go">  &gt; wget https://pbs.twimg.com/profile_images/1273307847103635465/lfVWBmiW_400x400.png</span>
+<span class="gp">  # </span>convert to jpg
+<span class="go">  &gt; convert lfVWBmiW_400x400.png myimage.jpg</span>
+<span class="gp">  # </span><span class="nb">exit</span> container
+
+<span class="gp"># </span>fetch container ID with <span class="sb">`</span>ps -a<span class="sb">`</span> and use <span class="sb">`</span>docker cp<span class="sb">`</span> to copy jpg file from the stopped container to the host
+<span class="go">docker cp *CONTAINER_ID*:/myimage.jpg .</span>
+
+<span class="go">.. raw:: html</span>
+
+<span class="go">  &lt;/details&gt;</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>
