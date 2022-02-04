@@ -47,6 +47,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#what-is-docker">What is Docker?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#docker-components">Docker components</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#images-versus-containers">Images versus containers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-vocabulary">Docker vocabulary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-existing-images">Using existing images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#explore-docker-hub">Explore Docker hub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docker-pull-import-image">docker pull: import image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#biocontainers">Biocontainers</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -124,7 +131,9 @@
 <p><em>“The image is the recipe, the container is the cake; you can make as many cakes as you like with a given recipe.”</em></p>
 <p><a class="reference external" href="https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container">https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container</a></p>
 <a class="reference internal image-reference" href="_images/singularity_logo.svg"><img alt="_images/singularity_logo.svg" src="_images/singularity_logo.svg" width="300" /></a>
-<p><strong>Docker vocabulary</strong></p>
+</section>
+<section id="docker-vocabulary">
+<h3>Docker vocabulary<a class="headerlink" href="#docker-vocabulary" title="Permalink to this headline"></a></h3>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker</span>
 </pre></div>
 </div>
@@ -134,15 +143,20 @@
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/docker_run_help.png"><img alt="_images/docker_run_help.png" src="_images/docker_run_help.png" style="width: 550px;" /></a>
-<p><strong>Using existing images</strong></p>
-<p><strong>Explore Docker hub</strong></p>
+</section>
+<section id="using-existing-images">
+<h3>Using existing images<a class="headerlink" href="#using-existing-images" title="Permalink to this headline"></a></h3>
+<section id="explore-docker-hub">
+<h4>Explore Docker hub<a class="headerlink" href="#explore-docker-hub" title="Permalink to this headline"></a></h4>
 <p>Images can be stored locally or shared in a registry.
 &lt;br&gt;
 [Docker hub](<a class="reference external" href="https://hub.docker.com/">https://hub.docker.com/</a>) is the main public registry for Docker images.
 &lt;br&gt;</p>
 <p>Let’s search the keyword <strong>ubuntu</strong>:</p>
 <a class="reference internal image-reference" href="_images/dockerhub_ubuntu.png"><img alt="_images/dockerhub_ubuntu.png" src="_images/dockerhub_ubuntu.png" style="width: 900px;" /></a>
-<p><strong>docker pull: import image</strong></p>
+</section>
+<section id="docker-pull-import-image">
+<h4>docker pull: import image<a class="headerlink" href="#docker-pull-import-image" title="Permalink to this headline"></a></h4>
 <ul class="simple">
 <li><p>get latest image / latest release</p></li>
 </ul>
@@ -157,7 +171,9 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker pull ubuntu:18.04</span>
 </pre></div>
 </div>
-<p><strong>Biocontainers</strong></p>
+</section>
+<section id="biocontainers">
+<h4>Biocontainers<a class="headerlink" href="#biocontainers" title="Permalink to this headline"></a></h4>
 <p><a class="reference external" href="https://biocontainers.pro/">https://biocontainers.pro/</a></p>
 <p>Specific directory of Bioinformatics related entries</p>
 <ul class="simple">
@@ -261,10 +277,27 @@ docker run image:tag <strong>command</strong></p>
 </ul>
 <p><strong>CMD, ENTRYPOINT</strong>: command to execute when generated container starts</p>
 <p>The ENTRYPOINT specifies a command that will always be executed when the container starts. The CMD specifies arguments that will be fed to the ENTRYPOINT</p>
-<p>&lt;br&gt;</p>
 <p>In the example below, when the container is run without an argument, it will execute <cite>echo “hello world”</cite>.&lt;br&gt;
 If it is run with the argument <strong>nice</strong> it will execute <cite>echo “nice”</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+<span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;/bin/echo&quot;</span><span class="p">]</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;hello world&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
 <p>A more complex recipe (save it in a text file named <strong>Dockerfile</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+
+<span class="n">MAINTAINER</span> <span class="n">Toni</span> <span class="n">Hermoso</span> <span class="n">Pulido</span> <span class="o">&lt;</span><span class="n">toni</span><span class="o">.</span><span class="n">hermoso</span><span class="nd">@crg</span><span class="o">.</span><span class="n">eu</span><span class="o">&gt;</span>
+
+<span class="n">WORKDIR</span> <span class="o">~</span>
+
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span>
+
+<span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;/usr/bin/wget&quot;</span><span class="p">]</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;https://cdn.wp.nginx.com/wp-content/uploads/2016/07/docker-swarm-hero2.png&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
 <p><strong>docker build</strong></p>
 <p>Implicitely looks for a <strong>Dockerfile</strong> file in the current directory:</p>
 <p>Same as:</p>
@@ -305,6 +338,7 @@ This is OK most of the times and very convenient for testing and trying new step
 </ul>
 <p><strong>Exercises</strong></p>
 <p>We explore interactively the different examples in the container/docker folders.</p>
+</section>
 </section>
 </section>
 </section>
