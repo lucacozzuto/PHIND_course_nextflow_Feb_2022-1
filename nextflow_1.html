@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nextflow 1 &mdash; PHINDaccess - Linux containers &amp; Nextflow for reproducible research and open science  documentation</title>
+  <title>Introduction to Nextflow &mdash; PHINDaccess - Linux containers &amp; Nextflow for reproducible research and open science  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://biocorecrg.github.io/PHIND_course_nextflow_Feb_2022/nextflow_1.html" />
@@ -44,31 +44,25 @@
 <li class="toctree-l1"><a class="reference internal" href="containers.html">Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docker.html">Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="singularity.html">Singularity</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Nextflow 1</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#introduction-to-nextflow">Introduction to Nextflow</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Nextflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Introduction to Nextflow</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-nextflow">What is Nextflow?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-nextflow-for">What is Nextflow for?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#main-advantages">Main advantages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-structure">Workflow structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#workflow-structure">Workflow structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#channels-and-operators">Channels and Operators</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#exercise">EXERCISE</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#channels-and-operators">Channels and Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercise">EXERCISE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#processes">Processes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workflow-and-log">Workflow and log</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#nextflow-log">Nextflow log</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">EXERCISE</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nextflow-log">Nextflow log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">EXERCISE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#more-complex-scripts">More complex scripts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#directives">Directives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#resuming-a-pipeline">Resuming a pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">EXERCISE</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#resuming-a-pipeline">Resuming a pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">EXERCISE</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nextflow_2.html">Nextflow 2</a></li>
@@ -89,7 +83,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Nextflow 1</li>
+      <li>Introduction to Nextflow</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/nextflow_1.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,10 +93,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="nextflow-1">
-<span id="nextflow-1-page"></span><h1>Nextflow 1<a class="headerlink" href="#nextflow-1" title="Permalink to this headline"></a></h1>
-<section id="introduction-to-nextflow">
-<h2>Introduction to Nextflow<a class="headerlink" href="#introduction-to-nextflow" title="Permalink to this headline"></a></h2>
+  <section id="introduction-to-nextflow">
+<span id="nextflow-1-page"></span><h1>Introduction to Nextflow<a class="headerlink" href="#introduction-to-nextflow" title="Permalink to this headline"></a></h1>
+<section id="id1">
+<h2>Introduction to Nextflow<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
 <p>DSL for data-driven computational pipelines. <a class="reference external" href="https://www.nextflow.io">www.nextflow.io</a>.</p>
 <a class="reference internal image-reference" href="_images/nextflow_logo_deep.png"><img alt="_images/nextflow_logo_deep.png" src="_images/nextflow_logo_deep.png" style="width: 400px;" /></a>
 <section id="what-is-nextflow">
@@ -157,9 +151,8 @@ The resulting applications are inherently parallel and can scale-up or scale-out
 <p>All the intermediate results produced during the pipeline execution are automatically tracked.
 For each process <strong>a temporary folder is created and is cached (or not) once resuming an execution</strong>.</p>
 </section>
-</section>
 <section id="workflow-structure">
-<h2>Workflow structure<a class="headerlink" href="#workflow-structure" title="Permalink to this headline"></a></h2>
+<h3>Workflow structure<a class="headerlink" href="#workflow-structure" title="Permalink to this headline"></a></h3>
 <p>The workflows can be represented as graphs where the nodes are the <strong>processes</strong> and the edges are the <strong>channels</strong>.
 The <strong>processes</strong> are blocks of code that can be executed - such as scripts or programs - while the <strong>channels</strong> are asynchronous queues able to <strong>connect processes among them via input / output</strong>.</p>
 <a class="reference internal image-reference" href="_images/wf_example.png"><img alt="_images/wf_example.png" src="_images/wf_example.png" style="width: 600px;" /></a>
@@ -167,7 +160,7 @@ The <strong>processes</strong> are blocks of code that can be executed - such as
 In the previous example, processes <strong>A</strong>, <strong>B</strong> and <strong>C</strong> can be run in parallel and only when they <strong>ALL</strong> end the process <strong>D</strong> is triggered.</p>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Nextflow is already installed on the machines provided for this course.
@@ -261,6 +254,7 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </div>
 <p>Nextflow main concepts.</p>
 </section>
+</section>
 <section id="channels-and-operators">
 <h2>Channels and Operators<a class="headerlink" href="#channels-and-operators" title="Permalink to this headline"></a></h2>
 <p>There are two different types of channels:</p>
@@ -337,8 +331,9 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </pre></div>
 </div>
 <p>Once executed, we can see that a folder named <strong>work</strong> is generated. Nextflow stores in this folder the intermediate files generated by the processes.</p>
+</section>
 <section id="exercise">
-<h3>EXERCISE<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h3>
+<h2>EXERCISE<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Create a couple of files (e.g., paired-end reads) and read them as a tuple.</p></li>
 </ul>
@@ -412,7 +407,6 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <div class="line"><br /></div>
 </div>
 </section>
-</section>
 <section id="processes">
 <h2>Processes<a class="headerlink" href="#processes" title="Permalink to this headline"></a></h2>
 <p>Let’s add a process to the previous script <cite>test0.nf</cite> and let’s call it test1.nf</p>
@@ -458,8 +452,8 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </div>
 <p>Before the input, you can indicate a <strong>tag</strong> that will be reported in the log. This is quite useful for <strong>logging / debugging</strong>.</p>
 </section>
-<section id="workflow-and-log">
-<h2>Workflow and log<a class="headerlink" href="#workflow-and-log" title="Permalink to this headline"></a></h2>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline"></a></h2>
 <p>The code above will produce nothing, because it requires the part that will actually <strong>call the process</strong> and connect it to the input channel.</p>
 <p>This part is called a <strong>workflow</strong>.</p>
 <p>Let’s add a workflow to our code:</p>
@@ -500,8 +494,9 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test1.nf -bg &gt; log.txt</span>
 </pre></div>
 </div>
+</section>
 <section id="nextflow-log">
-<h3>Nextflow log<a class="headerlink" href="#nextflow-log" title="Permalink to this headline"></a></h3>
+<h2>Nextflow log<a class="headerlink" href="#nextflow-log" title="Permalink to this headline"></a></h2>
 <p>Let’s inspect the log file:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat log.txt</span>
 
@@ -647,8 +642,8 @@ drwxr-xr-x  3 lcozzuto  staff    96B Oct  7 13:39 ..
 </pre></div>
 </div>
 </section>
-<section id="id1">
-<h3>EXERCISE<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<section id="id2">
+<h2>EXERCISE<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Change the pipeline to produce files instead of <a class="reference external" href="https://www.nextflow.io/docs/latest/dsl2.html#process-outputs">standard output</a>.</p></li>
@@ -803,7 +798,6 @@ You also need to specify in the workflow the output using the <a class="referenc
 <div class="line"><br /></div>
 <div class="line"><br /></div>
 </div>
-</section>
 </section>
 <section id="more-complex-scripts">
 <h2>More complex scripts<a class="headerlink" href="#more-complex-scripts" title="Permalink to this headline"></a></h2>
@@ -1102,8 +1096,9 @@ This avoids clashes, and each process is isolated from the other.</p>
 </pre></div>
 </div>
 <p><strong>IMPORTANT: On some shared file systems you might have inconsistent file timestamps. Thus cache lenient prevents you from unwanted restarting of cached processes.</strong></p>
-<section id="id2">
-<h3>EXERCISE<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+</section>
+<section id="id3">
+<h2>EXERCISE<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
 <p>Make the previous pipeline resilient to the process failing and save the results so the process execution would be skipped when the pipeline is launched again.</p>
 <p>First, make the process <cite>reverseSequence</cite> to fail by introducing a typo in the command line, then add the directive to the process.</p>
 <details>
@@ -1151,7 +1146,6 @@ This avoids clashes, and each process is isolated from the other.</p>
 <div class="line"><br /></div>
 <div class="line"><br /></div>
 </div>
-</section>
 </section>
 </section>
 
