@@ -213,6 +213,9 @@
 </section>
 <section id="docker-images-list-images">
 <h3>docker images: list images<a class="headerlink" href="#docker-images-list-images" title="Permalink to this headline"></a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker images</span>
+</pre></div>
+</div>
 <a class="reference internal image-reference" href="_images/docker_images_list.png"><img alt="_images/docker_images_list.png" src="_images/docker_images_list.png" style="width: 650px;" /></a>
 <p>Each image has a unique <strong>IMAGE ID</strong>.</p>
 </section>
@@ -222,43 +225,108 @@
 <p><strong>docker run</strong> creates a fresh container (active instance of the image) from a <strong>Docker (static) image</strong>, and runs it.</p>
 <p>The format is:</p>
 <p>docker run image:tag <strong>command</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run ubuntu:18.04 /bin/ls</span>
+</pre></div>
+</div>
 <a class="reference internal image-reference" href="_images/docker_run_ls.png"><img alt="_images/docker_run_ls.png" src="_images/docker_run_ls.png" style="width: 200px;" /></a>
 <p>Now execute <strong>ls</strong> in your current working directory: is the result the same?</p>
 <p>You can execute any program/command that is stored inside the image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run ubuntu:18.04 /bin/whoami</span>
+<span class="go">docker run ubuntu:18.04 cat /etc/issue</span>
+</pre></div>
+</div>
 <p>You can either execute programs in the image from the command line (see above) or <strong>execute a container interactively</strong>, i.e. <strong>“enter”</strong> the container.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run -it ubuntu:18.04 /bin/bash</span>
+</pre></div>
+</div>
 <p>Run container as daemon (in background)</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --detach ubuntu:18.04 tail -f /dev/null</span>
+</pre></div>
+</div>
 <p>Run container as daemon (in background) with a given name</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --detach --name myubuntu ubuntu:18.04 tail -f /dev/null</span>
+</pre></div>
+</div>
 </section>
 <section id="docker-ps-check-containers-status">
 <h3>docker ps: check containers status<a class="headerlink" href="#docker-ps-check-containers-status" title="Permalink to this headline"></a></h3>
 <p>List running containers:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker ps</span>
+</pre></div>
+</div>
 <p>List all containers (whether they are running or not):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker ps -a</span>
+</pre></div>
+</div>
 <p>Each container has a unique ID.</p>
 </section>
 <section id="docker-exec-execute-process-in-running-container">
 <h3>docker exec: execute process in running container<a class="headerlink" href="#docker-exec-execute-process-in-running-container" title="Permalink to this headline"></a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker exec myubuntu uname -a</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p>Interactively</p></li>
 </ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker exec -it myubuntu /bin/bash</span>
+</pre></div>
+</div>
 </section>
 <section id="docker-stop-start-restart-actions-on-container">
 <h3>docker stop, start, restart: actions on container<a class="headerlink" href="#docker-stop-start-restart-actions-on-container" title="Permalink to this headline"></a></h3>
 <p>Stop a running container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker stop myubuntu</span>
+
+<span class="go">docker ps -a</span>
+</pre></div>
+</div>
 <p>Start a stopped container (does NOT create a new one):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker start myubuntu</span>
+
+<span class="go">docker ps -a</span>
+</pre></div>
+</div>
 <p>Restart a running container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker restart myubuntu</span>
+
+<span class="go">docker ps -a</span>
+</pre></div>
+</div>
 <p>Run with restart enabled</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --restart=unless-stopped --detach --name myubuntu2 ubuntu:18.04 tail -f /dev/null</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p>Restart policies: no (default), always, on-failure, unless-stopped</p></li>
 </ul>
 <p>Update restart policy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker update --restart unless-stopped myubuntu</span>
+</pre></div>
+</div>
 </section>
 <section id="docker-rm-docker-rmi-clean-up">
 <h3>docker rm, docker rmi: clean up!<a class="headerlink" href="#docker-rm-docker-rmi-clean-up" title="Permalink to this headline"></a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker rm myubuntu</span>
+<span class="go">docker rm -f myubuntu</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker rmi ubuntu:18.04</span>
+</pre></div>
+</div>
 <section id="major-clean">
 <h4>Major clean<a class="headerlink" href="#major-clean" title="Permalink to this headline"></a></h4>
 <p>Check used space</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker system df</span>
+</pre></div>
+</div>
 <p>Remove unused containers (and others) - <strong>DO WITH CARE</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker system prune</span>
+</pre></div>
+</div>
 <p>Remove ALL non-running containers, images, etc. - <strong>DO WITH MUCH MORE CARE!!!</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker system prune -a</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p>Reference: <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes">https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes</a></p></li>
 </ul>
@@ -304,6 +372,14 @@
 <h2>Volumes<a class="headerlink" href="#volumes" title="Permalink to this headline"></a></h2>
 <p>Docker containers are fully isolated. It is necessary to mount volumes in order to handle input/output files.</p>
 <p>Syntax: <strong>–volume/-v</strong> <em>host:container</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir datatest</span>
+<span class="go">touch datatest/test</span>
+<span class="go">docker run --detach --volume $(pwd)/datatest:/scratch --name fastqc_container biocontainers/fastqc:v0.11.9_cv7 tail -f /dev/null</span>
+<span class="go">docker exec -ti fastqc_container /bin/bash</span>
+<span class="go">&gt; ls -l /scratch</span>
+<span class="go">&gt; exit</span>
+</pre></div>
+</div>
 <section id="exercises">
 <h3>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline"></a></h3>
 <ol class="arabic simple">
@@ -317,6 +393,25 @@
 <h2>Ports<a class="headerlink" href="#ports" title="Permalink to this headline"></a></h2>
 <p>The same as with volumes, but with ports, to access Internet services.</p>
 <p>Syntax: <strong>–publish/-p</strong> <em>host:container</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --detach --name webserver nginx</span>
+<span class="go">curl localhost:80</span>
+<span class="go">docker exec webserver curl localhost:80</span>
+<span class="go">docker rm -f webserver</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --detach --name webserver --publish 80:80 nginx</span>
+<span class="go">curl localhost:80</span>
+<span class="go">docker rm -f webserver</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --detach --name webserver -p 8080:80 nginx</span>
+<span class="go">curl localhost:80</span>
+<span class="go">curl localhost:8080</span>
+<span class="go">docker exec webserver curl localhost:80</span>
+<span class="go">docker exec webserver curl localhost:8080</span>
+<span class="go">docker rm -f webserver</span>
+</pre></div>
+</div>
 </section>
 <section id="docker-recipes-build-your-own-images">
 <h2>Docker recipes: build your own images<a class="headerlink" href="#docker-recipes-build-your-own-images" title="Permalink to this headline"></a></h2>
@@ -328,15 +423,27 @@
 <h3>Basic instructions<a class="headerlink" href="#basic-instructions" title="Permalink to this headline"></a></h3>
 <p>Each row in the recipe corresponds to a <strong>layer</strong> of the final image.</p>
 <p><strong>FROM</strong>: parent image. Typically, an operating system. The <strong>base layer</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+</pre></div>
+</div>
 <p><strong>RUN</strong>: the command to execute inside the image filesystem.</p>
 <p>Think about it this way: every <strong>RUN</strong> line is essentially what you would run to install programs on a freshly installed Ubuntu OS.</p>
 <p>A basic recipe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+
+<span class="n">RUN</span> <span class="n">apt</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+<span class="n">RUN</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span>
+</pre></div>
+</div>
 </section>
 <section id="more-instructions">
 <h3>More instructions<a class="headerlink" href="#more-instructions" title="Permalink to this headline"></a></h3>
 <p><strong>MAINTAINER</strong></p>
 <p>Who is maintaining the container?</p>
 <p><strong>WORKDIR</strong>: all subsequent actions will be executed in that working directory</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WORKDIR</span> <span class="o">~</span>
+</pre></div>
+</div>
 <p><strong>ADD, COPY</strong>: add files to the image filesystem</p>
 <p>Difference between ADD and COPY explained <a class="reference external" href="https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile">here</a> and <a class="reference external" href="https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile">here</a></p>
 <p><strong>COPY</strong>: lets you copy a local file or directory from your host (the machine from which you are building the image)</p>
@@ -378,25 +485,65 @@ If it is run with the argument <strong>nice</strong> it will execute <cite>echo 
 <section id="docker-build">
 <h3>docker build<a class="headerlink" href="#docker-build" title="Permalink to this headline"></a></h3>
 <p>Implicitely looks for a <strong>Dockerfile</strong> file in the current directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build .</span>
+</pre></div>
+</div>
 <p>Same as:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build --file Dockerfile .</span>
+</pre></div>
+</div>
 <p>Syntax: <strong>–file / -f</strong></p>
 <p><strong>.</strong> stands for the context (in this case, current directory) of the build process. This makes sense if copying files from filesystem, for instance. <strong>IMPORTANT</strong>: Avoid contexts (directories) overpopulated with files (even if not actually used in the recipe).</p>
 <p>You can define a specific name for the image during the build process.</p>
 <p>Syntax: <strong>-t</strong> <em>imagename:tag</em>. If not defined <code class="docutils literal notranslate"><span class="pre">`:tag`</span></code> default is latest.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build -t mytestimage .</span>
+</pre></div>
+</div>
 <p>The last line of installation should be <strong>Successfully built …</strong>: then you are good to go.</p>
 <p>Check with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code> that you see the newly built image in the list…</p>
 <p>Then let’s check the ID of the image and run it!</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker images</span>
+
+<span class="go">docker run f9f41698e2f8</span>
+<span class="go">docker run mytestimage</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run f9f41698e2f8 https://cdn-images-1.medium.com/max/1600/1*_NQN6_YnxS29m8vFzWYlEg.png</span>
+</pre></div>
+</div>
 </section>
 <section id="docker-tag">
 <h3>docker tag<a class="headerlink" href="#docker-tag" title="Permalink to this headline"></a></h3>
 <p>To tag a local image with ID “e23aaea5dff1” into the “ubuntu_wget” image name repository with version “1.0”:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker tag e23aaea5dff1 --tag ubuntu_wget:1.0</span>
+</pre></div>
+</div>
 </section>
 <section id="build-cache">
 <h3>Build cache<a class="headerlink" href="#build-cache" title="Permalink to this headline"></a></h3>
 <p>Every line of a Dockerfile is actually an image/layer by itself.</p>
 <p>Modify for instance the last bit of the previous image (let’s change the image URL) and rebuild it (even with a different name/tag):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+
+<span class="n">MAINTAINER</span> <span class="n">Toni</span> <span class="n">Hermoso</span> <span class="n">Pulido</span> <span class="o">&lt;</span><span class="n">toni</span><span class="o">.</span><span class="n">hermoso</span><span class="nd">@crg</span><span class="o">.</span><span class="n">eu</span><span class="o">&gt;</span>
+
+<span class="n">WORKDIR</span> <span class="o">~</span>
+
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span>
+
+<span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;/usr/bin/wget&quot;</span><span class="p">]</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;https://cdn-images-1.medium.com/max/1600/1*_NQN6_YnxS29m8vFzWYlEg.png&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build -t mytestimage2 .</span>
+</pre></div>
+</div>
 <p>It will start from the last line.
 This is OK most of the times and very convenient for testing and trying new steps, but it may lead to errors when versions are updated (either FROM image or included packages). For that it is benefitial to start from scratch with <code class="docutils literal notranslate"><span class="pre">`--no-cache`</span></code> tag.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build --no-cache -t mytestimage2 .</span>
+</pre></div>
+</div>
 </section>
 <section id="more-advanced-image-building">
 <h3>More advanced image building<a class="headerlink" href="#more-advanced-image-building" title="Permalink to this headline"></a></h3>
