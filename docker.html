@@ -54,8 +54,34 @@
 <li class="toctree-l4"><a class="reference internal" href="#biocontainers">Biocontainers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-images-list-images">docker images: list images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-run-run-image-i-e-start-a-container">docker run: run image, i.e. start a container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-ps-check-containers-status">docker ps: check containers status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-exec-execute-process-in-running-container">docker exec: execute process in running container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-stop-start-restart-actions-on-container">docker stop, start, restart: actions on container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-rm-docker-rmi-clean-up">docker rm, docker rmi: clean up!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#major-clean">Major clean</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#volumes">Volumes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ports">Ports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-recipes-build-your-own-images">Docker recipes: build your own images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-recipes">Building recipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-instructions">Basic instructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#more-instructions">More instructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-build">docker build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-tag">docker tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-cache">Build cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#more-advanced-image-building">More advanced image building</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-commands">Additional commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Exercises</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="singularity.html">Singularity</a></li>
@@ -185,10 +211,15 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker pull biocontainers/fastqc:v0.11.9_cv7</span>
 </pre></div>
 </div>
-<p><strong>docker images: list images</strong></p>
+</section>
+</section>
+<section id="docker-images-list-images">
+<h3>docker images: list images<a class="headerlink" href="#docker-images-list-images" title="Permalink to this headline"></a></h3>
 <a class="reference internal image-reference" href="_images/docker_images_list.png"><img alt="_images/docker_images_list.png" src="_images/docker_images_list.png" style="width: 650px;" /></a>
 <p>Each image has a unique <strong>IMAGE ID</strong>.</p>
-<p><strong>docker run: run image, i.e. start a container</strong></p>
+</section>
+<section id="docker-run-run-image-i-e-start-a-container">
+<h3>docker run: run image, i.e. start a container<a class="headerlink" href="#docker-run-run-image-i-e-start-a-container" title="Permalink to this headline"></a></h3>
 <p>Now we want to use what is <strong>inside</strong> the image.
 &lt;br&gt;</p>
 <p><strong>docker run</strong> creates a fresh container (active instance of the image) from a <strong>Docker (static) image</strong>, and runs it.</p>
@@ -201,15 +232,21 @@ docker run image:tag <strong>command</strong></p>
 <p>You can either execute programs in the image from the command line (see above) or <strong>execute a container interactively</strong>, i.e. <strong>“enter”</strong> the container.</p>
 <p>Run container as daemon (in background)</p>
 <p>Run container as daemon (in background) with a given name</p>
-<p><strong>docker ps: check containers status</strong></p>
+</section>
+<section id="docker-ps-check-containers-status">
+<h3>docker ps: check containers status<a class="headerlink" href="#docker-ps-check-containers-status" title="Permalink to this headline"></a></h3>
 <p>List running containers:</p>
 <p>List all containers (whether they are running or not):</p>
 <p>Each container has a unique ID.</p>
-<p><strong>docker exec: execute process in running container</strong></p>
+</section>
+<section id="docker-exec-execute-process-in-running-container">
+<h3>docker exec: execute process in running container<a class="headerlink" href="#docker-exec-execute-process-in-running-container" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p>Interactively</p></li>
 </ul>
-<p><strong>docker stop, start, restart: actions on container</strong></p>
+</section>
+<section id="docker-stop-start-restart-actions-on-container">
+<h3>docker stop, start, restart: actions on container<a class="headerlink" href="#docker-stop-start-restart-actions-on-container" title="Permalink to this headline"></a></h3>
 <p>Stop a running container:</p>
 <p>Start a stopped container (does NOT create a new one):</p>
 <p>Restart a running container:</p>
@@ -218,8 +255,11 @@ docker run image:tag <strong>command</strong></p>
 <li><p>Restart policies: no (default), always, on-failure, unless-stopped</p></li>
 </ul>
 <p>Update restart policy</p>
-<p><strong>docker rm, docker rmi: clean up!</strong></p>
-<p><strong>Major clean</strong></p>
+</section>
+<section id="docker-rm-docker-rmi-clean-up">
+<h3>docker rm, docker rmi: clean up!<a class="headerlink" href="#docker-rm-docker-rmi-clean-up" title="Permalink to this headline"></a></h3>
+<section id="major-clean">
+<h4>Major clean<a class="headerlink" href="#major-clean" title="Permalink to this headline"></a></h4>
 <p>Check used space
 .. code-block:: console</p>
 <blockquote>
@@ -238,30 +278,43 @@ docker run image:tag <strong>command</strong></p>
 <ul class="simple">
 <li><p>Reference: <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes">https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes</a></p></li>
 </ul>
-<p><strong>Volumes</strong></p>
+</section>
+</section>
+</section>
+<section id="volumes">
+<h2>Volumes<a class="headerlink" href="#volumes" title="Permalink to this headline"></a></h2>
 <p>Docker containers are fully isolated. It is necessary to mount volumes in order to handle input/output files.</p>
 <p>Syntax: <strong>–volume/-v</strong> <em>host:container</em></p>
-<ul class="simple">
-<li><p>Exercises:</p></li>
-</ul>
+<section id="exercises">
+<h3>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline"></a></h3>
 <ol class="arabic simple">
 <li><p>Copy the 2 fastq files from available datasets in Github repository and place them in mounted directory</p></li>
 <li><p>Run fastqc interactively (inside container): <code class="docutils literal notranslate"><span class="pre">`fastqc</span>&#160; <span class="pre">/scratch/*.gz`</span></code></p></li>
 <li><p>Run fastqc outside the container</p></li>
 </ol>
-<p><strong>Ports</strong></p>
+</section>
+</section>
+<section id="ports">
+<h2>Ports<a class="headerlink" href="#ports" title="Permalink to this headline"></a></h2>
 <p>The same as with volumes, but with ports, to access Internet services.</p>
 <p>Syntax: <strong>–publish/-p</strong> <em>host:container</em></p>
-<p><strong>Docker recipes: build your own images</strong></p>
-<p><strong>Building recipes</strong></p>
+</section>
+<section id="docker-recipes-build-your-own-images">
+<h2>Docker recipes: build your own images<a class="headerlink" href="#docker-recipes-build-your-own-images" title="Permalink to this headline"></a></h2>
+<section id="building-recipes">
+<h3>Building recipes<a class="headerlink" href="#building-recipes" title="Permalink to this headline"></a></h3>
 <p>All commands should be saved in a text file, named by default <strong>Dockerfile</strong>.</p>
-<p><strong>Basic instructions</strong></p>
+</section>
+<section id="basic-instructions">
+<h3>Basic instructions<a class="headerlink" href="#basic-instructions" title="Permalink to this headline"></a></h3>
 <p>Each row in the recipe corresponds to a <strong>layer</strong> of the final image.</p>
 <p><strong>FROM</strong>: parent image. Typically, an operating system. The <strong>base layer</strong>.</p>
 <p><strong>RUN</strong>: the command to execute inside the image filesystem.</p>
 <p>Think about it this way: every <strong>RUN</strong> line is essentially what you would run to install programs on a freshly installed Ubuntu OS.</p>
 <p>A basic recipe:</p>
-<p><strong>More instructions</strong></p>
+</section>
+<section id="more-instructions">
+<h3>More instructions<a class="headerlink" href="#more-instructions" title="Permalink to this headline"></a></h3>
 <p><strong>MAINTAINER</strong></p>
 <p>Who is maintaining the container?</p>
 <p><strong>WORKDIR</strong>: all subsequent actions will be executed in that working directory</p>
@@ -298,7 +351,9 @@ If it is run with the argument <strong>nice</strong> it will execute <cite>echo 
 <span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;https://cdn.wp.nginx.com/wp-content/uploads/2016/07/docker-swarm-hero2.png&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p><strong>docker build</strong></p>
+</section>
+<section id="docker-build">
+<h3>docker build<a class="headerlink" href="#docker-build" title="Permalink to this headline"></a></h3>
 <p>Implicitely looks for a <strong>Dockerfile</strong> file in the current directory:</p>
 <p>Same as:</p>
 <p>Syntax: <strong>–file / -f</strong></p>
@@ -308,14 +363,20 @@ If it is run with the argument <strong>nice</strong> it will execute <cite>echo 
 <p>The last line of installation should be <strong>Successfully built …</strong>: then you are good to go.</p>
 <p>Check with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code> that you see the newly built image in the list…</p>
 <p>Then let’s check the ID of the image and run it!</p>
-<p><strong>docker tag</strong></p>
+</section>
+<section id="docker-tag">
+<h3>docker tag<a class="headerlink" href="#docker-tag" title="Permalink to this headline"></a></h3>
 <p>To tag a local image with ID “e23aaea5dff1” into the “ubuntu_wget” image name repository with version “1.0”:</p>
-<p><strong>Build cache</strong></p>
+</section>
+<section id="build-cache">
+<h3>Build cache<a class="headerlink" href="#build-cache" title="Permalink to this headline"></a></h3>
 <p>Every line of a Dockerfile is actually an image/layer by itself.</p>
 <p>Modify for instance the last bit of the previous image (let’s change the image URL) and rebuild it (even with a different name/tag):</p>
 <p>It will start from the last line.
 This is OK most of the times and very convenient for testing and trying new steps, but it may lead to errors when versions are updated (either FROM image or included packages). For that it is benefitial to start from scratch with <code class="docutils literal notranslate"><span class="pre">`--no-cache`</span></code> tag.</p>
-<p><strong>More advanced image building</strong></p>
+</section>
+<section id="more-advanced-image-building">
+<h3>More advanced image building<a class="headerlink" href="#more-advanced-image-building" title="Permalink to this headline"></a></h3>
 <p>Different ways to build images.</p>
 <p>Know your base system and their packages. Popular ones:</p>
 <ul class="simple">
@@ -324,7 +385,10 @@ This is OK most of the times and very convenient for testing and trying new step
 <li><p><a class="reference external" href="https://pkgs.alpinelinux.org/packages">Alpine</a></p></li>
 <li><p>Conda. <a class="reference external" href="https://anaconda.org/anaconda/repo">Anaconda</a>, <a class="reference external" href="https://conda-forge.org/feedstocks/">Conda-forge</a>, <a class="reference external" href="https://anaconda.org/bioconda/repo">Bioconda</a>, etc.</p></li>
 </ul>
-<p><strong>Additional commands</strong></p>
+</section>
+</section>
+<section id="additional-commands">
+<h2>Additional commands<a class="headerlink" href="#additional-commands" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p><strong>docker inspect</strong>: Get details from containers (both running and stopped). Things such as IPs, volumes, etc.</p></li>
 <li><p><strong>docker logs</strong>: Get <em>console</em> messages from running containers. Useful when using with web services.</p></li>
@@ -336,10 +400,10 @@ This is OK most of the times and very convenient for testing and trying new step
 <li><p><strong>docker export</strong>: Save a container into a tar archive.</p></li>
 <li><p><strong>docker import</strong>: Import a tar archive into an image.</p></li>
 </ul>
-<p><strong>Exercises</strong></p>
+</section>
+<section id="id1">
+<h2>Exercises<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
 <p>We explore interactively the different examples in the container/docker folders.</p>
-</section>
-</section>
 </section>
 </section>
 
