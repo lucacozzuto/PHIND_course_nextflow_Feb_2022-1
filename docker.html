@@ -174,10 +174,8 @@
 <h3>Using existing images<a class="headerlink" href="#using-existing-images" title="Permalink to this headline"></a></h3>
 <section id="explore-docker-hub">
 <h4>Explore Docker hub<a class="headerlink" href="#explore-docker-hub" title="Permalink to this headline"></a></h4>
-<p>Images can be stored locally or shared in a registry.
-&lt;br&gt;
-[Docker hub](<a class="reference external" href="https://hub.docker.com/">https://hub.docker.com/</a>) is the main public registry for Docker images.
-&lt;br&gt;</p>
+<p>Images can be stored locally or shared in a registry.</p>
+<p><a class="reference external" href="https://hub.docker.com/">Docker hub</a> is the main public registry for Docker images.</p>
 <p>Let’s search the keyword <strong>ubuntu</strong>:</p>
 <a class="reference internal image-reference" href="_images/dockerhub_ubuntu.png"><img alt="_images/dockerhub_ubuntu.png" src="_images/dockerhub_ubuntu.png" style="width: 900px;" /></a>
 </section>
@@ -319,11 +317,11 @@ docker run image:tag <strong>command</strong></p>
 <p>Who is maintaining the container?</p>
 <p><strong>WORKDIR</strong>: all subsequent actions will be executed in that working directory</p>
 <p><strong>ADD, COPY</strong>: add files to the image filesystem</p>
-<p>Difference between ADD and COPY explained [here](<a class="reference external" href="https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile">https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile</a>) and [here](<a class="reference external" href="https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile">https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile</a>)</p>
+<p>Difference between ADD and COPY explained <a class="reference external" href="https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile">here</a> and <a class="reference external" href="https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile">here</a></p>
 <p><strong>COPY</strong>: lets you copy a local file or directory from your host (the machine from which you are building the image)</p>
 <p><strong>ADD</strong>: same, but ADD works also for URLs, and for .tar archives that will be automatically extracted upon being copied.</p>
 <p><strong>ENV, ARG</strong>: run and build environment variables</p>
-<p>Difference between ARG and ENV explained [here](<a class="reference external" href="https://vsupalov.com/docker-arg-vs-env/">https://vsupalov.com/docker-arg-vs-env/</a>).</p>
+<p>Difference between ARG and ENV explained <a class="reference external" href="https://vsupalov.com/docker-arg-vs-env/">here</a>.</p>
 <ul class="simple">
 <li><p><strong>ARG</strong> values: available only while the image is built.</p></li>
 <li><p><strong>ENV</strong> values: available for the future running containers.</p></li>
