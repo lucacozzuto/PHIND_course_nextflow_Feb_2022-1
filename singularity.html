@@ -365,7 +365,31 @@
 <section id="id1">
 <h4>Exercise<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
 <p>Using the 2 fastq available files, process them outside and inside a mounted directory using fastqc.</p>
-</section>
+<details>
+<summary><a>Suggested solution</a></summary><div class="highlight-console notranslate"><div class="highlight"><pre><span></span># Let&#39;s create a dummy directory
+mkdir $HOME/scratch
+
+# Let&#39;s copy contents of testdata in scratch
+
+singularity exec fastqc.sif fastqc scratch/*fastq.gz
+
+# Check you have some HTMLs there. Remove them
+rm scratch/*html
+
+# Let&#39;s use shell
+singularity shell fastqc.sif
+&gt; cd scratch
+&gt; fastqc *fastq.gz
+&gt; exit
+
+# Check you have some HTMLs there. Remove them
+singularity exec -B ./scratch:/fastqcdir fastqc.sif fastqc /fastqcdir/*fastq.gz
+
+# What happens here!
+singularity exec -B ./scratch:/fastqcdir fastqc.sif bash -c &#39;fastqc /fastqcdir/*fastq.gz&#39;
+</pre></div>
+</div>
+</details></section>
 </section>
 <section id="instances">
 <h3>Instances<a class="headerlink" href="#instances" title="Permalink to this headline"></a></h3>
