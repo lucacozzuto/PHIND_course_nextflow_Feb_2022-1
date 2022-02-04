@@ -141,7 +141,7 @@
 [Docker hub](<a class="reference external" href="https://hub.docker.com/">https://hub.docker.com/</a>) is the main public registry for Docker images.
 &lt;br&gt;</p>
 <p>Let’s search the keyword <strong>ubuntu</strong>:</p>
-<p>&lt;img src=”images/dockerhub_ubuntu.png” width=”900/”&gt;</p>
+<a class="reference internal image-reference" href="_images/dockerhub_ubuntu.png"><img alt="_images/dockerhub_ubuntu.png" src="_images/dockerhub_ubuntu.png" style="width: 900px;" /></a>
 <p><strong>docker pull: import image</strong></p>
 <ul class="simple">
 <li><p>get latest image / latest release</p></li>
@@ -203,7 +203,7 @@ docker run image:tag <strong>command</strong></p>
 </ul>
 <p>Update restart policy</p>
 <p><strong>docker rm, docker rmi: clean up!</strong></p>
-<p>#### Major clean</p>
+<p><strong>Major clean</strong></p>
 <p>Check used space
 .. code-block:: console</p>
 <blockquote>
@@ -233,7 +233,7 @@ docker run image:tag <strong>command</strong></p>
 <li><p>Run fastqc interactively (inside container): <code class="docutils literal notranslate"><span class="pre">`fastqc</span>&#160; <span class="pre">/scratch/*.gz`</span></code></p></li>
 <li><p>Run fastqc outside the container</p></li>
 </ol>
-<p>## Ports</p>
+<p><strong>Ports</strong></p>
 <p>The same as with volumes, but with ports, to access Internet services.</p>
 <p>Syntax: <strong>–publish/-p</strong> <em>host:container</em></p>
 <p><strong>Docker recipes: build your own images</strong></p>
@@ -265,16 +265,15 @@ docker run image:tag <strong>command</strong></p>
 <p>In the example below, when the container is run without an argument, it will execute <cite>echo “hello world”</cite>.&lt;br&gt;
 If it is run with the argument <strong>nice</strong> it will execute <cite>echo “nice”</cite></p>
 <p>A more complex recipe (save it in a text file named <strong>Dockerfile</strong>:</p>
-<p>### docker build</p>
+<p><strong>docker build</strong></p>
 <p>Implicitely looks for a <strong>Dockerfile</strong> file in the current directory:</p>
 <p>Same as:</p>
 <p>Syntax: <strong>–file / -f</strong></p>
 <p><strong>.</strong> stands for the context (in this case, current directory) of the build process. This makes sense if copying files from filesystem, for instance. <strong>IMPORTANT</strong>: Avoid contexts (directories) overpopulated with files (even if not actually used in the recipe).</p>
 <p>You can define a specific name for the image during the build process.</p>
 <p>Syntax: <strong>-t</strong> <em>imagename:tag</em>. If not defined <code class="docutils literal notranslate"><span class="pre">`:tag`</span></code> default is latest.</p>
-<p>The last line of installation should be <strong>Successfully built …</strong>: then you are good to go.
-&lt;br&gt;
-Check with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code> that you see the newly built image in the list…</p>
+<p>The last line of installation should be <strong>Successfully built …</strong>: then you are good to go.</p>
+<p>Check with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code> that you see the newly built image in the list…</p>
 <p>Then let’s check the ID of the image and run it!</p>
 <p><strong>docker tag</strong></p>
 <p>To tag a local image with ID “e23aaea5dff1” into the “ubuntu_wget” image name repository with version “1.0”:</p>
@@ -285,11 +284,13 @@ Check with <code class="docutils literal notranslate"><span class="pre">docker</
 This is OK most of the times and very convenient for testing and trying new steps, but it may lead to errors when versions are updated (either FROM image or included packages). For that it is benefitial to start from scratch with <code class="docutils literal notranslate"><span class="pre">`--no-cache`</span></code> tag.</p>
 <p><strong>More advanced image building</strong></p>
 <p>Different ways to build images.</p>
-<p>Know your base system and their packages. Popular ones:
-* <a class="reference external" href="https://packages.debian.org">Debian</a>
-* <a class="reference external" href="https://centos.pkgs.org/">CentOS</a>
-* <a class="reference external" href="https://pkgs.alpinelinux.org/packages">Alpine</a>
-* Conda. <a class="reference external" href="https://anaconda.org/anaconda/repo">Anaconda</a>, <a class="reference external" href="https://conda-forge.org/feedstocks/">Conda-forge</a>, <a class="reference external" href="https://anaconda.org/bioconda/repo">Bioconda</a>, etc.</p>
+<p>Know your base system and their packages. Popular ones:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://packages.debian.org">Debian</a></p></li>
+<li><p><a class="reference external" href="https://centos.pkgs.org/">CentOS</a></p></li>
+<li><p><a class="reference external" href="https://pkgs.alpinelinux.org/packages">Alpine</a></p></li>
+<li><p>Conda. <a class="reference external" href="https://anaconda.org/anaconda/repo">Anaconda</a>, <a class="reference external" href="https://conda-forge.org/feedstocks/">Conda-forge</a>, <a class="reference external" href="https://anaconda.org/bioconda/repo">Bioconda</a>, etc.</p></li>
+</ul>
 <p><strong>Additional commands</strong></p>
 <ul class="simple">
 <li><p><strong>docker inspect</strong>: Get details from containers (both running and stopped). Things such as IPs, volumes, etc.</p></li>
