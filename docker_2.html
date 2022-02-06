@@ -47,6 +47,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#docker-recipes-build-your-own-images">Docker recipes: build your own images</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#os-commands-in-image-building">OS commands in image building</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#update-and-upgrade-packages">Update and upgrade packages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#search-and-install-packages">Search and install packages</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#building-recipes">Building recipes</a><ul>
@@ -112,14 +113,30 @@
 <ul class="simple">
 <li><p>In <strong>Ubuntu</strong>:</p></li>
 </ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">upgrade</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
 <p>In <strong>CentOS</strong>:</p>
-<p>### Search and install packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">check</span><span class="o">-</span><span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">update</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+</section>
+<section id="search-and-install-packages">
+<h4>Search and install packages<a class="headerlink" href="#search-and-install-packages" title="Permalink to this headline"></a></h4>
 <ul class="simple">
 <li><p>In <strong>Ubuntu</strong>:</p></li>
 </ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">search</span> <span class="n">libxml2</span>
+<span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">libxml2</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p>In <strong>CentOS</strong>:</p></li>
 </ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">search</span> <span class="n">libxml2</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">libxml2</span><span class="o">-</span><span class="n">devel</span><span class="o">.</span><span class="n">x86_64</span>
+</pre></div>
+</div>
 <p>&gt;Note the <strong>-y</strong> option that we set for updating and for installing.&lt;br&gt;
 It is an important option in the context of Docker: it means that you <em>answer yes to all questions</em> regarding installation.</p>
 </section>
