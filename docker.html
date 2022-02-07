@@ -448,7 +448,7 @@
 <h3>docker run –user<a class="headerlink" href="#docker-run-user" title="Permalink to this headline"></a></h3>
 <p>It is possible to run certain containers with a specific user, appending <code class="docutils literal notranslate"><span class="pre">`run</span> <span class="pre">--user`</span></code>.</p>
 <p>A convenient command would be:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --user $(id -u):$(id -g)</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --user $(id -u):$(id -g) --detach --volume $(pwd)/datatest:/scratch --name user_test biocontainers/fastqc:v0.11.9_cv7 touch /scratch/userfile</span>
 </pre></div>
 </div>
 </section>
