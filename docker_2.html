@@ -287,11 +287,14 @@ This is OK most of the times and very convenient for testing and trying new step
 </div>
 <p>This script outputs random intergers from 1 to 1000: the number of integers selected is given as the first argument.</p>
 <ul class="simple">
-<li><p>Write a recipe for an image:
-* Based on centos:7
-* That will execute this script (with bash) when it is run, giving it 2 as a default argument (i.e. outputs 2 random integers): the default can be changed as the image is run.
-* Build the image.
-* Start a container with the default argument, then try it with another argument.</p></li>
+<li><p>Write a recipe for an image:</p>
+<ul>
+<li><p>Based on centos:7</p></li>
+<li><p>That will execute this script (with bash) when it is run, giving it 2 as a default argument (i.e. outputs 2 random integers): the default can be changed as the image is run.</p></li>
+<li><p>Build the image.</p></li>
+<li><p>Start a container with the default argument, then try it with another argument.</p></li>
+</ul>
+</li>
 </ul>
 <details>
 <summary><a>Suggested solution</a></summary><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">centos</span><span class="p">:</span><span class="mi">7</span>
