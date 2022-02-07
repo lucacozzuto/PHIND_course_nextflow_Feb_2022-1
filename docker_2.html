@@ -58,9 +58,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#docker-build">docker build</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#docker-tag">docker tag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#build-cache">Build cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-exercise">Build exercise</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#additional-commands">Additional commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-commands">Additional commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#note-about-the-tar-formats">Note about the tar formats</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a></li>
 </ul>
 </li>
@@ -271,6 +275,50 @@ This is OK most of the times and very convenient for testing and trying new step
 </pre></div>
 </div>
 </section>
+<section id="build-exercise">
+<h3>Build exercise<a class="headerlink" href="#build-exercise" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>Random numbers</p></li>
+<li><p>Copy the following short bash script in a file called random_numbers.bash.</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span>!/usr/bin/bash
+<span class="go">seq 1 1000 | shuf | head -$1</span>
+</pre></div>
+</div>
+<p>This script outputs random intergers from 1 to 1000: the number of integers selected is given as the first argument.</p>
+<ul>
+<li><p>Write a recipe for an image:
+* Based on centos:7
+* That will execute this script (with bash) when it is run, giving it 2 as a default argument (i.e. outputs 2 random integers): the default can be changed as the image is run.
+* Build the image.
+* Start a container with the default argument, then try it with another argument.</p>
+<details>
+<summary><a>Suggested solution</a></summary></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">centos</span><span class="p">:</span><span class="mi">7</span>
+
+<span class="n">MAINTAINER</span> <span class="n">Name</span> <span class="n">Surname</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">.</span><span class="n">surname</span><span class="nd">@mail</span><span class="o">.</span><span class="n">com</span><span class="o">&gt;</span>
+
+<span class="c1"># Copy script from host to image</span>
+<span class="n">COPY</span> <span class="n">random_numbers</span><span class="o">.</span><span class="n">bash</span> <span class="o">.</span>
+
+<span class="c1"># Make script executable</span>
+<span class="n">RUN</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">random_numbers</span><span class="o">.</span><span class="n">bash</span>
+
+<span class="c1"># As the container starts, &quot;random_numbers.bash&quot; is run</span>
+<span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;/usr/bin/bash&quot;</span><span class="p">,</span> <span class="s2">&quot;random_numbers.bash&quot;</span><span class="p">]</span>
+
+<span class="c1"># default argument (that can be changed on the command line)</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Build and run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build -f Dockerfile_RN -t random_numbers .</span>
+<span class="go">docker run random_numbers</span>
+<span class="go">docker run random_numbers 10</span>
+</pre></div>
+</div>
+</details></section>
 </section>
 <section id="additional-commands">
 <h2>Additional commands<a class="headerlink" href="#additional-commands" title="Permalink to this headline"></a></h2>
@@ -285,6 +333,10 @@ This is OK most of the times and very convenient for testing and trying new step
 <li><p><strong>docker export</strong>: Save a container into a tar archive.</p></li>
 <li><p><strong>docker import</strong>: Import a tar archive into an image.</p></li>
 </ul>
+<section id="note-about-the-tar-formats">
+<h3>Note about the tar formats<a class="headerlink" href="#note-about-the-tar-formats" title="Permalink to this headline"></a></h3>
+<p>If you check the tar archives generated thanks to save with the ones using export, you will notice they do not look the same. The former ones ressemble more what you will find in /var/lib/docker (that is where Docker daemon stores its data) and it includes metadata information (so it is not necessary to specify an image tag). On the other hand, tar files generated with export they simply contantain the image filesystem. You lost that way a lot of metadata associated to the original image, such as the tags, but also things such as ENTRYPOINT and CMD instructions.</p>
+</section>
 </section>
 <section id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline"></a></h2>
