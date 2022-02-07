@@ -68,7 +68,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#volumes">Volumes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ports">Ports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#volume-exercises">Volume exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volume-exercises">Volume exercises</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker-run-user">docker run –user</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="docker_2.html">Docker 2</a></li>
@@ -441,6 +444,14 @@
 <li><p>Run fastqc interactively (inside container): <code class="docutils literal notranslate"><span class="pre">`fastqc</span>&#160; <span class="pre">/scratch/*.gz`</span></code></p></li>
 <li><p>Run fastqc outside the container</p></li>
 </ol>
+<section id="docker-run-user">
+<h3>docker run –user<a class="headerlink" href="#docker-run-user" title="Permalink to this headline"></a></h3>
+<p>It is possible to run certain containers with a specific user, appending <code class="docutils literal notranslate"><span class="pre">`run</span> <span class="pre">--user`</span></code>.</p>
+<p>A convenient command would be:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run --user $(id -u):$(id -g)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
