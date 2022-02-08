@@ -358,7 +358,7 @@
 <h3>Bind paths (aka volumes)<a class="headerlink" href="#bind-paths-aka-volumes" title="Permalink to this headline"></a></h3>
 <p>Paths of host system mounted in the container</p>
 <ul class="simple">
-<li><p>Default ones, no need to mount them explicitly (for 3.6.x): <code class="docutils literal notranslate"><span class="pre">`$HOME`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/sys:/sys`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/proc:/proc`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/tmp:/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/var/tmp:/var/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/resolv.conf:/etc/resolv.conf`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/passwd:/etc/passwd`</span></code>, and <code class="docutils literal notranslate"><span class="pre">`$PWD`</span></code> [<a class="reference external" href="https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html](https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html">https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html](https://sylabs.io/guides/3.6/user-guide/bind_paths_and_mounts.html</a>)</p></li>
+<li><p>Default ones, no need to mount them explicitly (for 3.6.x): <code class="docutils literal notranslate"><span class="pre">`$HOME`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/sys:/sys`</span></code> , <code class="docutils literal notranslate"><span class="pre">`/proc:/proc`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/tmp:/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/var/tmp:/var/tmp`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/resolv.conf:/etc/resolv.conf`</span></code>, <code class="docutils literal notranslate"><span class="pre">`/etc/passwd:/etc/passwd`</span></code>, and <code class="docutils literal notranslate"><span class="pre">`$PWD`</span></code>  <a class="reference external" href="https://apptainer.org/docs/user/main/bind_paths_and_mounts.html">Ref</a></p></li>
 </ul>
 <p>For others, need to be done explicitly (syntax: host:container)</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir datatest</span>
@@ -428,8 +428,8 @@ singularity exec -B ./datatest:/scratch fastqc.sif bash -c &#39;fastqc /scratch/
 </div>
 <p>More information:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://apptainer.com/docs/user-guide/running_services.html">https://apptainer.com/docs/user-guide/running_services.html</a></p></li>
-<li><p><a class="reference external" href="https://apptainer.com/docs/user-guide/networking.html">https://apptainer.com/docs/user-guide/networking.html</a></p></li>
+<li><p><a class="reference external" href="https://apptainer.org/docs/user/main/running_services.html">https://apptainer.org/docs/user/main/running_services.html</a></p></li>
+<li><p><a class="reference external" href="https://apptainer.org/docs/user/main/networking.html">https://apptainer.org/docs/user/main/networking.html</a></p></li>
 </ul>
 </section>
 <section id="singularity-tips">
