@@ -395,11 +395,11 @@ singularity exec -B ./datatest:/scratch fastqc.sif bash -c &#39;fastqc /scratch/
 <h3>Instances<a class="headerlink" href="#instances" title="Permalink to this headline"></a></h3>
 <p>Also know as <strong>services</strong>. Despite Docker it is still more convenient for these tasks, it allows enabling thing such as webservices (e.g., via APIs) in HPC workflows.</p>
 <p>As a simple example, first we create a boostrapped image:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Bootstrap: docker</span>
-<span class="go">From: library/mariadb:10.3</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Bootstrap</span><span class="p">:</span> <span class="n">docker</span>
+<span class="n">From</span><span class="p">:</span> <span class="n">library</span><span class="o">/</span><span class="n">mariadb</span><span class="p">:</span><span class="mf">10.3</span>
 
-<span class="gp">%</span>startscript
-<span class="go">        mysqld</span>
+<span class="o">%</span><span class="n">startscript</span>
+        <span class="n">mysqld</span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo singularity build mariadb.sif mariadb.singularity</span>
