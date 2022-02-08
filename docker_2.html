@@ -211,8 +211,22 @@ It is an important option in the context of Docker: it means that you <em>answer
 <p>Difference between ADD and COPY explained <a class="reference external" href="https://stackoverflow.com/questions/24958140/what-is-the-difference-between-the-copy-and-add-commands-in-a-dockerfile">here</a> and <a class="reference external" href="https://nickjanetakis.com/blog/docker-tip-2-the-difference-between-copy-and-add-in-a-dockerile">here</a></p>
 <p><strong>COPY</strong>: lets you copy a local file or directory from your host (the machine from which you are building the image)</p>
 <p><strong>ADD</strong>: same, but ADD works also for URLs, and for .tar archives that will be automatically extracted upon being copied.</p>
+<p>If we have a file, let’s say <code class="docutils literal notranslate"><span class="pre">`example.jpg`</span></code>, we can copy it.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># COPY source destination</span>
-<span class="n">COPY</span> <span class="o">~/.</span><span class="n">bashrc</span> <span class="o">.</span>
+<span class="n">COPY</span> <span class="n">example</span><span class="o">.</span><span class="n">jpg</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>A more sophisticated case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+
+<span class="n">RUN</span> <span class="n">apt</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span> <span class="o">-</span><span class="n">y</span> <span class="n">upgrade</span>
+<span class="n">RUN</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span>
+
+<span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">data</span>
+
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">data</span>
+
+<span class="n">COPY</span> <span class="n">example</span><span class="o">.</span><span class="n">jpg</span> <span class="o">.</span>
 </pre></div>
 </div>
 <p><strong>ENV, ARG</strong>: run and build environment variables</p>
@@ -221,19 +235,13 @@ It is an important option in the context of Docker: it means that you <em>answer
 <li><p><strong>ARG</strong> values: available only while the image is built.</p></li>
 <li><p><strong>ENV</strong> values: available for the future running containers.</p></li>
 </ul>
-<p>With a default value</p>
+<p>In the case below <strong>UbuntuVersion</strong> argument is provided with a default value.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ARG UbuntuVersion=18.04
 
 FROM ubuntu:${UbuntuVersion}
 </pre></div>
 </div>
-<p>Without a default value (i.e. the user is expected to provide it upon building)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ARG UbuntuVersion
-
-FROM ubuntu:${UbuntuVersion}
-</pre></div>
-</div>
-<p>Provide a value for UbuntuVersion as you build the image with –build-arg:</p>
+<p>Override the value for <strong>UbuntuVersion</strong> as you build the image with –build-arg:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="n">arg</span> <span class="n">UbuntuVersion</span><span class="o">=</span><span class="mf">20.04</span> <span class="o">.</span>
 </pre></div>
 </div>
