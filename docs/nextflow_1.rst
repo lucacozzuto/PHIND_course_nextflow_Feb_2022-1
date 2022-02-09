@@ -1,7 +1,7 @@
 .. _nextflow_1-page:
 
 *******************
-Introduction to Nextflow
+Nextflow 1
 *******************
 
 Introduction to Nextflow
