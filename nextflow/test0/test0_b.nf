@@ -1,54 +1,54 @@
-	#!/usr/bin/env nextflow
+#!/usr/bin/env nextflow
 
-	nextflow.enable.dsl=2
+nextflow.enable.dsl=2
 
-	str = Channel.from('hello', 'hola', 'bonjour')
+str = Channel.from('hello', 'hola', 'bonjour')
 
-	process printHello {
-		tag  "${str_in}"
+process printHello {
+	tag  "${str_in}"
 
- 	  	input:
-	   	val str_in
+  	input:
+   	val str_in
 
-	   	output:
-	   	stdout
+   	output:
+   	stdout
 
-	   	script:
-	   	"""
-	   		echo ${str_in} in Italian is ciao
-	   	"""
-	}
+   	script:
+   	"""
+   		echo ${str_in} in Italian is ciao
+   	"""
+}
 
-	/*
-	 * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword
-	 */
-
-
-	workflow first_pipeline {
- 	   take: str_input
-
-	   main:
-	   printHello(str_input).view()
-	}
-
-	/*
-	 * You can re-use the previous processes and combine as you prefer
-	 */
+/*
+ * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword
+ */
 
 
-	workflow second_pipeline {
-	    take: str_input
+workflow first_pipeline {
+   take: str_input
 
-	    main:
-	    printHello(str_input.collect()).view()
-	}
+   main:
+   printHello(str_input).view()
+}
 
-	/*
-	 * You can then invoke the different named workflows in this way
- 	* passing the same input channel `str` to both
- 	*/
+/*
+ * You can re-use the previous processes and combine as you prefer
+ */
 
-	workflow {
-	    first_pipeline(str)
-	    second_pipeline(str)
-	}
+
+workflow second_pipeline {
+    take: str_input
+
+    main:
+    printHello(str_input.collect()).view()
+}
+
+/*
+ * You can then invoke the different named workflows in this way
+* passing the same input channel `str` to both
+*/
+
+workflow {
+    first_pipeline(str)
+    second_pipeline(str)
+}
