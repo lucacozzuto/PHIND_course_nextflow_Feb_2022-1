@@ -3,20 +3,20 @@
 /*
  * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).
  *
- *   This file is part of 'CRG_Containers_NextFlow'.
+ *    This file is part of 'CRG_Containers_NextFlow'.
  *
- *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
+ *    CRG_Containers_NextFlow is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
  *
- *   CRG_Containers_NextFlow is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *    CRG_Containers_NextFlow is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with CRG_Containers_NextFlow.  If not, see <http://www.gnu.org/licenses/>.
+ *    You should have received a copy of the GNU General Public License
+ *    along with CRG_Containers_NextFlow.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -40,18 +40,18 @@ str = Channel.from('hello', 'hola', 'bonjour')
  */
 
 process printHello {
-   tag { "${str_in}" }
-   
-   input:
-   val str_in
+    tag { "${str_in}" }
+    
+    input:
+    val str_in
 
-   output: 
-   stdout
-   
-   script:
-   """
-   echo ${str_in} in Italian is ciao 
-   """
+    output: 
+    stdout
+    
+    script:
+    """
+    echo ${str_in} in Italian is ciao 
+    """
 }
 
 /*
@@ -61,7 +61,7 @@ process printHello {
  */
 
 workflow {
- result = printHello(str)
- result.view()
+    result = printHello(str)
+    result.view()
 }
  
