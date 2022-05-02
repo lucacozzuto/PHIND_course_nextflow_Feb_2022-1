@@ -218,6 +218,10 @@ An **operator** is a method that reshapes or connects different channels applyin
 
 We can write a very simple Nextflow script: save the following piece of code in the ``test0.nf`` file:
 
+
+.. literalinclude:: ../nextflow/test0/test0.nf
+   :language: groovy
+
 .. code-block:: groovy
 
 

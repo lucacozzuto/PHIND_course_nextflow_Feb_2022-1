@@ -271,25 +271,94 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </ul>
 <p>An <strong>operator</strong> is a method that reshapes or connects different channels applying specific rules.</p>
 <p>We can write a very simple Nextflow script: save the following piece of code in the <code class="docutils literal notranslate"><span class="pre">test0.nf</span></code> file:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
-<span class="c1">// This is a comment</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
+<span class="cm"> *</span>
+<span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
+<span class="cm"> *   it under the terms of the GNU General Public License as published by</span>
+<span class="cm"> *   the Free Software Foundation, either version 3 of the License, or</span>
+<span class="cm"> *   (at your option) any later version.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is distributed in the hope that it will be useful,</span>
+<span class="cm"> *   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="cm"> *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="cm"> *   GNU General Public License for more details.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   You should have received a copy of the GNU General Public License</span>
+<span class="cm"> *   along with CRG_Containers_NextFlow.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="cm"> */</span><span class="w"></span>
+
+
+<span class="cm">/* </span>
+<span class="cm"> * This code enables the new dsl of Nextflow. </span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="w"> </span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="cm">/* </span>
+<span class="cm"> * Creates a channel emitting some string values</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="w"> </span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Creates a process which receive an input channel containing values</span>
+<span class="cm"> * Each value emitted by the channel triggers the execution </span>
+<span class="cm"> * of the process. The process stdout is caputured and send over </span>
+<span class="cm"> * the another channel. </span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
+<span class="w">   </span>
+<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
+
+<span class="w">   </span><span class="nl">output:</span><span class="w"> </span>
+<span class="w">   </span><span class="n">stdout</span><span class="w"></span>
+<span class="w">   </span>
+<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">   echo ${str_in} in Italian is ciao </span>
+<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * A workflow consist of a number of invocations of processes</span>
+<span class="cm"> * where they are fed with the expected input channels </span>
+<span class="cm"> * as they were cutom functions. You can only invoke once a process per workflow.</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w"> </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+<span class="w"> </span>
+</pre></div>
+</div>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+<span class="c1">// This is a comment</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * This is a block of comments</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="c1">// This is needed for activating the new DLS2</span>
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="c1">// This is needed for activating the new DLS2</span><span class="w"></span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="c1">//Let&#39;s create a channel from string values</span>
-<span class="n">str</span> <span class="o">=</span> <span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span> <span class="s1">&#39;hola&#39;</span><span class="o">,</span> <span class="s1">&#39;bonjour&#39;</span><span class="o">)</span>
+<span class="c1">//Let&#39;s create a channel from string values</span><span class="w"></span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm">* Let&#39;s print that channel using the operator view()</span>
 <span class="cm">* https://www.nextflow.io/docs/latest/operator.html#view</span>
-<span class="cm">*/</span>
+<span class="cm">*/</span><span class="w"></span>
 
-<span class="n">str</span><span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="n">str</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Once the file is saved, execute it with:</p>
@@ -308,23 +377,23 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </pre></div>
 </div>
 <p>and another script (test2.nf) with the following code:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="c1">// enable DSL2</span>
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="c1">// enable DSL2</span><span class="w"></span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm">* Let&#39;s create the channel `my_files`</span>
 <span class="cm">* using the method fromPath</span>
-<span class="cm">*/</span>
+<span class="cm">*/</span><span class="w"></span>
 
-<span class="n">Channel</span>
-    <span class="o">.</span><span class="na">fromPath</span><span class="o">(</span> <span class="s2">&quot;*.txt&quot;</span> <span class="o">)</span>
-    <span class="o">.</span><span class="na">set</span> <span class="o">{</span><span class="n">my_files</span><span class="o">}</span>
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="w"> </span><span class="s2">&quot;*.txt&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
 
-<span class="c1">// We can use the view() operator again to see the content of channel &quot;my_files&quot;</span>
+<span class="c1">// We can use the view() operator again to see the content of channel &quot;my_files&quot;</span><span class="w"></span>
 
-<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can now execute <cite>test2.nf</cite>:</p>
@@ -344,20 +413,20 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </pre></div>
 </div>
 <p>Then we use <a class="reference external" href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs">fromFilePairs</a> for generating a tuple:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm">* Let&#39;s create the channel `my_files`</span>
 <span class="cm">* using the method fromFilePairs</span>
-<span class="cm">*/</span>
+<span class="cm">*/</span><span class="w"></span>
 
-<span class="n">Channel</span>
-    <span class="o">.</span><span class="na">fromFilePairs</span><span class="o">(</span> <span class="s2">&quot;aaa_{1,2}.txt&quot;</span> <span class="o">)</span>
-    <span class="o">.</span><span class="na">set</span> <span class="o">{</span><span class="n">my_files</span><span class="o">}</span>
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromFilePairs</span><span class="o">(</span><span class="w"> </span><span class="s2">&quot;aaa_{1,2}.txt&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
 
-<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -373,30 +442,30 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </div></blockquote>
 <p>See here the list of <a class="reference external" href="https://www.nextflow.io/docs/latest/operator.html#">Operators</a> available at the official documentation.</p>
 <details>
-<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="n">Channel</span>
-   <span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s2">&quot;{aa,bb,cc}.txt&quot;</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">set</span> <span class="o">{</span><span class="n">my_files</span><span class="o">}</span>
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">   </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s2">&quot;{aa,bb,cc}.txt&quot;</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
 
-<span class="n">my_files</span>
-    <span class="o">.</span><span class="na">collect</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="n">my_files</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">collect</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 
-<span class="c1">// You can also write it as: my_files.collect().view()</span>
+<span class="c1">// You can also write it as: my_files.collect().view()</span><span class="w"></span>
 
-<span class="n">my_files</span>
-    <span class="o">.</span><span class="na">combine</span><span class="o">(</span><span class="n">my_files</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="n">my_files</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">combine</span><span class="o">(</span><span class="n">my_files</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 
-<span class="n">my_files</span>
-    <span class="o">.</span><span class="na">collect</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">{</span>
-                <span class="o">[</span><span class="s2">&quot;custom id&quot;</span><span class="o">,</span> <span class="n">it</span><span class="o">]</span>
-        <span class="o">}</span>
-    <span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="n">my_files</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">collect</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">map</span><span class="o">{</span><span class="w"></span>
+<span class="w">                </span><span class="o">[</span><span class="s2">&quot;custom id&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">it</span><span class="o">]</span><span class="w"></span>
+<span class="w">        </span><span class="o">}</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 </pre></div>
 </div>
 </details><div class="line-block">
@@ -407,33 +476,33 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <section id="processes">
 <h3>Processes<a class="headerlink" href="#processes" title="Permalink to this headline"></a></h3>
 <p>Let’s add a process to the previous script <cite>test0.nf</cite> and let’s call it test1.nf</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="n">str</span> <span class="o">=</span> <span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span> <span class="s1">&#39;hola&#39;</span><span class="o">,</span> <span class="s1">&#39;bonjour&#39;</span><span class="o">)</span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Creates a process which receives an input channel containing values</span>
 <span class="cm"> * Each value emitted by the channel triggers the execution</span>
 <span class="cm"> * of the process. The process stdout is captured and sent over</span>
 <span class="cm"> * the another channel.</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">printHello</span> <span class="o">{</span>
-   <span class="n">tag</span> <span class="o">{</span> <span class="s2">&quot;${str_in}&quot;</span> <span class="o">}</span> <span class="c1">// this is for displaying the content of `str_in` in the log file</span>
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"> </span><span class="c1">// this is for displaying the content of `str_in` in the log file</span><span class="w"></span>
 
-   <span class="nl">input:</span>
-   <span class="n">val</span> <span class="n">str_in</span>
+<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-   <span class="nl">output:</span>
-   <span class="n">stdout</span>
+<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">   </span><span class="n">stdout</span><span class="w"></span>
 
-   <span class="nl">script:</span>
-   <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        echo ${str_in} in Italian is ciao</span>
-<span class="s2">   &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The process can be seen as a function that is composed of:</p>
@@ -454,37 +523,37 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <p>The code above will produce nothing, because it requires the part that will actually <strong>call the process</strong> and connect it to the input channel.</p>
 <p>This part is called a <strong>workflow</strong>.</p>
 <p>Let’s add a workflow to our code:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="n">str</span> <span class="o">=</span> <span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span> <span class="s1">&#39;hola&#39;</span><span class="o">,</span> <span class="s1">&#39;bonjour&#39;</span><span class="o">)</span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">printHello</span> <span class="o">{</span>
-   <span class="n">tag</span>  <span class="s2">&quot;${str_in}&quot;</span>
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
-   <span class="nl">input:</span>
-   <span class="n">val</span> <span class="n">str_in</span>
+<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-   <span class="nl">output:</span>
-   <span class="n">stdout</span>
+<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">   </span><span class="n">stdout</span><span class="w"></span>
 
-   <span class="nl">script:</span>
-   <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">   echo ${str_in} in Italian is ciao</span>
-<span class="s2">   &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * A workflow consists of a number of invocations of processes</span>
 <span class="cm"> * where they are fed with the expected input channels</span>
 <span class="cm"> * as if they were custom functions. You can only invoke a process once per workflow.</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="o">{</span>
- <span class="n">result</span> <span class="o">=</span> <span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span>
- <span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span>
-<span class="o">}</span>
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w"> </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can run the script sending the execution in the background (with the <cite>-bg</cite> option) and saving the log in the file <cite>log.txt</cite>.</p>
@@ -564,60 +633,60 @@ drwxr-xr-x  3 lcozzuto  staff    96B Oct  7 13:39 ..
 </div>
 <p>You can also name the sub workflows to combine them in the main workflow.
 For example, using this code you can execute two different workflows that contain the same process. As you can see the named workflows work similarly to the process: the input is defined by the <strong>take</strong> keyword, while the <strong>script</strong> part is represented by the <strong>main</strong>. We also have an equivalent of <strong>output</strong> that is <strong>emit</strong> that will be described later on.</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="n">str</span> <span class="o">=</span> <span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span> <span class="s1">&#39;hola&#39;</span><span class="o">,</span> <span class="s1">&#39;bonjour&#39;</span><span class="o">)</span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">printHello</span> <span class="o">{</span>
-        <span class="n">tag</span>  <span class="s2">&quot;${str_in}&quot;</span>
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
-        <span class="nl">input:</span>
-        <span class="n">val</span> <span class="n">str_in</span>
+<span class="w">        </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">        </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-        <span class="nl">output:</span>
-        <span class="n">stdout</span>
+<span class="w">        </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">        </span><span class="n">stdout</span><span class="w"></span>
 
-        <span class="nl">script:</span>
-        <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">                echo ${str_in} in Italian is ciao</span>
-<span class="s2">        &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
 
-<span class="n">workflow</span> <span class="n">first_pipeline</span> <span class="o">{</span>
-   <span class="nl">take:</span> <span class="n">str_input</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-   <span class="nl">main:</span>
-   <span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">).</span><span class="na">view</span><span class="o">()</span>
-<span class="o">}</span>
+<span class="w">   </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">   </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * You can re-use the previous processes and combine as you prefer</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
 
-<span class="n">workflow</span> <span class="n">second_pipeline</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">str_input</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-    <span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">()).</span><span class="na">view</span><span class="o">()</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">()).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * You can then invoke the different named workflows in this way</span>
 <span class="cm">* passing the same input channel `str` to both</span>
-<span class="cm">*/</span>
+<span class="cm">*/</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="o">{</span>
-    <span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span>
-    <span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can add the <strong>collect</strong> operator to the second workflow that would collect the output from different executions and return the resulting list <strong>as a sole emission</strong>.</p>
@@ -643,146 +712,146 @@ For example, using this code you can execute two different workflows that contai
 <span class="go">We can change the pipeline to produce files instead of `standard output &lt;https://www.nextflow.io/docs/latest/dsl2.html#process-outputs&gt;`__.</span>
 </pre></div>
 </div>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="n">str</span> <span class="o">=</span> <span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span> <span class="s1">&#39;hola&#39;</span><span class="o">,</span> <span class="s1">&#39;bonjour&#39;</span><span class="o">)</span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">printHello</span> <span class="o">{</span>
-   <span class="n">tag</span>  <span class="s2">&quot;${str_in}&quot;</span>
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
-   <span class="nl">input:</span>
-   <span class="n">val</span> <span class="n">str_in</span>
+<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-   <span class="nl">output:</span>
-   <span class="n">path</span><span class="o">(</span><span class="s2">&quot;${str_in}.txt&quot;</span><span class="o">)</span>
+<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">   </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${str_in}.txt&quot;</span><span class="o">)</span><span class="w"></span>
 
-   <span class="nl">script:</span>
-   <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        echo ${str_in} in Italian is ciao &gt; ${str_in}.txt</span>
-<span class="s2">   &quot;&quot;&quot;</span>
-<span class="o">}</span>
-<span class="n">process</span> <span class="n">printHello2</span> <span class="o">{</span>
-   <span class="n">tag</span>  <span class="s2">&quot;${str_in}&quot;</span>
+<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">printHello2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
-   <span class="nl">input:</span>
-   <span class="n">val</span> <span class="n">str_in</span>
+<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-   <span class="nl">output:</span>
-   <span class="n">path</span><span class="o">(</span><span class="s2">&quot;cheers.txt&quot;</span><span class="o">)</span>
+<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">   </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;cheers.txt&quot;</span><span class="o">)</span><span class="w"></span>
 
-   <span class="nl">script:</span>
-   <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt</span>
-<span class="s2">   &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * A workflow can be named as a function and receive an input using the take keyword</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="n">first_pipeline</span> <span class="o">{</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 
-    <span class="nl">take:</span> <span class="n">str_input</span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-        <span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">        </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * You can re-use the previous processes an combine as you prefer</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="n">second_pipeline</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">str_input</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-        <span class="n">printHello2</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">        </span><span class="n">printHello2</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span><span class="w"></span>
 
-<span class="o">}</span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * You can then invoke the different named workflows in this way</span>
 <span class="cm"> * passing the same input channel `str` to both</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
 
-<span class="n">workflow</span> <span class="o">{</span>
-    <span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span>
-    <span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="more-complex-scripts">
 <h2>More complex scripts<a class="headerlink" href="#more-complex-scripts" title="Permalink to this headline"></a></h2>
 <p>We can feed the channel that is generated by a process to another process in the workflow definition. The variable used by AWK need to be escaped, otherwise they will be considered as proper Nextflow variables and thus produce an error. Every special character, e.g., <strong>$</strong>, needs to be escaped (<strong>$</strong>). It can be tedeous when writing long one liners; therefore, it is recommended to make a small shell script and call it as an executable. It has to be placed in a folder named <strong>bin</strong> inside the pipeline folder to be automatically considered from Nextflow as a tool in the path.</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="c1">// the default &quot;$baseDir/testdata/test.fa&quot; can be overridden by using --inputfile OTHERFILENAME</span>
-<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span> <span class="o">=</span> <span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span>
+<span class="c1">// the default &quot;$baseDir/testdata/test.fa&quot; can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
 
-<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span>
-<span class="n">sequences_file</span> <span class="o">=</span> <span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span>
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
 
-<span class="c1">// check if the file exists</span>
-<span class="k">if</span><span class="o">(</span> <span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">)</span> <span class="n">exit</span> <span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span>
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
-<span class="cm"> */</span>
-<span class="n">process</span> <span class="n">splitSequences</span> <span class="o">{</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">sequencesFile</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
 
-    <span class="c1">// simple awk command</span>
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Process 2 for reversing the sequences. Note the escaped AWK variables \$</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">reverseSequence</span> <span class="o">{</span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 
-    <span class="n">tag</span> <span class="o">{</span> <span class="s2">&quot;${seq}&quot;</span> <span class="o">}</span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
 
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">seq</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="s2">&quot;all.rev&quot;</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
 
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="o">{</span>
-    <span class="n">splitted_seq</span>        <span class="o">=</span> <span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span>
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
 
-    <span class="c1">// Here you have the output channel as a collection</span>
-    <span class="n">splitted_seq</span><span class="o">.</span><span class="na">view</span><span class="o">()</span>
+<span class="w">    </span><span class="c1">// Here you have the output channel as a collection</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 
-    <span class="c1">// Here you have the same channel reshaped to send separately each value</span>
-    <span class="n">splitted_seq</span><span class="o">.</span><span class="na">flatten</span><span class="o">().</span><span class="na">view</span><span class="o">()</span>
+<span class="w">    </span><span class="c1">// Here you have the same channel reshaped to send separately each value</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="o">.</span><span class="na">flatten</span><span class="o">().</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 
-    <span class="c1">// DLS2 allows you to reuse the channels! In past you had to create many identical</span>
-    <span class="c1">// channels for sending the same kind of data to different processes</span>
-    <span class="n">rev_single_seq</span>      <span class="o">=</span> <span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span>
+<span class="w">    </span><span class="c1">// DLS2 allows you to reuse the channels! In past you had to create many identical</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// channels for sending the same kind of data to different processes</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
 
-<span class="o">}</span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Here we have two simple processes:</p>
@@ -791,7 +860,7 @@ For example, using this code you can execute two different workflows that contai
 <li><p>the latter is able to <strong>reverse the position of the sequences</strong>.</p></li>
 </ul>
 <p>The input path is fed as a parameter using the script parameters <strong>${seq}</strong></p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -839,74 +908,74 @@ This avoids clashes, and each process is isolated from the other.</p>
 </pre></div>
 </div>
 <p>At this point we can make two different workflows to demonstrate how the new DSL allows reusing the code.</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span>
-<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span> <span class="o">=</span> <span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span>
+<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
 
-<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span>
-<span class="n">sequences_file</span> <span class="o">=</span> <span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span>
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
 
-<span class="c1">// check if the file exists</span>
-<span class="k">if</span><span class="o">(</span> <span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">)</span> <span class="n">exit</span> <span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span>
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
-<span class="cm"> */</span>
-<span class="n">process</span> <span class="n">splitSequences</span> <span class="o">{</span>
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">sequencesFile</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
 
-    <span class="c1">// simple awk command</span>
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Process 2 for reversing the sequences</span>
-<span class="cm"> */</span>
-<span class="n">process</span> <span class="n">reverseSequence</span> <span class="o">{</span>
-    <span class="n">tag</span> <span class="o">{</span> <span class="s2">&quot;${seq}&quot;</span> <span class="o">}</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
 
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">seq</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="s2">&quot;all.rev&quot;</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
 
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="n">flow1</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">sequences</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-    <span class="n">splitted_seq</span>        <span class="o">=</span> <span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span>
-    <span class="n">rev_single_seq</span>      <span class="o">=</span> <span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="n">flow2</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">sequences</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-    <span class="n">splitted_seq</span>        <span class="o">=</span> <span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span>
-    <span class="n">rev_single_seq</span>      <span class="o">=</span> <span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="o">{</span>
-   <span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span>
-   <span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The first workflow will just run like the previous script, while the second will “flatten” the output of the first process and will launch the second process on each single sequence.</p>
@@ -927,73 +996,73 @@ This avoids clashes, and each process is isolated from the other.</p>
 <h3>Exercise<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>Optimize the previus pipeline to avoid running the process <strong>splitSequences</strong> twice.</p>
 <details>
-<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span>
+<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span>
-<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span> <span class="o">=</span> <span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span>
+<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
 
-<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span>
-<span class="n">sequences_file</span> <span class="o">=</span> <span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span>
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
 
-<span class="c1">// check if the file exists</span>
-<span class="k">if</span><span class="o">(</span> <span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">)</span> <span class="n">exit</span> <span class="mi">1</span><span class="o">,</span> <span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span>
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
-<span class="cm"> */</span>
-<span class="n">process</span> <span class="n">splitSequences</span> <span class="o">{</span>
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">sequencesFile</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
 
-    <span class="c1">// simple awk command</span>
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm"> * Process 2 for reversing the sequences</span>
-<span class="cm"> */</span>
-<span class="n">process</span> <span class="n">reverseSequence</span> <span class="o">{</span>
-    <span class="n">tag</span> <span class="o">{</span> <span class="s2">&quot;${seq}&quot;</span> <span class="o">}</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
 
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">seq</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="s2">&quot;all.rev&quot;</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
 
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="n">flow1</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">splitted_seq</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">splitted_seq</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-    <span class="n">rev_single_seq</span>      <span class="o">=</span> <span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="n">flow2</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">splitted_seq</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">splitted_seq</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-    <span class="n">rev_single_seq</span>      <span class="o">=</span> <span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">.</span><span class="na">flatten</span><span class="o">())</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">.</span><span class="na">flatten</span><span class="o">())</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span> <span class="o">{</span>
-   <span class="n">splitted_seq</span>        <span class="o">=</span> <span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span>
-   <span class="n">flow1</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span>
-   <span class="n">flow2</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 </details><div class="line-block">
@@ -1008,24 +1077,24 @@ This avoids clashes, and each process is isolated from the other.</p>
 <p>We can add the directive <a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#publishdir">publishDir</a> to our previous example:</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm"> * Simple reverse the sequences</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">reverseSequence</span> <span class="o">{</span>
-    <span class="n">tag</span> <span class="s2">&quot;$seq&quot;</span> <span class="c1">// during the execution prints the indicated variable for follow-up</span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="s2">&quot;$seq&quot;</span><span class="w"> </span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
 
-    <span class="n">publishDir</span> <span class="s2">&quot;output&quot;</span>
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
 
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">seq</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="s2">&quot;all.rev&quot;</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
 
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can also use <a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#storedir">storeDir</a> in case we want to have a permanent cache.</p>
@@ -1033,14 +1102,14 @@ This avoids clashes, and each process is isolated from the other.</p>
 <p>When the output files exist, the process execution is skipped and these files are used as the actual process result.</p>
 <p>We can also indicate what to do if a process fails.</p>
 <p>The default is to stop the pipeline and to raise an error. But we can also skip the process using the <a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#errorstrategy">errorStrategy</a> directive:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">errorStrategy</span> <span class="s1">&#39;ignore&#39;</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">errorStrategy</span><span class="w"> </span><span class="s1">&#39;ignore&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>or retry a number of times changing the available memory or the maximum execution time, using the foolowing directives:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">memory</span> <span class="o">{</span> <span class="mi">1</span><span class="o">.</span><span class="na">GB</span> <span class="o">*</span> <span class="n">task</span><span class="o">.</span><span class="na">attempt</span> <span class="o">}</span>
-<span class="n">time</span> <span class="o">{</span> <span class="mi">1</span><span class="o">.</span><span class="na">hour</span> <span class="o">*</span> <span class="n">task</span><span class="o">.</span><span class="na">attempt</span> <span class="o">}</span>
-<span class="n">errorStrategy</span> <span class="s1">&#39;retry&#39;</span>
-<span class="n">maxRetries</span> <span class="mi">3</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">memory</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="na">GB</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">task</span><span class="o">.</span><span class="na">attempt</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
+<span class="n">time</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="na">hour</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">task</span><span class="o">.</span><span class="na">attempt</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
+<span class="n">errorStrategy</span><span class="w"> </span><span class="s1">&#39;retry&#39;</span><span class="w"></span>
+<span class="n">maxRetries</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -1081,11 +1150,11 @@ This avoids clashes, and each process is isolated from the other.</p>
 </pre></div>
 </div>
 <p>Nextflow’s cache can be disabled for a specific process by setting the directive <strong>cache</strong> to <strong>false</strong>. You can also choose among the three caching methods:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">cache</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">// (default) Cache keys are created indexing input files meta-data information (name, size and last update timestamp attributes).</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c1">// (default) Cache keys are created indexing input files meta-data information (name, size and last update timestamp attributes).</span><span class="w"></span>
 
-<span class="n">cache</span> <span class="o">=</span> <span class="s1">&#39;deep&#39;</span> <span class="c1">// Cache keys are created indexing input files content.</span>
+<span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;deep&#39;</span><span class="w"> </span><span class="c1">// Cache keys are created indexing input files content.</span><span class="w"></span>
 
-<span class="n">cache</span> <span class="o">=</span> <span class="s1">&#39;lenient&#39;</span> <span class="c1">// (Best in HPC and shared file systems) Cache keys are created indexing input files path and size attributes</span>
+<span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;lenient&#39;</span><span class="w"> </span><span class="c1">// (Best in HPC and shared file systems) Cache keys are created indexing input files path and size attributes</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>IMPORTANT: On some shared file systems you might have inconsistent file timestamps. Thus cache lenient prevents you from unwanted restarting of cached processes.</strong></p>
@@ -1097,27 +1166,27 @@ This avoids clashes, and each process is isolated from the other.</p>
 <details>
 <summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm"> * Broken process</span>
-<span class="cm"> */</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="n">process</span> <span class="n">reverseSequence</span> <span class="o">{</span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 
-    <span class="n">tag</span> <span class="o">{</span> <span class="s2">&quot;${seq}&quot;</span> <span class="o">}</span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
 
-    <span class="n">publishDir</span> <span class="s2">&quot;output&quot;</span>
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
 
-    <span class="n">errorStrategy</span> <span class="s1">&#39;ignore&#39;</span>
+<span class="w">    </span><span class="n">errorStrategy</span><span class="w"> </span><span class="s1">&#39;ignore&#39;</span><span class="w"></span>
 
-    <span class="nl">input:</span>
-    <span class="n">path</span> <span class="n">seq</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
-    <span class="nl">output:</span>
-    <span class="n">path</span> <span class="s2">&quot;all.rev&quot;</span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
 
-    <span class="nl">script:</span>
-    <span class="s2">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        cat ${seq} | AAAAAAA &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
-<span class="s2">    &quot;&quot;&quot;</span>
-<span class="o">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 </details><div class="line-block">
@@ -1127,12 +1196,12 @@ This avoids clashes, and each process is isolated from the other.</p>
 <p>Write the first workflow using pipes. Nextflow DLS2 allows you to use pipes for connecting channels via input / output.</p>
 <p>See the <a class="reference external" href="https://www.nextflow.io/docs/latest/dsl2.html#pipes">documentation on pipes</a>.</p>
 <details>
-<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">workflow</span> <span class="n">flow1</span> <span class="o">{</span>
-    <span class="nl">take:</span> <span class="n">sequences</span>
+<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
 
-    <span class="nl">main:</span>
-    <span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span> <span class="o">|</span> <span class="n">reverseSequence</span> <span class="o">|</span> <span class="n">view</span><span class="o">()</span>
-<span class="o">}</span>
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 </details><div class="line-block">
