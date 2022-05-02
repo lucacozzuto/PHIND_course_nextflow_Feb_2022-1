@@ -1,70 +1,69 @@
- 
-	#!/usr/bin/env nextflow
+#!/usr/bin/env nextflow
 
-	nextflow.enable.dsl=2
+nextflow.enable.dsl=2
 
-	str = Channel.from('hello', 'hola', 'bonjour')
+str = Channel.from('hello', 'hola', 'bonjour')
 
-	process printHello {
-	   tag  "${str_in}"
+process printHello {
+    tag  "${str_in}"
 
-	   input:
-	   val str_in
+    input:
+    val str_in
 
-	   output:
-	   path("${str_in}.txt")
+    output:
+    path("${str_in}.txt")
 
-	   script:
-	   """
-	   	echo ${str_in} in Italian is ciao > ${str_in}.txt
-	   """
-	}
-	process printHello2 {
-	   tag  "${str_in}"
+    script:
+    """
+    	echo ${str_in} in Italian is ciao > ${str_in}.txt
+    """
+}
+process printHello2 {
+    tag  "${str_in}"
 
-	   input:
-	   val str_in
+    input:
+    val str_in
 
-	   output:
-	   path("cheers.txt")
+    output:
+    path("cheers.txt")
 
-	   script:
-	   """
-	   	echo ${str_in.join(', ')} in Italian are ciao > cheers.txt
-	   """
-	}
+    script:
+    """
+    	echo ${str_in.join(', ')} in Italian are ciao > cheers.txt
+    """
+}
 
-	/*
-	 * A workflow can be named as a function and receive an input using the take keyword
-	 */
+/*
+ * A workflow can be named as a function and receive an input using the take keyword
+ */
 
-	workflow first_pipeline {
+workflow first_pipeline {
 
-	    take: str_input
+     take: str_input
 
-	    main:
-	    	printHello(str_input)
-	}
+     main:
+     printHello(str_input)
+}
 
-	/*
-	 * You can re-use the previous processes an combine as you prefer
-	 */
+/*
+ * You can re-use the previous processes an combine as you prefer
+ */
 
-	workflow second_pipeline {
-	    take: str_input
+workflow second_pipeline {
+    take: str_input
 
-	    main:
-		printHello2(str_input.collect())
+    main:
+	printHello2(str_input.collect())
 
-	}
+}
 
-	/*
-	 * You can then invoke the different named workflows in this way
-	 * passing the same input channel `str` to both
-	 */
+/*
+ * You can then invoke the different named workflows in this way
+ * passing the same input channel `str` to both
+ */
 
 
-	workflow {
-	    first_pipeline(str)
-	    second_pipeline(str)
-	}
+workflow {
+     first_pipeline(str)
+     second_pipeline(str)
+}
