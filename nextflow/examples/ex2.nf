@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // enable DSL2
-	nextflow.enable.dsl=2
+nextflow.enable.dsl=2
 
 /*
 * Let's create the channel `my_files`
