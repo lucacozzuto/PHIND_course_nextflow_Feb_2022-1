@@ -216,44 +216,20 @@ There are two different types of channels:
 
 An **operator** is a method that reshapes or connects different channels applying specific rules.
 
-We can write a very simple Nextflow script: save the following piece of code in the ``test0.nf`` file:
+We can write a very simple Nextflow script: save the following piece of code in a file called ``ex1.nf``. All the examples are in the folder
+**/nextflow/examples/** while the scripts are in folders named **/nextflow/test**
 
-
-.. literalinclude:: ../nextflow/test0/test0.nf
+.. literalinclude:: ../nextflow/examples/ex1.nf
    :language: groovy
-
-.. code-block:: groovy
-
-
-	#!/usr/bin/env nextflow
-	// This is a comment
-
-	/*
-	 * This is a block of comments
-	 */
-
-	// This is needed for activating the new DLS2
-	nextflow.enable.dsl=2
-
-	//Let's create a channel from string values
-	str = Channel.from('hello', 'hola', 'bonjour')
-
-	/*
-	* Let's print that channel using the operator view()
-	* https://www.nextflow.io/docs/latest/operator.html#view
-	*/
-
-	str.view()
-
 
 Once the file is saved, execute it with:
 
 .. code-block:: console
 
-	nextflow run test0.nf
+	nextflow run ex1.nf
 
 	N E X T F L O W  ~  version 20.07.1
-	Launching `test0.nf` [agitated_avogadro] - revision: 61a595c5bf
+	Launching `ex1.nf` [agitated_avogadro] - revision: 61a595c5bf
 	hello
 	hola
 	bonjour
@@ -268,38 +244,21 @@ Let's create three empty files with the `touch` command:
 	touch aa.txt bb.txt cc.txt
 
 
-and another script (test2.nf) with the following code:
+and make another script (ex2.nf) with the following code:
 
-.. code-block:: groovy
-
-
-	#!/usr/bin/env nextflow
-
-	// enable DSL2
-	nextflow.enable.dsl=2
-
-	/*
-	* Let's create the channel `my_files`
-	* using the method fromPath
-	*/
-
-	Channel
-	    .fromPath( "*.txt" )
-	    .set {my_files}
-
-	// We can use the view() operator again to see the content of channel "my_files"
-
-	my_files.view()
+.. literalinclude:: ../nextflow/examples/ex2.nf
+   :language: groovy
 
 
-We can now execute `test2.nf`:
+
+We can now execute `ex2.nf`:
 
 .. code-block:: console
 
 	nextflow run test2.nf
 
 	N E X T F L O W  ~  version 20.07.1
-	Launching `test2.nf` [condescending_hugle] - revision: f513c0fac3
+	Launching `ex2.nf` [condescending_hugle] - revision: f513c0fac3
 	/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/aa.txt
 	/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/bb.txt
 	/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/cc.txt
@@ -318,23 +277,10 @@ We can simulate this situation by generating a couple of files:
 Then we use `fromFilePairs <https://www.nextflow.io/docs/latest/channel.html#fromfilepairs>`__ for generating a tuple:
 
 
-.. code-block:: groovy
+.. literalinclude:: ../nextflow/examples/ex3.nf
+   :language: groovy
 
 
-	#!/usr/bin/env nextflow
-
-	nextflow.enable.dsl=2
-
-	/*
-	* Let's create the channel `my_files`
-	* using the method fromFilePairs
-	*/
-
-	Channel
-	    .fromFilePairs( "aaa_{1,2}.txt" )
-	    .set {my_files}
-
-	my_files.view()
 
 
 Exercise
@@ -354,33 +300,11 @@ See here the list of `Operators <https://www.nextflow.io/docs/latest/operator.ht
    <details>
    <summary><a>Solution</a></summary>
 
+.. literalinclude:: ../nextflow/examples/sol1.nf
+   :language: groovy
 
-.. code-block:: groovy
 
-	#!/usr/bin/env nextflow
 
-	nextflow.enable.dsl=2
-
-	Channel
-	   .fromPath("{aa,bb,cc}.txt")
- 	   .set {my_files}
-
-	my_files
-	    .collect()
-	    .view()
-
-	// You can also write it as: my_files.collect().view()
-
-	my_files
-	    .combine(my_files)
-	    .view()
-
-	my_files
-	    .collect()
-	    .map{
-			["custom id", it]
-		}
-	    .view()
 
 .. raw:: html
 
@@ -391,37 +315,11 @@ See here the list of `Operators <https://www.nextflow.io/docs/latest/operator.ht
 Processes
 -------------
 
-Let's add a process to the previous script `test0.nf` and let's call it test1.nf
+Let's add a process to the previous script `ex1.nf` and let's call it `ex1_a.nf`
 
-.. code-block:: groovy
+.. literalinclude:: ../nextflow/examples/ex1a.nf
+   :language: groovy
 
-	#!/usr/bin/env nextflow
-
-	nextflow.enable.dsl=2
-
-	str = Channel.from('hello', 'hola', 'bonjour')
-
-	/*
-	 * Creates a process which receives an input channel containing values
-	 * Each value emitted by the channel triggers the execution
-	 * of the process. The process stdout is captured and sent over
-	 * the another channel.
-	 */
-
-	process printHello {
-	   tag { "${str_in}" } // this is for displaying the content of `str_in` in the log file
-
-	   input:
-	   val str_in
-
-	   output:
-	   stdout
-
-	   script:
-	   """
-	   	echo ${str_in} in Italian is ciao
-	   """
-	}
 
 
 The process can be seen as a function that is composed of:
@@ -436,7 +334,8 @@ Any kind of code / command line can be run there, as it is **language agnostic**
 .. note::
 	You can have some trouble with escaping some characters: in that case, it is better to save the code into a file and call that file as a program.
 
-Before the input, you can indicate a **tag** that will be reported in the log. This is quite useful for **logging / debugging**.
+.. tip::
+	Before the input, you can indicate a **tag** that will be reported in the log. This is quite useful for **logging / debugging**.
 
 
 Workflow
@@ -446,48 +345,16 @@ The code above will produce nothing, because it requires the part that will actu
 
 This part is called a **workflow**.
 
-Let's add a workflow to our code:
+Let's add a workflow to our code `ex1_a.nf`. Now we will have our first prototype of a Nextflow pipeline, so we can rename it `test0.nf`. You can find this code in **/nextflow/test0/** folder:
 
-.. code-block:: groovy
-
-	#!/usr/bin/env nextflow
-
-	nextflow.enable.dsl=2
-
-	str = Channel.from('hello', 'hola', 'bonjour')
-
-	process printHello {
-	   tag  "${str_in}"
-
-	   input:
-	   val str_in
-
-	   output:
-	   stdout
-
-	   script:
-	   """
-	   echo ${str_in} in Italian is ciao
-	   """
-	}
-
-	/*
-	 * A workflow consists of a number of invocations of processes
-	 * where they are fed with the expected input channels
-	 * as if they were custom functions. You can only invoke a process once per workflow.
-	 */
-
-	workflow {
-	 result = printHello(str)
-	 result.view()
-	}
-
+.. literalinclude:: ../nextflow/test0/test0.nf
+   :language: groovy
 
 We can run the script sending the execution in the background (with the `-bg` option) and saving the log in the file `log.txt`.
 
 .. code-block:: console
 
-	nextflow run test1.nf -bg > log.txt
+	nextflow run test0.nf -bg > log.txt
 
 
 Nextflow log
@@ -500,7 +367,7 @@ Let's inspect the log file:
 	cat log.txt
 
 	N E X T F L O W  ~  version 20.07.1
-	Launching `test1.nf` [high_fermat] - revision: b129d66e57
+	Launching `test0.nf` [high_fermat] - revision: b129d66e57
 	[6a/2dfcaf] Submitted process > printHello (hola)
 	[24/a286da] Submitted process > printHello (hello)
 	[04/e733db] Submitted process > printHello (bonjour)
@@ -577,65 +444,11 @@ And the content of `.command.out` is
 
 
 You can also name the sub workflows to combine them in the main workflow. 
-For example, using this code you can execute two different workflows that contain the same process. As you can see the named workflows work similarly to the process: the input is defined by the **take** keyword, while the **script** part is represented by the **main**. We also have an equivalent of **output** that is **emit** that will be described later on.
-
-.. code-block:: groovy
-
-	#!/usr/bin/env nextflow
-
-	nextflow.enable.dsl=2
-
-	str = Channel.from('hello', 'hola', 'bonjour')
-
-	process printHello {
-		tag  "${str_in}"
-
- 	  	input:
-	   	val str_in
-
-	   	output:
-	   	stdout
-
-	   	script:
-	   	"""
-	   		echo ${str_in} in Italian is ciao
-	   	"""
-	}
-
-	/*
-	 * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword
-	 */
+For example, using this code you can execute two different workflows that contain the same process. As you can see the named workflows work similarly to the process: the input is defined by the **take** keyword, while the **script** part is represented by the **main**. We also have an equivalent of **output** that is **emit** that will be described later on. The following script can be found in `test0_b.nf` file
 
 
-	workflow first_pipeline {
- 	   take: str_input
-
-	   main:
-	   printHello(str_input).view()
-	}
-
-	/*
-	 * You can re-use the previous processes and combine as you prefer
-	 */
-
-
-	workflow second_pipeline {
-	    take: str_input
-
-	    main:
-	    printHello(str_input.collect()).view()
-	}
-
-	/*
-	 * You can then invoke the different named workflows in this way
- 	* passing the same input channel `str` to both
- 	*/
-
-	workflow {
-	    first_pipeline(str)
-	    second_pipeline(str)
-	}
-
+.. literalinclude:: ../nextflow/test0/test0_b.nf
+   :language: groovy
 
 
 
@@ -645,12 +458,12 @@ Let's run the code:
 
 .. code-block:: console
 
-	nextflow run test1.nf -bg > log2
+	nextflow run test0_b.nf -bg > log2
 
 	cat log2
 
 	N E X T F L O W  ~  version 20.07.1
-	Launching `test1.nf` [irreverent_davinci] - revision: 25a5511d1d
+	Launching `test0_b.nf` [irreverent_davinci] - revision: 25a5511d1d
 	[de/105b97] Submitted process > first_pipeline:printHello (hello)
 	[ba/051c23] Submitted process > first_pipeline:printHello (bonjour)
 	[1f/9b41b2] Submitted process > second_pipeline:printHello (hello)
@@ -665,79 +478,9 @@ Let's run the code:
 
  We can change the pipeline to produce files instead of `standard output <https://www.nextflow.io/docs/latest/dsl2.html#process-outputs>`__.
 
- 
 
-.. code-block:: groovy
-
-	#!/usr/bin/env nextflow
-
-	nextflow.enable.dsl=2
-
-	str = Channel.from('hello', 'hola', 'bonjour')
-
-	process printHello {
-	   tag  "${str_in}"
-
-	   input:
-	   val str_in
-
-	   output:
-	   path("${str_in}.txt")
-
-	   script:
-	   """
-	   	echo ${str_in} in Italian is ciao > ${str_in}.txt
-	   """
-	}
-	process printHello2 {
-	   tag  "${str_in}"
-
-	   input:
-	   val str_in
-
-	   output:
-	   path("cheers.txt")
-
-	   script:
-	   """
-	   	echo ${str_in.join(', ')} in Italian are ciao > cheers.txt
-	   """
-	}
-
-	/*
-	 * A workflow can be named as a function and receive an input using the take keyword
-	 */
-
-	workflow first_pipeline {
-
-	    take: str_input
-
-	    main:
-	    	printHello(str_input)
-	}
-
-	/*
-	 * You can re-use the previous processes an combine as you prefer
-	 */
-
-	workflow second_pipeline {
-	    take: str_input
-
-	    main:
-		printHello2(str_input.collect())
-
-	}
-
-	/*
-	 * You can then invoke the different named workflows in this way
-	 * passing the same input channel `str` to both
-	 */
-
-
-	workflow {
-	    first_pipeline(str)
-	    second_pipeline(str)
-	}
+.. literalinclude:: ../nextflow/test0/test0_c.nf
+   :language: groovy
 
 
 More complex scripts

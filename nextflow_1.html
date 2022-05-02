@@ -270,7 +270,167 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <li><p>A <strong>value channel</strong>, a.k.a. singleton channel, is bound to a single value and can be read unlimited times without consuming its content.</p></li>
 </ul>
 <p>An <strong>operator</strong> is a method that reshapes or connects different channels applying specific rules.</p>
-<p>We can write a very simple Nextflow script: save the following piece of code in the <code class="docutils literal notranslate"><span class="pre">test0.nf</span></code> file:</p>
+<p>We can write a very simple Nextflow script: save the following piece of code in a file called <code class="docutils literal notranslate"><span class="pre">ex1.nf</span></code>. All the examples are in the folder
+<strong>/nextflow/examples/</strong> while the scripts are in folders named <strong>/nextflow/test</strong></p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+<span class="c1">// This is a comment</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * This is a block of comments</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="c1">// This is needed for activating the new DLS2</span><span class="w"></span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="cm">/* </span>
+<span class="cm">* This is a channel creating </span>
+<span class="cm">*/</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">values</span><span class="w"></span>
+
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm">* The operator view() can be used to view the channel `str`</span>
+<span class="cm">* https://www.nextflow.io/docs/latest/operator.html#view</span>
+<span class="cm">*/</span><span class="w"></span>
+
+<span class="n">str</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Once the file is saved, execute it with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run ex1.nf</span>
+
+<span class="go">N E X T F L O W  ~  version 20.07.1</span>
+<span class="go">Launching `ex1.nf` [agitated_avogadro] - revision: 61a595c5bf</span>
+<span class="go">hello</span>
+<span class="go">hola</span>
+<span class="go">bonjour</span>
+</pre></div>
+</div>
+<p>As you can see, the <strong>Channel</strong> is just a collection of values, but it can also be a collection of <strong>file paths</strong>.</p>
+<p>Let’s create three empty files with the <cite>touch</cite> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">touch aa.txt bb.txt cc.txt</span>
+</pre></div>
+</div>
+<p>and make another script (ex2.nf) with the following code:</p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+
+<span class="c1">// enable DSL2</span><span class="w"></span>
+<span class="w">	</span><span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm">* Let&#39;s create the channel `my_files`</span>
+<span class="cm">* using the method fromPath</span>
+<span class="cm">*/</span><span class="w"></span>
+
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="w"> </span><span class="s2">&quot;*.txt&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
+
+<span class="c1">// We can use the view() operator again to see the content of channel &quot;my_files&quot;</span><span class="w"></span>
+
+<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can now execute <cite>ex2.nf</cite>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test2.nf</span>
+
+<span class="go">N E X T F L O W  ~  version 20.07.1</span>
+<span class="go">Launching `ex2.nf` [condescending_hugle] - revision: f513c0fac3</span>
+<span class="go">/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/aa.txt</span>
+<span class="go">/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/bb.txt</span>
+<span class="go">/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/cc.txt</span>
+</pre></div>
+</div>
+<p>Once executed, we can see that a folder named <strong>work</strong> is generated. Nextflow stores in this folder the intermediate files generated by the processes.</p>
+<p>In genomics we often have couple of files that have to be processed at the same times, such as the paired end reads etc. For this Nextflow allow using a special method for generating “tuples” from file pairs.</p>
+<p>We can simulate this situation by generating a couple of files:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">touch aaa_1.txt aaa_2.txt</span>
+</pre></div>
+</div>
+<p>Then we use <a class="reference external" href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs">fromFilePairs</a> for generating a tuple:</p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span>	#!/usr/bin/env nextflow
+
+	nextflow.enable.dsl=2
+
+	/*
+	* Let&#39;s create the channel `my_files`
+	* using the method fromFilePairs
+	*/
+
+	Channel
+	    .fromFilePairs( &quot;aaa_{1,2}.txt&quot; )
+	    .set {my_files}
+
+	my_files.view()
+</pre></div>
+</div>
+</section>
+<section id="exercise">
+<h3>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h3>
+<p>Using again the previous 3 <cite>.txt</cite> files (“aa.txt”, “bb.txt”, “cc.txt”), reshape the channels to emit:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A single channel with a <strong>single emission</strong> with all the files</p></li>
+<li><p>A channel with each possible file combination ( A vs A, A vs B, A vs C etc..)</p></li>
+<li><p>A tuple with a custom id, i.e. something like [“custom id”, [“aa.txt”, “bb.txt”, “cc.txt”]]</p></li>
+</ul>
+</div></blockquote>
+<p>See here the list of <a class="reference external" href="https://www.nextflow.io/docs/latest/operator.html#">Operators</a> available at the official documentation.</p>
+<details>
+<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span>	#!/usr/bin/env nextflow
+
+	nextflow.enable.dsl=2
+
+	Channel
+	   .fromPath(&quot;{aa,bb,cc}.txt&quot;)
+ 	   .set {my_files}
+
+	my_files
+	    .collect()
+	    .view()
+
+	// You can also write it as: my_files.collect().view()
+
+	my_files
+	    .combine(my_files)
+	    .view()
+
+	my_files
+	    .collect()
+	    .map{
+			[&quot;custom id&quot;, it]
+	}.view()
+</pre></div>
+</div>
+</details><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="processes">
+<h3>Processes<a class="headerlink" href="#processes" title="Permalink to this headline"></a></h3>
+<p>Let’s add a process to the previous script <cite>ex1.nf</cite> and let’s call it <cite>ex1_a.nf</cite></p>
+<p>The process can be seen as a function that is composed of:</p>
+<ul class="simple">
+<li><p>An <strong>input</strong> part where the input channels are defined.</p></li>
+<li><p>An <strong>output</strong> part where we specify what to store as a result, that will be sent to other processes or published as final result.</p></li>
+<li><p>A <strong>script</strong> part where we have the block of code to be executed using data from the input channel, and that will produce the output for the ouput channel.</p></li>
+</ul>
+<p>Any kind of code / command line can be run there, as it is <strong>language agnostic</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can have some trouble with escaping some characters: in that case, it is better to save the code into a file and call that file as a program.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Before the input, you can indicate a <strong>tag</strong> that will be reported in the log. This is quite useful for <strong>logging / debugging</strong>.</p>
+</div>
+</section>
+<section id="workflow">
+<h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline"></a></h3>
+<p>The code above will produce nothing, because it requires the part that will actually <strong>call the process</strong> and connect it to the input channel.</p>
+<p>This part is called a <strong>workflow</strong>.</p>
+<p>Let’s add a workflow to our code <cite>ex1_a.nf</cite>. Now we will have our first prototype of a Nextflow pipeline, so we can rename it <cite>test0.nf</cite>. You can find this code in <strong>/nextflow/test0/</strong> folder:</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
 <span class="cm">/*</span>
@@ -340,224 +500,8 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <span class="w"> </span>
 </pre></div>
 </div>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
-<span class="c1">// This is a comment</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm"> * This is a block of comments</span>
-<span class="cm"> */</span><span class="w"></span>
-
-<span class="c1">// This is needed for activating the new DLS2</span><span class="w"></span>
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
-
-<span class="c1">//Let&#39;s create a channel from string values</span><span class="w"></span>
-<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm">* Let&#39;s print that channel using the operator view()</span>
-<span class="cm">* https://www.nextflow.io/docs/latest/operator.html#view</span>
-<span class="cm">*/</span><span class="w"></span>
-
-<span class="n">str</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Once the file is saved, execute it with:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test0.nf</span>
-
-<span class="go">N E X T F L O W  ~  version 20.07.1</span>
-<span class="go">Launching `test0.nf` [agitated_avogadro] - revision: 61a595c5bf</span>
-<span class="go">hello</span>
-<span class="go">hola</span>
-<span class="go">bonjour</span>
-</pre></div>
-</div>
-<p>As you can see, the <strong>Channel</strong> is just a collection of values, but it can also be a collection of <strong>file paths</strong>.</p>
-<p>Let’s create three empty files with the <cite>touch</cite> command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">touch aa.txt bb.txt cc.txt</span>
-</pre></div>
-</div>
-<p>and another script (test2.nf) with the following code:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
-
-<span class="c1">// enable DSL2</span><span class="w"></span>
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm">* Let&#39;s create the channel `my_files`</span>
-<span class="cm">* using the method fromPath</span>
-<span class="cm">*/</span><span class="w"></span>
-
-<span class="n">Channel</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="w"> </span><span class="s2">&quot;*.txt&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
-
-<span class="c1">// We can use the view() operator again to see the content of channel &quot;my_files&quot;</span><span class="w"></span>
-
-<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-</pre></div>
-</div>
-<p>We can now execute <cite>test2.nf</cite>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test2.nf</span>
-
-<span class="go">N E X T F L O W  ~  version 20.07.1</span>
-<span class="go">Launching `test2.nf` [condescending_hugle] - revision: f513c0fac3</span>
-<span class="go">/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/aa.txt</span>
-<span class="go">/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/bb.txt</span>
-<span class="go">/home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/cc.txt</span>
-</pre></div>
-</div>
-<p>Once executed, we can see that a folder named <strong>work</strong> is generated. Nextflow stores in this folder the intermediate files generated by the processes.</p>
-<p>In genomics we often have couple of files that have to be processed at the same times, such as the paired end reads etc. For this Nextflow allow using a special method for generating “tuples” from file pairs.</p>
-<p>We can simulate this situation by generating a couple of files:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">touch aaa_1.txt aaa_2.txt</span>
-</pre></div>
-</div>
-<p>Then we use <a class="reference external" href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs">fromFilePairs</a> for generating a tuple:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
-
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm">* Let&#39;s create the channel `my_files`</span>
-<span class="cm">* using the method fromFilePairs</span>
-<span class="cm">*/</span><span class="w"></span>
-
-<span class="n">Channel</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">fromFilePairs</span><span class="o">(</span><span class="w"> </span><span class="s2">&quot;aaa_{1,2}.txt&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
-
-<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-</pre></div>
-</div>
-</section>
-<section id="exercise">
-<h3>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline"></a></h3>
-<p>Using again the previous 3 <cite>.txt</cite> files (“aa.txt”, “bb.txt”, “cc.txt”), reshape the channels to emit:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>A single channel with a <strong>single emission</strong> with all the files</p></li>
-<li><p>A channel with each possible file combination ( A vs A, A vs B, A vs C etc..)</p></li>
-<li><p>A tuple with a custom id, i.e. something like [“custom id”, [“aa.txt”, “bb.txt”, “cc.txt”]]</p></li>
-</ul>
-</div></blockquote>
-<p>See here the list of <a class="reference external" href="https://www.nextflow.io/docs/latest/operator.html#">Operators</a> available at the official documentation.</p>
-<details>
-<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
-
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
-
-<span class="n">Channel</span><span class="w"></span>
-<span class="w">   </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s2">&quot;{aa,bb,cc}.txt&quot;</span><span class="o">)</span><span class="w"></span>
-<span class="w">   </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
-
-<span class="n">my_files</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">collect</span><span class="o">()</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-
-<span class="c1">// You can also write it as: my_files.collect().view()</span><span class="w"></span>
-
-<span class="n">my_files</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">combine</span><span class="o">(</span><span class="n">my_files</span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-
-<span class="n">my_files</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">collect</span><span class="o">()</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">map</span><span class="o">{</span><span class="w"></span>
-<span class="w">                </span><span class="o">[</span><span class="s2">&quot;custom id&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">it</span><span class="o">]</span><span class="w"></span>
-<span class="w">        </span><span class="o">}</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-</pre></div>
-</div>
-</details><div class="line-block">
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-</div>
-</section>
-<section id="processes">
-<h3>Processes<a class="headerlink" href="#processes" title="Permalink to this headline"></a></h3>
-<p>Let’s add a process to the previous script <cite>test0.nf</cite> and let’s call it test1.nf</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
-
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
-
-<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm"> * Creates a process which receives an input channel containing values</span>
-<span class="cm"> * Each value emitted by the channel triggers the execution</span>
-<span class="cm"> * of the process. The process stdout is captured and sent over</span>
-<span class="cm"> * the another channel.</span>
-<span class="cm"> */</span><span class="w"></span>
-
-<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"> </span><span class="c1">// this is for displaying the content of `str_in` in the log file</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">   </span><span class="n">stdout</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
-<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        echo ${str_in} in Italian is ciao</span>
-<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-</pre></div>
-</div>
-<p>The process can be seen as a function that is composed of:</p>
-<ul class="simple">
-<li><p>An <strong>input</strong> part where the input channels are defined.</p></li>
-<li><p>An <strong>output</strong> part where we specify what to store as a result, that will be sent to other processes or published as final result.</p></li>
-<li><p>A <strong>script</strong> part where we have the block of code to be executed using data from the input channel, and that will produce the output for the ouput channel.</p></li>
-</ul>
-<p>Any kind of code / command line can be run there, as it is <strong>language agnostic</strong>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You can have some trouble with escaping some characters: in that case, it is better to save the code into a file and call that file as a program.</p>
-</div>
-<p>Before the input, you can indicate a <strong>tag</strong> that will be reported in the log. This is quite useful for <strong>logging / debugging</strong>.</p>
-</section>
-<section id="workflow">
-<h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline"></a></h3>
-<p>The code above will produce nothing, because it requires the part that will actually <strong>call the process</strong> and connect it to the input channel.</p>
-<p>This part is called a <strong>workflow</strong>.</p>
-<p>Let’s add a workflow to our code:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
-
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
-
-<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
-
-<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">   </span><span class="n">stdout</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
-<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">   echo ${str_in} in Italian is ciao</span>
-<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm"> * A workflow consists of a number of invocations of processes</span>
-<span class="cm"> * where they are fed with the expected input channels</span>
-<span class="cm"> * as if they were custom functions. You can only invoke a process once per workflow.</span>
-<span class="cm"> */</span><span class="w"></span>
-
-<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="w"> </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-</pre></div>
-</div>
 <p>We can run the script sending the execution in the background (with the <cite>-bg</cite> option) and saving the log in the file <cite>log.txt</cite>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test1.nf -bg &gt; log.txt</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test0.nf -bg &gt; log.txt</span>
 </pre></div>
 </div>
 </section>
@@ -568,7 +512,7 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat log.txt</span>
 
 <span class="go">N E X T F L O W  ~  version 20.07.1</span>
-<span class="go">Launching `test1.nf` [high_fermat] - revision: b129d66e57</span>
+<span class="go">Launching `test0.nf` [high_fermat] - revision: b129d66e57</span>
 <span class="go">[6a/2dfcaf] Submitted process &gt; printHello (hola)</span>
 <span class="go">[24/a286da] Submitted process &gt; printHello (hello)</span>
 <span class="go">[04/e733db] Submitted process &gt; printHello (bonjour)</span>
@@ -632,71 +576,71 @@ drwxr-xr-x  3 lcozzuto  staff    96B Oct  7 13:39 ..
 </pre></div>
 </div>
 <p>You can also name the sub workflows to combine them in the main workflow.
-For example, using this code you can execute two different workflows that contain the same process. As you can see the named workflows work similarly to the process: the input is defined by the <strong>take</strong> keyword, while the <strong>script</strong> part is represented by the <strong>main</strong>. We also have an equivalent of <strong>output</strong> that is <strong>emit</strong> that will be described later on.</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+For example, using this code you can execute two different workflows that contain the same process. As you can see the named workflows work similarly to the process: the input is defined by the <strong>take</strong> keyword, while the <strong>script</strong> part is represented by the <strong>main</strong>. We also have an equivalent of <strong>output</strong> that is <strong>emit</strong> that will be described later on. The following script can be found in <cite>test0_b.nf</cite> file</p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span>	#!/usr/bin/env nextflow
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+	nextflow.enable.dsl=2
 
-<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
+	str = Channel.from(&#39;hello&#39;, &#39;hola&#39;, &#39;bonjour&#39;)
 
-<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
+	process printHello {
+		tag  &quot;${str_in}&quot;
 
-<span class="w">        </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">        </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
+ 	  	input:
+	   	val str_in
 
-<span class="w">        </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">        </span><span class="n">stdout</span><span class="w"></span>
+	   	output:
+	   	stdout
 
-<span class="w">        </span><span class="nl">script:</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                echo ${str_in} in Italian is ciao</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
+	   	script:
+	   	&quot;&quot;&quot;
+	   		echo ${str_in} in Italian is ciao
+	   	&quot;&quot;&quot;
+	}
 
-<span class="cm">/*</span>
-<span class="cm"> * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword</span>
-<span class="cm"> */</span><span class="w"></span>
-
-
-<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">   </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-
-<span class="cm">/*</span>
-<span class="cm"> * You can re-use the previous processes and combine as you prefer</span>
-<span class="cm"> */</span><span class="w"></span>
+	/*
+	 * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword
+	 */
 
 
-<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
+	workflow first_pipeline {
+ 	   take: str_input
 
-<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">    </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">()).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
+	   main:
+	   printHello(str_input).view()
+	}
 
-<span class="cm">/*</span>
-<span class="cm"> * You can then invoke the different named workflows in this way</span>
-<span class="cm">* passing the same input channel `str` to both</span>
-<span class="cm">*/</span><span class="w"></span>
+	/*
+	 * You can re-use the previous processes and combine as you prefer
+	 */
 
-<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
+
+	workflow second_pipeline {
+	    take: str_input
+
+	    main:
+	    printHello(str_input.collect()).view()
+	}
+
+	/*
+	 * You can then invoke the different named workflows in this way
+ 	* passing the same input channel `str` to both
+ 	*/
+
+	workflow {
+	    first_pipeline(str)
+	    second_pipeline(str)
+	}
 </pre></div>
 </div>
 <p>We can add the <strong>collect</strong> operator to the second workflow that would collect the output from different executions and return the resulting list <strong>as a sole emission</strong>.</p>
 <p>Let’s run the code:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">       nextflow run test1.nf -bg &gt; log2</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">       nextflow run test0_b.nf -bg &gt; log2</span>
 
 <span class="go">       cat log2</span>
 
 <span class="go">       N E X T F L O W  ~  version 20.07.1</span>
-<span class="go">       Launching `test1.nf` [irreverent_davinci] - revision: 25a5511d1d</span>
+<span class="go">       Launching `test0_b.nf` [irreverent_davinci] - revision: 25a5511d1d</span>
 <span class="go">       [de/105b97] Submitted process &gt; first_pipeline:printHello (hello)</span>
 <span class="go">       [ba/051c23] Submitted process &gt; first_pipeline:printHello (bonjour)</span>
 <span class="go">       [1f/9b41b2] Submitted process &gt; second_pipeline:printHello (hello)</span>
@@ -712,75 +656,76 @@ For example, using this code you can execute two different workflows that contai
 <span class="go">We can change the pipeline to produce files instead of `standard output &lt;https://www.nextflow.io/docs/latest/dsl2.html#process-outputs&gt;`__.</span>
 </pre></div>
 </div>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span> 
+	#!/usr/bin/env nextflow
 
-<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+	nextflow.enable.dsl=2
 
-<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
+	str = Channel.from(&#39;hello&#39;, &#39;hola&#39;, &#39;bonjour&#39;)
 
-<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
+	process printHello {
+	   tag  &quot;${str_in}&quot;
 
-<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
+	   input:
+	   val str_in
 
-<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">   </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${str_in}.txt&quot;</span><span class="o">)</span><span class="w"></span>
+	   output:
+	   path(&quot;${str_in}.txt&quot;)
 
-<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
-<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        echo ${str_in} in Italian is ciao &gt; ${str_in}.txt</span>
-<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-<span class="n">process</span><span class="w"> </span><span class="n">printHello2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
+	   script:
+	   &quot;&quot;&quot;
+	   	echo ${str_in} in Italian is ciao &gt; ${str_in}.txt
+	   &quot;&quot;&quot;
+	}
+	process printHello2 {
+	   tag  &quot;${str_in}&quot;
 
-<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
+	   input:
+	   val str_in
 
-<span class="w">   </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">   </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;cheers.txt&quot;</span><span class="o">)</span><span class="w"></span>
+	   output:
+	   path(&quot;cheers.txt&quot;)
 
-<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
-<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt</span>
-<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
+	   script:
+	   &quot;&quot;&quot;
+	   	echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt
+	   &quot;&quot;&quot;
+	}
 
-<span class="cm">/*</span>
-<span class="cm"> * A workflow can be named as a function and receive an input using the take keyword</span>
-<span class="cm"> */</span><span class="w"></span>
+	/*
+	 * A workflow can be named as a function and receive an input using the take keyword
+	 */
 
-<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+	workflow first_pipeline {
 
-<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
+	    take: str_input
 
-<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">        </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">)</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
+	    main:
+	    	printHello(str_input)
+	}
 
-<span class="cm">/*</span>
-<span class="cm"> * You can re-use the previous processes an combine as you prefer</span>
-<span class="cm"> */</span><span class="w"></span>
+	/*
+	 * You can re-use the previous processes an combine as you prefer
+	 */
 
-<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
+	workflow second_pipeline {
+	    take: str_input
 
-<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">        </span><span class="n">printHello2</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span><span class="w"></span>
+	    main:
+		printHello2(str_input.collect())
 
-<span class="o">}</span><span class="w"></span>
+	}
 
-<span class="cm">/*</span>
-<span class="cm"> * You can then invoke the different named workflows in this way</span>
-<span class="cm"> * passing the same input channel `str` to both</span>
-<span class="cm"> */</span><span class="w"></span>
+	/*
+	 * You can then invoke the different named workflows in this way
+	 * passing the same input channel `str` to both
+	 */
 
 
-<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
+	workflow {
+	    first_pipeline(str)
+	    second_pipeline(str)
+	}
 </pre></div>
 </div>
 </section>
