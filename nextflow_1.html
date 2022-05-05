@@ -122,7 +122,7 @@ The Nextflow documentation is <a class="reference external" href="https://www.ne
 <a class="reference internal image-reference" href="_images/NF_mentioning.png"><img alt="_images/NF_mentioning.png" src="_images/NF_mentioning.png" style="width: 600px;" /></a>
 <p>A curated list of <a class="reference external" href="https://github.com/nextflow-io/awesome-nextflow">Nextflow pipelines</a>.</p>
 <p>Many pipelines written collaboratively are provided by the <a class="reference external" href="https://nf-co.re/pipelines">NF-core</a> project.</p>
-<p>Some pipelines written in Nextflow have been used for the SARS-Cov-2 analysis, for example:</p>
+<p>Some pipelines written in Nextflow have been used for the SARS-Cov-2 analysis too, for example:</p>
 <ul class="simple">
 <li><p>The <a class="reference external" href="https://artic.network/ncov-2019">artic Network</a> pipeline <a class="reference external" href="https://github.com/connor-lab/ncov2019-artic-nf">ncov2019-artic-nf</a>.</p></li>
 <li><p>The <a class="reference external" href="https://covid19beacon.crg.eu/info">CRG / EGA viral Beacon</a> pipeline <a class="reference external" href="https://github.com/biocorecrg/master_of_pores">Master of Pores</a>.</p></li>
@@ -315,7 +315,7 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
 <span class="c1">// enable DSL2</span><span class="w"></span>
-<span class="w">	</span><span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm">* Let&#39;s create the channel `my_files`</span>
@@ -348,20 +348,20 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </pre></div>
 </div>
 <p>Then we use <a class="reference external" href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs">fromFilePairs</a> for generating a tuple:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span>	#!/usr/bin/env nextflow
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-	nextflow.enable.dsl=2
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-	/*
-	* Let&#39;s create the channel `my_files`
-	* using the method fromFilePairs
-	*/
+<span class="cm">/*</span>
+<span class="cm">* Let&#39;s create the channel `my_files`</span>
+<span class="cm">* using the method fromFilePairs</span>
+<span class="cm">*/</span><span class="w"></span>
 
-	Channel
-	    .fromFilePairs( &quot;aaa_{1,2}.txt&quot; )
-	    .set {my_files}
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromFilePairs</span><span class="o">(</span><span class="w"> </span><span class="s2">&quot;aaa_{1,2}.txt&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
 
-	my_files.view()
+<span class="n">my_files</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -377,29 +377,29 @@ The pipeline can also recognize the queue system which is used on the machine wh
 </div></blockquote>
 <p>See here the list of <a class="reference external" href="https://www.nextflow.io/docs/latest/operator.html#">Operators</a> available at the official documentation.</p>
 <details>
-<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span>	#!/usr/bin/env nextflow
+<summary><a>Solution</a></summary><div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-	nextflow.enable.dsl=2
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-	Channel
-	   .fromPath(&quot;{aa,bb,cc}.txt&quot;)
- 	   .set {my_files}
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s2">&quot;{aa,bb,cc}.txt&quot;</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">my_files</span><span class="o">}</span><span class="w"></span>
 
-	my_files
-	    .collect()
-	    .view()
+<span class="n">my_files</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">collect</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 
-	// You can also write it as: my_files.collect().view()
+<span class="c1">// You can also write it as: my_files.collect().view()</span><span class="w"></span>
 
-	my_files
-	    .combine(my_files)
-	    .view()
+<span class="n">my_files</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">combine</span><span class="o">(</span><span class="n">my_files</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 
-	my_files
-	    .collect()
-	    .map{
-			[&quot;custom id&quot;, it]
-	}.view()
+<span class="n">my_files</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">collect</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">map</span><span class="o">{</span><span class="w"></span>
+<span class="w">		</span><span class="o">[</span><span class="s2">&quot;custom id&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">it</span><span class="o">]</span><span class="w"></span>
+<span class="o">}.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 </pre></div>
 </div>
 </details><div class="line-block">
@@ -436,20 +436,20 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <span class="cm">/*</span>
 <span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
 <span class="cm"> *</span>
-<span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
+<span class="cm"> *    This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
 <span class="cm"> *</span>
-<span class="cm"> *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
-<span class="cm"> *   it under the terms of the GNU General Public License as published by</span>
-<span class="cm"> *   the Free Software Foundation, either version 3 of the License, or</span>
-<span class="cm"> *   (at your option) any later version.</span>
+<span class="cm"> *    CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
+<span class="cm"> *    it under the terms of the GNU General Public License as published by</span>
+<span class="cm"> *    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="cm"> *    (at your option) any later version.</span>
 <span class="cm"> *</span>
-<span class="cm"> *   CRG_Containers_NextFlow is distributed in the hope that it will be useful,</span>
-<span class="cm"> *   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="cm"> *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="cm"> *   GNU General Public License for more details.</span>
+<span class="cm"> *    CRG_Containers_NextFlow is distributed in the hope that it will be useful,</span>
+<span class="cm"> *    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="cm"> *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="cm"> *    GNU General Public License for more details.</span>
 <span class="cm"> *</span>
-<span class="cm"> *   You should have received a copy of the GNU General Public License</span>
-<span class="cm"> *   along with CRG_Containers_NextFlow.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="cm"> *    You should have received a copy of the GNU General Public License</span>
+<span class="cm"> *    along with CRG_Containers_NextFlow.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="cm"> */</span><span class="w"></span>
 
 
@@ -473,18 +473,18 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <span class="cm"> */</span><span class="w"></span>
 
 <span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
-<span class="w">   </span>
-<span class="w">   </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">   </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-<span class="w">   </span><span class="nl">output:</span><span class="w"> </span>
-<span class="w">   </span><span class="n">stdout</span><span class="w"></span>
-<span class="w">   </span>
-<span class="w">   </span><span class="nl">script:</span><span class="w"></span>
-<span class="w">   </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">   echo ${str_in} in Italian is ciao </span>
-<span class="s2">   &quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nl">output:</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stdout</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    echo ${str_in} in Italian is ciao </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
@@ -494,8 +494,8 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <span class="cm"> */</span><span class="w"></span>
 
 <span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="w"> </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 <span class="w"> </span>
 </pre></div>
@@ -577,60 +577,60 @@ drwxr-xr-x  3 lcozzuto  staff    96B Oct  7 13:39 ..
 </div>
 <p>You can also name the sub workflows to combine them in the main workflow.
 For example, using this code you can execute two different workflows that contain the same process. As you can see the named workflows work similarly to the process: the input is defined by the <strong>take</strong> keyword, while the <strong>script</strong> part is represented by the <strong>main</strong>. We also have an equivalent of <strong>output</strong> that is <strong>emit</strong> that will be described later on. The following script can be found in <cite>test0_b.nf</cite> file</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span>	#!/usr/bin/env nextflow
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-	nextflow.enable.dsl=2
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-	str = Channel.from(&#39;hello&#39;, &#39;hola&#39;, &#39;bonjour&#39;)
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
-	process printHello {
-		tag  &quot;${str_in}&quot;
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
- 	  	input:
-	   	val str_in
+<span class="w">  	</span><span class="nl">input:</span><span class="w"></span>
+<span class="w">   	</span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-	   	output:
-	   	stdout
+<span class="w">   	</span><span class="nl">output:</span><span class="w"></span>
+<span class="w">   	</span><span class="n">stdout</span><span class="w"></span>
 
-	   	script:
-	   	&quot;&quot;&quot;
-	   		echo ${str_in} in Italian is ciao
-	   	&quot;&quot;&quot;
-	}
+<span class="w">   	</span><span class="nl">script:</span><span class="w"></span>
+<span class="w">   	</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">   		echo ${str_in} in Italian is ciao</span>
+<span class="s2">   	&quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-	/*
-	 * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword
-	 */
-
-
-	workflow first_pipeline {
- 	   take: str_input
-
-	   main:
-	   printHello(str_input).view()
-	}
-
-	/*
-	 * You can re-use the previous processes and combine as you prefer
-	 */
+<span class="cm">/*</span>
+<span class="cm"> * A workflow can be named as a function and receive an input using the take keyword while the processing part is described by the main keyword</span>
+<span class="cm"> */</span><span class="w"></span>
 
 
-	workflow second_pipeline {
-	    take: str_input
+<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-	    main:
-	    printHello(str_input.collect()).view()
-	}
+<span class="w">   </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">   </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-	/*
-	 * You can then invoke the different named workflows in this way
- 	* passing the same input channel `str` to both
- 	*/
+<span class="cm">/*</span>
+<span class="cm"> * You can re-use the previous processes and combine as you prefer</span>
+<span class="cm"> */</span><span class="w"></span>
 
-	workflow {
-	    first_pipeline(str)
-	    second_pipeline(str)
-	}
+
+<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">()).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * You can then invoke the different named workflows in this way</span>
+<span class="cm">* passing the same input channel `str` to both</span>
+<span class="cm">*/</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can add the <strong>collect</strong> operator to the second workflow that would collect the output from different executions and return the resulting list <strong>as a sole emission</strong>.</p>
@@ -656,76 +656,75 @@ For example, using this code you can execute two different workflows that contai
 <span class="go">We can change the pipeline to produce files instead of `standard output &lt;https://www.nextflow.io/docs/latest/dsl2.html#process-outputs&gt;`__.</span>
 </pre></div>
 </div>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span> 
-	#!/usr/bin/env nextflow
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-	nextflow.enable.dsl=2
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
 
-	str = Channel.from(&#39;hello&#39;, &#39;hola&#39;, &#39;bonjour&#39;)
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Channel</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s1">&#39;hello&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;hola&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bonjour&#39;</span><span class="o">)</span><span class="w"></span>
 
-	process printHello {
-	   tag  &quot;${str_in}&quot;
+<span class="n">process</span><span class="w"> </span><span class="n">printHello</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
-	   input:
-	   val str_in
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-	   output:
-	   path(&quot;${str_in}.txt&quot;)
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${str_in}.txt&quot;</span><span class="o">)</span><span class="w"></span>
 
-	   script:
-	   &quot;&quot;&quot;
-	   	echo ${str_in} in Italian is ciao &gt; ${str_in}.txt
-	   &quot;&quot;&quot;
-	}
-	process printHello2 {
-	   tag  &quot;${str_in}&quot;
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    	echo ${str_in} in Italian is ciao &gt; ${str_in}.txt</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">printHello2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
 
-	   input:
-	   val str_in
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-	   output:
-	   path(&quot;cheers.txt&quot;)
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;cheers.txt&quot;</span><span class="o">)</span><span class="w"></span>
 
-	   script:
-	   &quot;&quot;&quot;
-	   	echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt
-	   &quot;&quot;&quot;
-	}
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    	echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-	/*
-	 * A workflow can be named as a function and receive an input using the take keyword
-	 */
+<span class="cm">/*</span>
+<span class="cm"> * A workflow can be named as a function and receive an input using the take keyword</span>
+<span class="cm"> */</span><span class="w"></span>
 
-	workflow first_pipeline {
+<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 
-	    take: str_input
+<span class="w">     </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-	    main:
-	    	printHello(str_input)
-	}
+<span class="w">     </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">     </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 
-	/*
-	 * You can re-use the previous processes an combine as you prefer
-	 */
+<span class="cm">/*</span>
+<span class="cm"> * You can re-use the previous processes an combine as you prefer</span>
+<span class="cm"> */</span><span class="w"></span>
 
-	workflow second_pipeline {
-	    take: str_input
+<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
 
-	    main:
-		printHello2(str_input.collect())
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">	</span><span class="n">printHello2</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span><span class="w"></span>
 
-	}
+<span class="o">}</span><span class="w"></span>
 
-	/*
-	 * You can then invoke the different named workflows in this way
-	 * passing the same input channel `str` to both
-	 */
+<span class="cm">/*</span>
+<span class="cm"> * You can then invoke the different named workflows in this way</span>
+<span class="cm"> * passing the same input channel `str` to both</span>
+<span class="cm"> */</span><span class="w"></span>
 
 
-	workflow {
-	    first_pipeline(str)
-	    second_pipeline(str)
-	}
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">     </span><span class="n">first_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="w">     </span><span class="n">second_pipeline</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>

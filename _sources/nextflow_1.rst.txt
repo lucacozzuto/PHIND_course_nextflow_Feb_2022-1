@@ -45,7 +45,7 @@ A curated list of `Nextflow pipelines <https://github.com/nextflow-io/awesome-ne
 
 Many pipelines written collaboratively are provided by the `NF-core <https://nf-co.re/pipelines>`__ project.
 
-Some pipelines written in Nextflow have been used for the SARS-Cov-2 analysis, for example:
+Some pipelines written in Nextflow have been used for the SARS-Cov-2 analysis too, for example:
 
 - The `artic Network <https://artic.network/ncov-2019>`__ pipeline `ncov2019-artic-nf <https://github.com/connor-lab/ncov2019-artic-nf>`__.
 - The `CRG / EGA viral Beacon <https://covid19beacon.crg.eu/info>`__ pipeline `Master of Pores <https://github.com/biocorecrg/master_of_pores>`__.
