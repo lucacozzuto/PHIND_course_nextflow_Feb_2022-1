@@ -280,7 +280,7 @@ Then we use `fromFilePairs <https://www.nextflow.io/docs/latest/channel.html#fro
 .. literalinclude:: ../nextflow/examples/ex3.nf
    :language: groovy
 
-
+We can reshape the channels in several ways and / or cross them using operators so that they can be used for a particular purpose. In brief, each "emission" of a channel can be used by a process for a specific purpose.  
 
 
 Exercise
