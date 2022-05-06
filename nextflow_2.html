@@ -321,27 +321,28 @@ In case of using a singularity container, you can indicate where to store the lo
 </pre></div>
 </div>
 <p>We will get a number of errors since no executable is found in our environment / path. This is because the executables are stored in our docker image and we have to tell Nextflow to use the docker image, using the <cite>-with-docker</cite> parameter.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test2.nf -with-docker</span>
-
-<span class="go">nextflow run test2.nf -with-docker</span>
-<span class="go">N E X T F L O W  ~  version 20.07.1</span>
-<span class="go">Launching `test2.nf` [boring_hamilton] - revision: e3a80b15a2</span>
-<span class="go">BIOCORE@CRG - N F TESTPIPE  ~  version 1.0</span>
-<span class="go">=============================================</span>
-<span class="go">reads                           : /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/nextflow/test2/../testdata/*.fastq.gz</span>
-<span class="go">executor &gt;  local (3)</span>
-<span class="go">[22/b437be] process &gt; fastQC (B7_H3K4me1_s_chr19.fastq.gz) [100%] 2 of 2 ✔</span>
-<span class="go">[1a/cfe63b] process &gt; multiQC                              [  0%] 0 of 1</span>
-<span class="go">executor &gt;  local (3)</span>
-<span class="go">[22/b437be] process &gt; fastQC (B7_H3K4me1_s_chr19.fastq.gz) [100%] 2 of 2 ✔</span>
-<span class="go">[1a/cfe63b] process &gt; multiQC                              [100%] 1 of 1 ✔</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="go">     nextflow run test2.nf -with-docker</span>
+</span>
+<span class="go">     N E X T F L O W  ~  version 20.07.1</span>
+<span class="go">     Launching `test2.nf` [boring_hamilton] - revision: e3a80b15a2</span>
+<span class="go">     BIOCORE@CRG - N F TESTPIPE  ~  version 1.0</span>
+<span class="go">     =============================================</span>
+<span class="go">     reads                           : /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/nextflow/test2/../testdata/*.fastq.gz</span>
+<span class="go">     executor &gt;  local (3)</span>
+<span class="go">     [22/b437be] process &gt; fastQC (B7_H3K4me1_s_chr19.fastq.gz) [100%] 2 of 2 ✔</span>
+<span class="go">     [1a/cfe63b] process &gt; multiQC                              [  0%] 0 of 1</span>
+<span class="go">     executor &gt;  local (3)</span>
+<span class="go">     [22/b437be] process &gt; fastQC (B7_H3K4me1_s_chr19.fastq.gz) [100%] 2 of 2 ✔</span>
+<span class="go">     [1a/cfe63b] process &gt; multiQC                              [100%] 1 of 1 ✔</span>
 </pre></div>
 </div>
 <p>This time it worked because Nextflow used the image specified in the <strong>nextflow.config</strong> file and containing the executables.</p>
 <p>Now let’s take a look at the <strong>params.config</strong> file:</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">reads</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/../testdata/*.fastq.gz&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="n">email</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;myemail@google.com&quot;</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">reads</span><span class="w">		</span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/../../testdata/*.fastq.gz&quot;</span><span class="w"></span>
+<span class="w">	</span><span class="n">email</span><span class="w">		</span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;myemail@google.com&quot;</span><span class="w"></span>
+
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -366,56 +367,50 @@ In case of using a singularity container, you can indicate where to store the lo
 <p>The script <strong>test2.nf</strong> generates two new folders, <strong>output_fastqc</strong> and <strong>output_multiQC</strong>, that contain the result of the pipeline output.
 We can indicate which process and output can be considered the final output of the pipeline using the <strong>publishDir</strong> directive that has to be specified at the beginning of a process.</p>
 <p>In our pipeline we define these folders here:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm"> * Defining the output folders.</span>
-<span class="cm"> */</span><span class="w"></span>
-
-<span class="n">fastqcOutputFolder</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_fastqc&quot;</span><span class="w"></span>
-<span class="n">multiqcOutputFolder</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_multiQC&quot;</span><span class="w"></span>
-
-<span class="o">[...]</span><span class="w"></span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
 <span class="cm">/*</span>
-<span class="cm"> * Process 1. Run FastQC on raw data. A process is the element for executing scripts / programs etc.</span>
+<span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
+<span class="cm"> *</span>
+<span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
+<span class="cm"> *   it under the terms of the GNU General Public License as published by</span>
+<span class="cm"> *   the Free Software Foundation, either version 3 of the License, or</span>
+<span class="cm"> *   (at your option) any later version.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is distributed in the hope that it will be useful,</span>
+<span class="cm"> *   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="cm"> *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="cm"> *   GNU General Public License for more details.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   You should have received a copy of the GNU General Public License</span>
+<span class="cm"> *   along with CRG_Containers_NextFlow.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="cm"> */</span><span class="w"></span>
 
-<span class="n">process</span><span class="w"> </span><span class="n">fastQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">fastqcOutputFolder</span><span class="w">                       </span><span class="c1">// where (and whether) to publish the results</span><span class="w"></span>
 
-<span class="o">[...]</span><span class="w"></span>
+<span class="cm">/* </span>
+<span class="cm"> * This code enables the new dsl of Nextflow. </span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+
+<span class="cm">/* </span>
+<span class="cm"> * NextFlow test pipe</span>
+<span class="cm"> * @authors</span>
+<span class="cm"> * Luca Cozzuto &lt;lucacozzuto@gmail.com&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> */</span><span class="w"></span>
 
 <span class="cm">/*</span>
-<span class="cm"> * Process 2. Run multiQC on fastQC results</span>
+<span class="cm"> * Input parameters: read pairs</span>
+<span class="cm"> * Params are stored in the params.config file</span>
 <span class="cm"> */</span><span class="w"></span>
 
-<span class="n">process</span><span class="w"> </span><span class="n">multiQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">multiqcOutputFolder</span><span class="o">,</span><span class="w"> </span><span class="nl">mode:</span><span class="w"> </span><span class="s1">&#39;copy&#39;</span><span class="w">        </span><span class="c1">// this time do not link but copy the output file</span><span class="w"></span>
-</pre></div>
-</div>
-<p>You can see that the default mode to publish the results in Nextflow is soft linking. You can change this behaviour specifying the mode as indicated in the <strong>multiQC</strong> process.</p>
-<p><strong>IMPORTANT: You can also “move” the results but this is not suggested for files that will be needed for other processes. This will likely disrupt your pipeline.</strong></p>
-<p>To access the output files via the web they can be copied to your <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html">S3 bucket</a> . Your bucket is mounted in <strong>/mnt</strong>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ls /mnt</span>
-
-<span class="go">/mnt/class-bucket-1</span>
-</pre></div>
-</div>
-<p><strong>Note:</strong> In this class, each student has its own bucket, with the number correponding to the number of the AWS instance.</p>
-<p>Let’s copy the <strong>multiqc_report.html</strong> file in the S3 bucket and change the privileges:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cp output_multiQC/multiqc_report.html /mnt/class-bucket-1</span>
-
-<span class="go">sudo chmod 775 /mnt/class-bucket-1/multiqc_report.html</span>
-</pre></div>
-</div>
-<p>Now you will be able to see this html file via the browser (change the bucket number to correspond to your instance):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">http://class-bucket-1.s3.eu-central-1.amazonaws.com/multiqc_report.html</span>
-</pre></div>
-</div>
-</section>
-<section id="adding-help-section-to-a-pipeline">
-<h2>Adding help section to a pipeline<a class="headerlink" href="#adding-help-section-to-a-pipeline" title="Permalink to this headline"></a></h2>
-<p>Here we describe another good practice: the use of the <cite>--help</cite> parameter. At the beginning of the pipeline we can write:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">.</span><span class="na">help</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">    </span><span class="c1">// this prevents a warning of undefined parameter</span><span class="w"></span>
+<span class="n">version</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="w"></span>
+<span class="c1">// this prevents a warning of undefined parameter</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">help</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
 
 <span class="c1">// this prints the input parameters</span><span class="w"></span>
 <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
@@ -430,6 +425,228 @@ We can indicate which process and output can be considered the final output of t
 <span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;Enjoy!&#39;</span><span class="w"></span>
 <span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="w"></span>
 <span class="w">    </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="hll"><span class="cm">/*</span>
+</span><span class="hll"><span class="cm"> * Defining the output folders.</span>
+</span><span class="hll"><span class="cm"> */</span><span class="w"></span>
+</span><span class="hll"><span class="n">fastqcOutputFolder</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ouptut_fastqc&quot;</span><span class="w"></span>
+</span><span class="hll"><span class="n">multiqcOutputFolder</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ouptut_multiQC&quot;</span><span class="w"></span>
+</span>
+
+<span class="cm">/* Reading the file list and creating a &quot;Channel&quot;: a queue that connects different channels.</span>
+<span class="cm"> * The queue is consumed by channels, so you cannot re-use a channel for different processes. </span>
+<span class="cm"> * If you need the same data for different processes you need to make more channels.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="w"> </span>
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">reads</span><span class="w"> </span><span class="o">)</span><span class="w">  											 </span><span class="c1">// read the files indicated by the wildcard                            </span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">ifEmpty</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="s2">&quot;Cannot find any reads matching: ${params.reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"> </span><span class="c1">// if empty, complains</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">reads_for_fastqc</span><span class="o">}</span><span class="w"> 											 </span><span class="c1">// make the channel &quot;reads_for_fastqc&quot;</span><span class="w"></span>
+
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1. Run FastQC on raw data. A process is the element for executing scripts / programs etc.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">fastQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="hll"><span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">fastqcOutputFolder</span><span class="w">  			</span><span class="c1">// where (and whether) to publish the results</span><span class="w"></span>
+</span><span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w">  							</span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;big_mem&#39;</span><span class="w"> </span>
+
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">reads</span><span class="w">   							</span><span class="c1">// it defines the input of the process. It sets values from a channel</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w">									</span><span class="c1">// It defines the output of the process (i.e. files) and send to a new channel</span><span class="w"></span>
+<span class="w">   	</span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;*_fastqc.*&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w">									</span><span class="c1">// here you have the execution of the script / program. Basically is the command line</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        fastqc ${reads} </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 2. Run multiQC on fastQC results</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">multiQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="hll"><span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">multiqcOutputFolder</span><span class="o">,</span><span class="w"> </span><span class="nl">mode:</span><span class="w"> </span><span class="s1">&#39;copy&#39;</span><span class="w"> 	</span><span class="c1">// this time do not link but copy the output file</span><span class="w"></span>
+</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="n">inputfiles</span><span class="o">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;multiqc_report.html&quot;</span><span class="o">)</span><span class="w"> 					</span><span class="c1">// do not send the results to any channel</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    multiqc .</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">fastqc_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fastQC</span><span class="o">(</span><span class="n">reads_for_fastqc</span><span class="o">)</span><span class="w"></span>
+<span class="w">	</span><span class="n">multiQC</span><span class="o">(</span><span class="n">fastqc_out</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+
+<span class="n">workflow</span><span class="o">.</span><span class="na">onComplete</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>
+<span class="w">	</span><span class="n">println</span><span class="w"> </span><span class="o">(</span><span class="w"> </span><span class="n">workflow</span><span class="o">.</span><span class="na">success</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot;\nDone! Open the following report in your browser --&gt; ${multiqcOutputFolder}/multiqc_report.html\n&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Oops .. something went wrong&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>You can see that the default mode to publish the results in Nextflow is <cite>soft linking</cite>. You can change this behaviour specifying the mode as indicated in the <strong>multiQC</strong> process.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>IMPORTANT: You can also “move” the results but this is not suggested for files that will be needed for other processes. This will likely disrupt your pipeline</p>
+</div>
+<p>To access the output files via the web they can be copied to your <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html">S3 bucket</a> . Your bucket is mounted in <strong>/mnt</strong>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ls /mnt</span>
+
+<span class="go">/mnt/class-bucket-1</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this class, each student has its own bucket, with the number correponding to the number of the AWS instance.</p>
+</div>
+<p>Let’s copy the <strong>multiqc_report.html</strong> file in the S3 bucket and change the privileges:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cp output_multiQC/multiqc_report.html /mnt/class-bucket-1</span>
+
+<span class="go">sudo chmod 775 /mnt/class-bucket-1/multiqc_report.html</span>
+</pre></div>
+</div>
+<p>Now you will be able to see this html file via the browser (change the bucket number to correspond to your instance):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">http://class-bucket-1.s3.eu-central-1.amazonaws.com/multiqc_report.html</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-help-section-to-a-pipeline">
+<h2>Adding help section to a pipeline<a class="headerlink" href="#adding-help-section-to-a-pipeline" title="Permalink to this headline"></a></h2>
+<p>Here we describe another good practice: the use of the <cite>--help</cite> parameter. At the beginning of the pipeline we can write:</p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
+<span class="cm"> *</span>
+<span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
+<span class="cm"> *   it under the terms of the GNU General Public License as published by</span>
+<span class="cm"> *   the Free Software Foundation, either version 3 of the License, or</span>
+<span class="cm"> *   (at your option) any later version.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is distributed in the hope that it will be useful,</span>
+<span class="cm"> *   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="cm"> *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="cm"> *   GNU General Public License for more details.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   You should have received a copy of the GNU General Public License</span>
+<span class="cm"> *   along with CRG_Containers_NextFlow.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="cm"> */</span><span class="w"></span>
+
+
+<span class="cm">/* </span>
+<span class="cm"> * This code enables the new dsl of Nextflow. </span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+
+<span class="cm">/* </span>
+<span class="cm"> * NextFlow test pipe</span>
+<span class="cm"> * @authors</span>
+<span class="cm"> * Luca Cozzuto &lt;lucacozzuto@gmail.com&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Input parameters: read pairs</span>
+<span class="cm"> * Params are stored in the params.config file</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="n">version</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="w"></span>
+<span class="c1">// this prevents a warning of undefined parameter</span><span class="w"></span>
+<span class="hll"><span class="n">params</span><span class="o">.</span><span class="na">help</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="c1">// this prints the input parameters</span><span class="w"></span>
+</span><span class="hll"><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+</span><span class="hll"><span class="s2">BIOCORE@CRG - N F TESTPIPE  ~  version ${version}</span>
+</span><span class="hll"><span class="s2">=============================================</span>
+</span><span class="hll"><span class="s2">reads                           : ${params.reads}</span>
+</span><span class="hll"><span class="s2">&quot;&quot;&quot;</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="c1">// this prints the help in case you use --help parameter in the command line and it stops the pipeline</span><span class="w"></span>
+</span><span class="hll"><span class="k">if</span><span class="w"> </span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">help</span><span class="o">)</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;This is the Biocore\&#39;s NF test pipeline&#39;</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;Enjoy!&#39;</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span>
+<span class="cm">/*</span>
+<span class="cm"> * Defining the output folders.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">fastqcOutputFolder</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ouptut_fastqc&quot;</span><span class="w"></span>
+<span class="n">multiqcOutputFolder</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ouptut_multiQC&quot;</span><span class="w"></span>
+
+
+<span class="cm">/* Reading the file list and creating a &quot;Channel&quot;: a queue that connects different channels.</span>
+<span class="cm"> * The queue is consumed by channels, so you cannot re-use a channel for different processes. </span>
+<span class="cm"> * If you need the same data for different processes you need to make more channels.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="w"> </span>
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">reads</span><span class="w"> </span><span class="o">)</span><span class="w">  											 </span><span class="c1">// read the files indicated by the wildcard                            </span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">ifEmpty</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="s2">&quot;Cannot find any reads matching: ${params.reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"> </span><span class="c1">// if empty, complains</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">reads_for_fastqc</span><span class="o">}</span><span class="w"> 											 </span><span class="c1">// make the channel &quot;reads_for_fastqc&quot;</span><span class="w"></span>
+
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1. Run FastQC on raw data. A process is the element for executing scripts / programs etc.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">fastQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">fastqcOutputFolder</span><span class="w">  			</span><span class="c1">// where (and whether) to publish the results</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w">  							</span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;big_mem&#39;</span><span class="w"> </span>
+
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">reads</span><span class="w">   							</span><span class="c1">// it defines the input of the process. It sets values from a channel</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w">									</span><span class="c1">// It defines the output of the process (i.e. files) and send to a new channel</span><span class="w"></span>
+<span class="w">   	</span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;*_fastqc.*&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w">									</span><span class="c1">// here you have the execution of the script / program. Basically is the command line</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        fastqc ${reads} </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 2. Run multiQC on fastQC results</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">multiQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">multiqcOutputFolder</span><span class="o">,</span><span class="w"> </span><span class="nl">mode:</span><span class="w"> </span><span class="s1">&#39;copy&#39;</span><span class="w"> 	</span><span class="c1">// this time do not link but copy the output file</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="n">inputfiles</span><span class="o">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;multiqc_report.html&quot;</span><span class="o">)</span><span class="w"> 					</span><span class="c1">// do not send the results to any channel</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    multiqc .</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">fastqc_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fastQC</span><span class="o">(</span><span class="n">reads_for_fastqc</span><span class="o">)</span><span class="w"></span>
+<span class="w">	</span><span class="n">multiQC</span><span class="o">(</span><span class="n">fastqc_out</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+
+<span class="n">workflow</span><span class="o">.</span><span class="na">onComplete</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>
+<span class="w">	</span><span class="n">println</span><span class="w"> </span><span class="o">(</span><span class="w"> </span><span class="n">workflow</span><span class="o">.</span><span class="na">success</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot;\nDone! Open the following report in your browser --&gt; ${multiqcOutputFolder}/multiqc_report.html\n&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Oops .. something went wrong&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -453,12 +670,45 @@ We can indicate which process and output can be considered the final output of t
 </ul>
 <details>
 <summary><a>Solution</a></summary><p>The process should become:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
+
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
+
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 2 for reversing the sequences</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
-<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;ignorefail&#39;</span><span class="w"></span>
 
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
+<span class="hll"><span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;ignorefail&#39;</span><span class="w"></span>
+</span><span class="w">    </span>
 <span class="w">    </span><span class="nl">input:</span><span class="w"></span>
 <span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
@@ -467,17 +717,37 @@ We can indicate which process and output can be considered the final output of t
 
 <span class="w">    </span><span class="nl">script:</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    cat ${seq} | AAAAA &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
+<span class="s2">    	cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>and the nextflow.config file would become:</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">process</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">        </span><span class="nl">withLabel:</span><span class="w"> </span><span class="s1">&#39;ignorefail&#39;</span><span class="w"></span>
-<span class="w">        </span><span class="o">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">errorStrategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore&#39;</span><span class="w"></span>
-<span class="w">        </span><span class="o">}</span><span class="w"></span>
+<span class="w">    </span><span class="nl">withLabel:</span><span class="w"> </span><span class="s1">&#39;ignorefail&#39;</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">errorStrategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="o">}</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -491,42 +761,149 @@ We can indicate which process and output can be considered the final output of t
 <p>Change this script and the config file using the label for handling failing processes by retrying 3 times and incrementing time.</p>
 <p>You can specify a very low time (5, 10 or 15 seconds) for the fastqc process so it would fail at beginning.</p>
 <details>
-<summary><a>Solution</a></summary><p>The process should become:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">process</span><span class="w"> </span><span class="n">fastQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<summary><a>Solution</a></summary><p>The code should become:</p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">publishDir</span><span class="w"> </span><span class="n">fastqcOutputFolder</span><span class="w">   </span><span class="c1">// where (and whether) to publish the results</span><span class="w"></span>
-<span class="w">        </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w">      </span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
-<span class="w">        </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;keep_trying&#39;</span><span class="w"></span>
+<span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
+<span class="cm"> *</span>
+<span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
+<span class="cm"> *   it under the terms of the GNU General Public License as published by</span>
+<span class="cm"> *   the Free Software Foundation, either version 3 of the License, or</span>
+<span class="cm"> *   (at your option) any later version.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   CRG_Containers_NextFlow is distributed in the hope that it will be useful,</span>
+<span class="cm"> *   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="cm"> *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="cm"> *   GNU General Public License for more details.</span>
+<span class="cm"> *</span>
+<span class="cm"> *   You should have received a copy of the GNU General Public License</span>
+<span class="cm"> *   along with CRG_Containers_NextFlow.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="w">        </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="n">reads</span><span class="w">      </span><span class="c1">// it defines the input of the process. It sets values from a channel</span><span class="w"></span>
 
-<span class="w">        </span><span class="nl">output:</span><span class="w">                 </span><span class="c1">// It defines the output of the process (i.e. files) and send to a new channel</span><span class="w"></span>
-<span class="w">        </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;*_fastqc.*&quot;</span><span class="w"></span>
+<span class="cm">/* </span>
+<span class="cm"> * This code enables the new dsl of Nextflow. </span>
+<span class="cm"> */</span><span class="w"></span>
 
-<span class="w">        </span><span class="nl">script:</span><span class="w">                 </span><span class="c1">// here you have the execution of the script / program. Basically is the command line</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        fastqc ${reads}</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="w"></span>
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+
+<span class="cm">/* </span>
+<span class="cm"> * NextFlow test pipe</span>
+<span class="cm"> * @authors</span>
+<span class="cm"> * Luca Cozzuto &lt;lucacozzuto@gmail.com&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Input parameters: read pairs</span>
+<span class="cm"> * Params are stored in the params.config file</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="n">version</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="w"></span>
+<span class="c1">// this prevents a warning of undefined parameter</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">help</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+
+<span class="c1">// this prints the input parameters</span><span class="w"></span>
+<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">BIOCORE@CRG - N F TESTPIPE  ~  version ${version}</span>
+<span class="s2">=============================================</span>
+<span class="s2">reads                           : ${params.reads}</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="w"></span>
+
+<span class="c1">// this prints the help in case you use --help parameter in the command line and it stops the pipeline</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">help</span><span class="o">)</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;This is the Biocore\&#39;s NF test pipeline&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;Enjoy!&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Defining the output folders.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">fastqcOutputFolder</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ouptut_fastqc&quot;</span><span class="w"></span>
+<span class="n">multiqcOutputFolder</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ouptut_multiQC&quot;</span><span class="w"></span>
+
+
+<span class="cm">/* Reading the file list and creating a &quot;Channel&quot;: a queue that connects different channels.</span>
+<span class="cm"> * The queue is consumed by channels, so you cannot re-use a channel for different processes. </span>
+<span class="cm"> * If you need the same data for different processes you need to make more channels.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="w"> </span>
+<span class="n">Channel</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">reads</span><span class="w"> </span><span class="o">)</span><span class="w">  											 </span><span class="c1">// read the files indicated by the wildcard                            </span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">ifEmpty</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="s2">&quot;Cannot find any reads matching: ${params.reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"> </span><span class="c1">// if empty, complains</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="na">set</span><span class="w"> </span><span class="o">{</span><span class="n">reads_for_fastqc</span><span class="o">}</span><span class="w"> 											 </span><span class="c1">// make the channel &quot;reads_for_fastqc&quot;</span><span class="w"></span>
+
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1. Run FastQC on raw data. A process is the element for executing scripts / programs etc.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">fastQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">fastqcOutputFolder</span><span class="w">  			</span><span class="c1">// where (and whether) to publish the results</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w">  							</span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
+<span class="hll"><span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;keep_trying&#39;</span><span class="w"></span>
+</span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">reads</span><span class="w">   							</span><span class="c1">// it defines the input of the process. It sets values from a channel</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w">									</span><span class="c1">// It defines the output of the process (i.e. files) and send to a new channel</span><span class="w"></span>
+<span class="w">   	</span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;*_fastqc.*&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w">									</span><span class="c1">// here you have the execution of the script / program. Basically is the command line</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        fastqc ${reads} </span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 2. Run multiQC on fastQC results</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">multiQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">multiqcOutputFolder</span><span class="o">,</span><span class="w"> </span><span class="nl">mode:</span><span class="w"> </span><span class="s1">&#39;copy&#39;</span><span class="w"> 	</span><span class="c1">// this time do not link but copy the output file</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="n">inputfiles</span><span class="o">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;multiqc_report.html&quot;</span><span class="o">)</span><span class="w"> 					</span><span class="c1">// do not send the results to any channel</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    multiqc .</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">fastqc_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fastQC</span><span class="o">(</span><span class="n">reads_for_fastqc</span><span class="o">)</span><span class="w"></span>
+<span class="w">	</span><span class="n">multiQC</span><span class="o">(</span><span class="n">fastqc_out</span><span class="o">.</span><span class="na">collect</span><span class="o">())</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+
+<span class="n">workflow</span><span class="o">.</span><span class="na">onComplete</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>
+<span class="w">	</span><span class="n">println</span><span class="w"> </span><span class="o">(</span><span class="w"> </span><span class="n">workflow</span><span class="o">.</span><span class="na">success</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot;\nDone! Open the following report in your browser --&gt; ${multiqcOutputFolder}/multiqc_report.html\n&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Oops .. something went wrong&quot;</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>while the nextflow.config file would be:</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">includeConfig</span><span class="w"> </span><span class="s2">&quot;$baseDir/params.config&quot;</span><span class="w"></span>
 
-
 <span class="n">process</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">     </span><span class="c1">//containerOptions = { workflow.containerEngine == &quot;docker&quot; ? &#39;-u $(id -u):$(id -g)&#39;: null}</span><span class="w"></span>
-<span class="w">     </span><span class="n">memory</span><span class="o">=</span><span class="s1">&#39;0.6G&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="n">cpus</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;6h&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">memory</span><span class="o">=</span><span class="s1">&#39;0.6G&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">cpus</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;6h&#39;</span><span class="w"></span>
 
-<span class="w">     </span><span class="nl">withLabel:</span><span class="w"> </span><span class="s1">&#39;keep_trying&#39;</span><span class="w"></span>
-<span class="w">     </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">withLabel:</span><span class="w"> </span><span class="s1">&#39;keep_trying&#39;</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>
 <span class="w">        </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="mi">10</span><span class="o">.</span><span class="na">second</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">task</span><span class="o">.</span><span class="na">attempt</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
-<span class="w">        </span><span class="n">errorStrategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;retry&#39;</span><span class="w"></span>
-<span class="w">        </span><span class="n">maxRetries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
-<span class="w">     </span><span class="o">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">errorStrategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;retry&#39;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">maxRetries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w">	</span>
+<span class="w">    </span><span class="o">}</span><span class="w"> 	</span>
+
 <span class="o">}</span><span class="w"></span>
 
 <span class="n">process</span><span class="o">.</span><span class="na">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;biocorecrg/c4lwg-2018:latest&#39;</span><span class="w"></span>

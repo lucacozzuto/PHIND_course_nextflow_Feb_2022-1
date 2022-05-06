@@ -127,10 +127,10 @@ We will get a number of errors since no executable is found in our environment /
 
 
 .. code-block:: console
+   :emphasize-lines: 1
 
 	nextflow run test2.nf -with-docker
 
-	nextflow run test2.nf -with-docker
 	N E X T F L O W  ~  version 20.07.1
 	Launching `test2.nf` [boring_hamilton] - revision: e3a80b15a2
 	BIOCORE@CRG - N F TESTPIPE  ~  version 1.0
@@ -148,12 +148,8 @@ This time it worked because Nextflow used the image specified in the **nextflow.
 
 Now let's take a look at the **params.config** file:
 
-.. code-block:: groovy
-
-	params {
-		reads		= "$baseDir/../testdata/*.fastq.gz"
-		email		= "myemail@google.com"
-	}
+.. literalinclude:: ../nextflow/test2/params.config
+   :language: groovy
 
 
 As you can see, we indicated two pipeline parameters, `reads` and `email`; when running the pipeline, they can be overridden using `\-\-reads` and `\-\-email`.
@@ -187,37 +183,16 @@ We can indicate which process and output can be considered the final output of t
 
 In our pipeline we define these folders here:
 
-.. code-block:: groovy
-
-	/*
- 	 * Defining the output folders.
- 	 */
-
-	fastqcOutputFolder    = "output_fastqc"
-	multiqcOutputFolder   = "output_multiQC"
-
-	[...]
-
-	/*
-	 * Process 1. Run FastQC on raw data. A process is the element for executing scripts / programs etc.
-	 */
-
-	process fastQC {
-	    publishDir fastqcOutputFolder  			// where (and whether) to publish the results
-
-	[...]
-
-	/*
-	 * Process 2. Run multiQC on fastQC results
-	 */
-
-	process multiQC {
-	    publishDir multiqcOutputFolder, mode: 'copy' 	// this time do not link but copy the output file
+.. literalinclude:: ../nextflow/test2/test2.nf
+   :language: groovy
+   :emphasize-lines: 61-65,83,103
 
 
-You can see that the default mode to publish the results in Nextflow is soft linking. You can change this behaviour specifying the mode as indicated in the **multiQC** process.
 
-**IMPORTANT: You can also "move" the results but this is not suggested for files that will be needed for other processes. This will likely disrupt your pipeline.**
+You can see that the default mode to publish the results in Nextflow is `soft linking`. You can change this behaviour specifying the mode as indicated in the **multiQC** process.
+
+.. note::
+	IMPORTANT: You can also "move" the results but this is not suggested for files that will be needed for other processes. This will likely disrupt your pipeline
 
 To access the output files via the web they can be copied to your `S3 bucket <https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html>`__ . Your bucket is mounted in **/mnt**:
 
@@ -229,7 +204,8 @@ To access the output files via the web they can be copied to your `S3 bucket <ht
 
 
 
-**Note:** In this class, each student has its own bucket, with the number correponding to the number of the AWS instance.
+.. note::
+	In this class, each student has its own bucket, with the number correponding to the number of the AWS instance.
 
 Let's copy the **multiqc_report.html** file in the S3 bucket and change the privileges:
 
@@ -255,24 +231,11 @@ Adding help section to a pipeline
 
 Here we describe another good practice: the use of the `\-\-help` parameter. At the beginning of the pipeline we can write:
 
-.. code-block:: groovy
 
-	params.help             = false    // this prevents a warning of undefined parameter
+.. literalinclude:: ../nextflow/test2/test2.nf
+   :language: groovy
+   :emphasize-lines: 44,45-59
 
-	// this prints the input parameters
-	log.info """
-	BIOCORE@CRG - N F TESTPIPE  ~  version ${version}
-	=============================================
-	reads                           : ${params.reads}
-	"""
-
-	// this prints the help in case you use --help parameter in the command line and it stops the pipeline
-	if (params.help) {
-	    log.info 'This is the Biocore\'s NF test pipeline'
-	    log.info 'Enjoy!'
-	    log.info '\n'
-	    exit 1
-	}
 
 so that launching the pipeline with `\-\-help` will show you just the parameters and the help.
 
@@ -300,37 +263,16 @@ EXERCISE
 
 The process should become:
 
-.. code-block:: groovy
+.. literalinclude:: ../nextflow/test1/sol/sol_lab.nf
+   :language: groovy
+   :emphasize-lines: 38
 
-	process reverseSequence {
-
-	    tag { "${seq}" }
-	    publishDir "output"
-	    label 'ignorefail'
-
-	    input:
-	    path seq
-
-	    output:
-	    path "all.rev"
-
-	    script:
-	    """
-	    cat ${seq} | AAAAA '{if (\$1~">") {print \$0} else system("echo " \$0 " |rev")}' > all.rev
-	    """
-	}
 
 
 and the nextflow.config file would become:
 
-.. code-block:: groovy
-
-	process {
-		withLabel: 'ignorefail'
-		{
-			errorStrategy = 'ignore'
-	    	}
-	}
+.. literalinclude:: ../nextflow/test1/sol/nextflow.config
+   :language: groovy
 
 
 .. raw:: html
@@ -350,53 +292,20 @@ You can specify a very low time (5, 10 or 15 seconds) for the fastqc process so 
    <summary><a>Solution</a></summary>
 
 
-The process should become:
+The code should become:
 
-.. code-block:: groovy
+.. literalinclude:: ../nextflow/test2/retry/retry.nf
+   :language: groovy
+   :emphasize-lines: 85
 
-	process fastQC {
-
-		publishDir fastqcOutputFolder	// where (and whether) to publish the results
-		tag { "${reads}" } 	// during the execution prints the indicated variable for follow-up
-		label 'keep_trying'
-
-		input:
-		path reads   	// it defines the input of the process. It sets values from a channel
-
-		output:			// It defines the output of the process (i.e. files) and send to a new channel
-   		path "*_fastqc.*"
-
-    		script:			// here you have the execution of the script / program. Basically is the command line
-    		"""
-        	fastqc ${reads}
-   		"""
-	}
 
 
 while the nextflow.config file would be:
 
-.. code-block:: groovy
-
-	includeConfig "$baseDir/params.config"
-
-
-	process {
-	     //containerOptions = { workflow.containerEngine == "docker" ? '-u $(id -u):$(id -g)': null}
-	     memory='0.6G'
-	     cpus='1'
-	     time='6h'
-
-	     withLabel: 'keep_trying'
-	     {
-		time = { 10.second * task.attempt }
-		errorStrategy = 'retry'
-		maxRetries = 3
-	     }
-	}
-
-	process.container = 'biocorecrg/c4lwg-2018:latest'
-	singularity.cacheDir = "$baseDir/singularity"
-
+.. literalinclude:: ../nextflow/test2/retry/nextflow.config
+   :language: groovy
+   
+   
 .. raw:: html
 
    </details>
