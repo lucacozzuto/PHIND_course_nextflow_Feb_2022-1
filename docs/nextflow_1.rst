@@ -458,23 +458,22 @@ Let's run the code:
 
 .. code-block:: console
 
-nextflow run test0_b.nf -bg > log2
+	nextflow run test0_b.nf -bg > log2
+	
+	cat log2
 
-cat log2
-
-N E X T F L O W  ~  version 20.07.1
-Launching `test0_b.nf` [irreverent_davinci] - revision: 25a5511d1d
-[de/105b97] Submitted process > first_pipeline:printHello (hello)
-[ba/051c23] Submitted process > first_pipeline:printHello (bonjour)
-[1f/9b41b2] Submitted process > second_pipeline:printHello (hello)
-[8d/270d93] Submitted process > first_pipeline:printHello (hola)
-[18/7b84c3] Submitted process > second_pipeline:printHello (hola)
-hello in Italian is ciao
-bonjour in Italian is ciao
-[0f/f78baf] Submitted process > second_pipeline:printHello (bonjour)
-hola in Italian is ciao
-['hello in Italian is ciao\n', 'hola in Italian is ciao\n', 'bonjour in Italian is ciao\n']
-
+	N E X T F L O W  ~  version 20.07.1
+	Launching `test0_b.nf` [irreverent_davinci] - revision: 25a5511d1d
+	[de/105b97] Submitted process > first_pipeline:printHello (hello)
+	[ba/051c23] Submitted process > first_pipeline:printHello (bonjour)
+	[1f/9b41b2] Submitted process > second_pipeline:printHello (hello)
+	[8d/270d93] Submitted process > first_pipeline:printHello (hola)
+	[18/7b84c3] Submitted process > second_pipeline:printHello (hola)
+	hello in Italian is ciao
+	bonjour in Italian is ciao
+	[0f/f78baf] Submitted process > second_pipeline:printHello (bonjour)
+	hola in Italian is ciao
+	['hello in Italian is ciao\n', 'hola in Italian is ciao\n', 'bonjour in Italian is ciao\n']
 
 
 
