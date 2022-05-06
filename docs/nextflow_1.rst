@@ -349,6 +349,8 @@ Let's add a workflow to our code `ex1_a.nf`. Now we will have our first prototyp
 
 .. literalinclude:: ../nextflow/test0/test0.nf
    :language: groovy
+   :emphasize-lines: 63-66
+
 
 We can run the script sending the execution in the background (with the `-bg` option) and saving the log in the file `log.txt`.
 
@@ -449,6 +451,7 @@ For example, using this code you can execute two different workflows that contai
 
 .. literalinclude:: ../nextflow/test0/test0_b.nf
    :language: groovy
+   :emphasize-lines: 27-32,39-44
 
 
 
@@ -482,6 +485,7 @@ We can change the pipeline to produce files instead of `standard output <https:/
 
 .. literalinclude:: ../nextflow/test0/test0_c.nf
    :language: groovy
+   :emphasize-lines: 13,14,18,27,28,32
 
 
 More complex scripts
@@ -569,6 +573,7 @@ At this point we can make two different workflows to demonstrate how the new DSL
 
 .. literalinclude:: ../nextflow/test1/test1_b.nf
    :language: groovy
+   :emphasize-lines: 49-63
 
 The first workflow will just run like the previous script, while the second will "flatten" the output of the first process and will launch the second process on each single sequence.
 
@@ -620,29 +625,10 @@ For example, they can affect the way a process stages in and out the input and o
 
 We can add the directive `publishDir <https://www.nextflow.io/docs/latest/process.html#publishdir>`__ to our previous example:
 
+.. literalinclude:: ../nextflow/test1/test1_c.nf
+   :language: groovy
+   :emphasize-lines: 37
 
-.. code-block:: groovy
-
-	/*
-	 * Simple reverse the sequences
-	 */
-
-	process reverseSequence {
-	    tag "$seq" // during the execution prints the indicated variable for follow-up
-
-	    publishDir "output"
-
-	    input:
-	    path seq
-
-	    output:
-	    path "all.rev"
-
-	    script:
-	    """
-	    	cat ${seq} | awk '{if (\$1~">") {print \$0} else system("echo " \$0 " |rev")}' > all.rev
-	    """
-	}
 
 The script name with this modification is **test1_c.nf**.
 
@@ -745,31 +731,11 @@ First, make the process `reverseSequence` to fail by introducing a typo in the c
 
 The solution is at **sol3.nf**. In particular the change is here:
 
-.. code-block:: groovy
 
-	/*
-	 * Broken process
-	 */
+.. literalinclude:: ../nextflow/test1/sol3.nf
+   :language: groovy
+   :emphasize-lines: 31-52
 
-	process reverseSequence {
-
-	    tag { "${seq}" }
-
-	    publishDir "output"
-
-	    errorStrategy 'ignore'
-
-	    input:
-	    path seq
-
-	    output:
-	    path "all.rev"
-
-	    script:
-	    """
-	    	cat ${seq} | AAAAAAA '{if (\$1~">") {print \$0} else system("echo " \$0 " |rev")}' > all.rev
-	    """
-	}
 
 
 .. raw:: html
@@ -788,16 +754,13 @@ See the `documentation on pipes <https://www.nextflow.io/docs/latest/dsl2.html#p
    <details>
    <summary><a>Solution</a></summary>
 
-The solution is at **sol4.nf**. Here is the major change:
+The solution is at **sol4.nf**. Here is the change:
 
-.. code-block:: groovy
 
-	workflow flow1 {
-	    take: sequences
+.. literalinclude:: ../nextflow/test1/sol4.nf
+   :language: groovy
+   :emphasize-lines: 51-56
 
-	    main:
-	    splitSequences(sequences) | reverseSequence | view()
-	}
 
 
 .. raw:: html
