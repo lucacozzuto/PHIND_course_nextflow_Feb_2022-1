@@ -636,23 +636,24 @@ For example, using this code you can execute two different workflows that contai
 </div>
 <p>We can add the <strong>collect</strong> operator to the second workflow that would collect the output from different executions and return the resulting list <strong>as a sole emission</strong>.</p>
 <p>Let’s run the code:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run test0_b.nf -bg &gt; log2</span>
+
+<span class="go">cat log2</span>
+
+<span class="go">N E X T F L O W  ~  version 20.07.1</span>
+<span class="go">Launching `test0_b.nf` [irreverent_davinci] - revision: 25a5511d1d</span>
+<span class="go">[de/105b97] Submitted process &gt; first_pipeline:printHello (hello)</span>
+<span class="go">[ba/051c23] Submitted process &gt; first_pipeline:printHello (bonjour)</span>
+<span class="go">[1f/9b41b2] Submitted process &gt; second_pipeline:printHello (hello)</span>
+<span class="go">[8d/270d93] Submitted process &gt; first_pipeline:printHello (hola)</span>
+<span class="go">[18/7b84c3] Submitted process &gt; second_pipeline:printHello (hola)</span>
+<span class="go">hello in Italian is ciao</span>
+<span class="go">bonjour in Italian is ciao</span>
+<span class="go">[0f/f78baf] Submitted process &gt; second_pipeline:printHello (bonjour)</span>
+<span class="go">hola in Italian is ciao</span>
+<span class="go">[&#39;hello in Italian is ciao\n&#39;, &#39;hola in Italian is ciao\n&#39;, &#39;bonjour in Italian is ciao\n&#39;]</span>
 </pre></div>
 </div>
-<p>nextflow run test0_b.nf -bg &gt; log2</p>
-<p>cat log2</p>
-<p>N E X T F L O W  ~  version 20.07.1
-Launching <cite>test0_b.nf</cite> [irreverent_davinci] - revision: 25a5511d1d
-[de/105b97] Submitted process &gt; first_pipeline:printHello (hello)
-[ba/051c23] Submitted process &gt; first_pipeline:printHello (bonjour)
-[1f/9b41b2] Submitted process &gt; second_pipeline:printHello (hello)
-[8d/270d93] Submitted process &gt; first_pipeline:printHello (hola)
-[18/7b84c3] Submitted process &gt; second_pipeline:printHello (hola)
-hello in Italian is ciao
-bonjour in Italian is ciao
-[0f/f78baf] Submitted process &gt; second_pipeline:printHello (bonjour)
-hola in Italian is ciao
-[‘hello in Italian is ciaon’, ‘hola in Italian is ciaon’, ‘bonjour in Italian is ciaon’]</p>
 <p>We can change the pipeline to produce files instead of <a class="reference external" href="https://www.nextflow.io/docs/latest/dsl2.html#process-outputs">standard output</a>.</p>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
