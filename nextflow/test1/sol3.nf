@@ -28,29 +28,28 @@ process splitSequences {
     """
 }
 
-	/*
-	 * Broken process
-	 */
+/*
+* Broken process
+*/
 
-	process reverseSequence {
+ process reverseSequence {
 
-	    tag { "${seq}" }
+    tag { "${seq}" }
 
-	    publishDir "output"
+    publishDir "output"
+    errorStrategy 'ignore'
 
-	    errorStrategy 'ignore'
+    input:
+    path seq
 
-	    input:
-	    path seq
+    output:
+    path "all.rev"
 
-	    output:
-	    path "all.rev"
-
-	    script:
-	    """
-	    	cat ${seq} | AAAAAAA '{if (\$1~">") {print \$0} else system("echo " \$0 " |rev")}' > all.rev
-	    """
-	}
+    script:
+    """
+    cat ${seq} | AAAAAAA '{if (\$1~">") {print \$0} else system("echo " \$0 " |rev")}' > all.rev
+    """
+}
 
 workflow flow1 {
     take: sequences
