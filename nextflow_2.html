@@ -137,10 +137,10 @@ This is achieved labeling processes in the nextflow.config file:</p>
 </ul>
 <div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
 
-<span class="hll"><span class="cm">/*</span>
-</span><span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
-<span class="hll"><span class="cm"> *</span>
-</span><span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
+<span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2013-2020, Centre for Genomic Regulation (CRG).</span>
+<span class="cm"> *</span>
+<span class="cm"> *   This file is part of &#39;CRG_Containers_NextFlow&#39;.</span>
 <span class="cm"> *</span>
 <span class="cm"> *   CRG_Containers_NextFlow is free software: you can redistribute it and/or modify</span>
 <span class="cm"> *   it under the terms of the GNU General Public License as published by</span>
@@ -219,8 +219,8 @@ This is achieved labeling processes in the nextflow.config file:</p>
 <span class="n">process</span><span class="w"> </span><span class="n">fastQC</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="n">fastqcOutputFolder</span><span class="w">  			</span><span class="c1">// where (and whether) to publish the results</span><span class="w"></span>
 <span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${reads}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w">  							</span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
-<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;big_mem&#39;</span><span class="w"> </span>
-
+<span class="hll"><span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="s1">&#39;big_mem&#39;</span><span class="w"> </span>
+</span>
 <span class="w">    </span><span class="nl">input:</span><span class="w"></span>
 <span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">reads</span><span class="w">   							</span><span class="c1">// it defines the input of the process. It sets values from a channel</span><span class="w"></span>
 
