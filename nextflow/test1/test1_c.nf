@@ -34,7 +34,7 @@ process splitSequences {
 process reverseSequence {
     tag { "${seq}" }
 
-	  publishDir "output"
+    publishDir "output"
 
     input:
     path seq
