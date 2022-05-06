@@ -22,25 +22,8 @@ This can be achieved using two additional files:
 The **nextflow.config** file allows to indicate resources needed for each class of processes.
 This is achieved labeling processes in the nextflow.config file:
 
-.. code-block:: groovy
-
-	includeConfig "$baseDir/params.config"
-
-	process {
-	     memory='0.6G'
-	     cpus='1'
-	     time='6h'
-
-	     withLabel: 'onecpu'
-		{
-			memory='0.6G'
-			cpus='1'
-		}
-
-	}
-
-	process.container = 'biocorecrg/c4lwg-2018:latest'
-	singularity.cacheDir = "$baseDir/singularity"
+.. literalinclude:: ../nextflow/test2/nextflow.config
+   :language: groovy
 
 
 The first row indicates to use the information stored in the **params.config** file (described later). Then follows the definition of the default resources for a process:
@@ -62,27 +45,20 @@ Then we specify resources needed for a class of processes labeled **bigmem** (i.
 		cpus='1'
 	}
 
-In the script **test2.nf file**, there are two processes to run two programs:
+In the script **/test2/test2.nf file**, there are two processes to run two programs:
 
 - `fastQC <https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>`__ - a tool that calculates a number of quality control metrics on single fastq files;
 - `multiQC <https://multiqc.info/>`__ - an aggregator of results from bioinformatics tools and samples for generating a single html report.
 
-You can see that the process **fastQC** is labeled 'bigmem':
 
-.. code-block:: groovy
+.. literalinclude:: ../nextflow/test2/test2.nf
+   :language: groovy
+   :emphasize-lines: 3,5
 
-	/*
-	 * Process 1. Run FastQC on raw data.
-	 */
-	process fastQC {
 
-	    publishDir fastqcOutputFolder
-	    tag { "${reads}" }
-	    label 'bigmem'
+You can see that the process **fastQC** is labeled 'bigmem'.
 
-	    input:
-	    path reads
-	...
+
 
 
 The last two rows of the config file indicate which containers to use.
