@@ -494,11 +494,11 @@ The pipeline can also recognize the queue system which is used on the machine wh
 <span class="cm"> * as they were cutom functions. You can only invoke once a process per workflow.</span>
 <span class="cm"> */</span><span class="w"></span>
 
-<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-<span class="w"> </span>
+<span class="hll"><span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">printHello</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">result</span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span><span class="w"> </span>
 </pre></div>
 </div>
 <p>We can run the script sending the execution in the background (with the <cite>-bg</cite> option) and saving the log in the file <cite>log.txt</cite>.</p>
@@ -604,25 +604,25 @@ For example, using this code you can execute two different workflows that contai
 <span class="cm"> */</span><span class="w"></span>
 
 
-<span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">   </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
-
-<span class="w">   </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">   </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-
+<span class="hll"><span class="n">workflow</span><span class="w"> </span><span class="n">first_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">   </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">   </span><span class="nl">main:</span><span class="w"></span>
+</span><span class="hll"><span class="w">   </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span>
 <span class="cm">/*</span>
 <span class="cm"> * You can re-use the previous processes and combine as you prefer</span>
 <span class="cm"> */</span><span class="w"></span>
 
 
-<span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
-
-<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">    </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">()).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-
+<span class="hll"><span class="n">workflow</span><span class="w"> </span><span class="n">second_pipeline</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">str_input</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">printHello</span><span class="o">(</span><span class="n">str_input</span><span class="o">.</span><span class="na">collect</span><span class="o">()).</span><span class="na">view</span><span class="o">()</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span>
 <span class="cm">/*</span>
 <span class="cm"> * You can then invoke the different named workflows in this way</span>
 <span class="cm">* passing the same input channel `str` to both</span>
@@ -667,13 +667,13 @@ For example, using this code you can execute two different workflows that contai
 <span class="w">    </span><span class="nl">input:</span><span class="w"></span>
 <span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${str_in}.txt&quot;</span><span class="o">)</span><span class="w"></span>
-
+<span class="hll"><span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;${str_in}.txt&quot;</span><span class="o">)</span><span class="w"></span>
+</span>
 <span class="w">    </span><span class="nl">script:</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    	echo ${str_in} in Italian is ciao &gt; ${str_in}.txt</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="hll"><span class="s2">    	echo ${str_in} in Italian is ciao &gt; ${str_in}.txt</span>
+</span><span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 <span class="n">process</span><span class="w"> </span><span class="n">printHello2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">tag</span><span class="w">  </span><span class="s2">&quot;${str_in}&quot;</span><span class="w"></span>
@@ -681,13 +681,13 @@ For example, using this code you can execute two different workflows that contai
 <span class="w">    </span><span class="nl">input:</span><span class="w"></span>
 <span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="n">str_in</span><span class="w"></span>
 
-<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;cheers.txt&quot;</span><span class="o">)</span><span class="w"></span>
-
+<span class="hll"><span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">path</span><span class="o">(</span><span class="s2">&quot;cheers.txt&quot;</span><span class="o">)</span><span class="w"></span>
+</span>
 <span class="w">    </span><span class="nl">script:</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    	echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="hll"><span class="s2">    	echo ${str_in.join(&#39;, &#39;)} in Italian are ciao &gt; cheers.txt</span>
+</span><span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 
 <span class="cm">/*</span>
@@ -926,22 +926,22 @@ This avoids clashes, and each process is isolated from the other.</p>
 <span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 
-<span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
-
-<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-
-<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
-
-<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
-<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
-<span class="o">}</span><span class="w"></span>
-
+<span class="hll"><span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span>
 <span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
 <span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
@@ -1045,15 +1045,44 @@ This avoids clashes, and each process is isolated from the other.</p>
 <p>The <a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#directives">directives</a> are declaration blocks that can provide optional settings for a process.</p>
 <p>For example, they can affect the way a process stages in and out the input and output files (<a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#stageinmode">stageInMode</a> and <a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#stageoutmode">stageOutMode</a>), or they can indicate which file has to be considered a final result and in which folder it should be published (<a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#publishdir">publishDir</a>).</p>
 <p>We can add the directive <a class="reference external" href="https://www.nextflow.io/docs/latest/process.html#publishdir">publishDir</a> to our previous example:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm"> * Simple reverse the sequences</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
+
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
+
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
 <span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
 
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 2 for reversing the sequences</span>
+<span class="cm"> */</span><span class="w"></span>
 <span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="s2">&quot;$seq&quot;</span><span class="w"> </span><span class="c1">// during the execution prints the indicated variable for follow-up</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
-
+<span class="hll"><span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
+</span>
 <span class="w">    </span><span class="nl">input:</span><span class="w"></span>
 <span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
 
@@ -1062,8 +1091,29 @@ This avoids clashes, and each process is isolated from the other.</p>
 
 <span class="w">    </span><span class="nl">script:</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
+<span class="s2">    	cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -1136,28 +1186,78 @@ This avoids clashes, and each process is isolated from the other.</p>
 <p>First, make the process <cite>reverseSequence</cite> to fail by introducing a typo in the command line, then add the directive to the process.</p>
 <details>
 <summary><a>Solution</a></summary><p>The solution is at <strong>sol3.nf</strong>. In particular the change is here:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm"> * Broken process</span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
+
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
+
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
 <span class="cm"> */</span><span class="w"></span>
-
-<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">errorStrategy</span><span class="w"> </span><span class="s1">&#39;ignore&#39;</span><span class="w"></span>
-
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">    </span><span class="nl">input:</span><span class="w"></span>
-<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
 
 <span class="w">    </span><span class="nl">output:</span><span class="w"></span>
-<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
 
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
 <span class="w">    </span><span class="nl">script:</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        cat ${seq} | AAAAAAA &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
+<span class="s2">    awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="hll"><span class="cm">/*</span>
+</span><span class="hll"><span class="cm">* Broken process</span>
+</span><span class="hll"><span class="cm">*/</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">errorStrategy</span><span class="w"> </span><span class="s1">&#39;ignore&#39;</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+</span><span class="hll"><span class="s2">    cat ${seq} | AAAAAAA &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
+</span><span class="hll"><span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -1168,12 +1268,75 @@ This avoids clashes, and each process is isolated from the other.</p>
 <p>Write the first workflow using pipes. Nextflow DLS2 allows you to use pipes for connecting channels via input / output.</p>
 <p>See the <a class="reference external" href="https://www.nextflow.io/docs/latest/dsl2.html#pipes">documentation on pipes</a>.</p>
 <details>
-<summary><a>Solution</a></summary><p>The solution is at <strong>sol4.nf</strong>. Here is the major change:</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<summary><a>Solution</a></summary><p>The solution is at <strong>sol4.nf</strong>. Here is the change:</p>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env nextflow</span><span class="w"></span>
+
+<span class="n">nextflow</span><span class="o">.</span><span class="na">enable</span><span class="o">.</span><span class="na">dsl</span><span class="o">=</span><span class="mi">2</span><span class="w"></span>
+
+<span class="c1">// this can be overridden by using --inputfile OTHERFILENAME</span><span class="w"></span>
+<span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$baseDir/testdata/test.fa&quot;</span><span class="w"></span>
+
+<span class="c1">// the &quot;file method&quot; returns a file system object given a file path string</span><span class="w"></span>
+<span class="n">sequences_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">params</span><span class="o">.</span><span class="na">inputfile</span><span class="o">)</span><span class="w"></span>
+
+<span class="c1">// check if the file exists</span><span class="w"></span>
+<span class="k">if</span><span class="o">(</span><span class="w"> </span><span class="o">!</span><span class="n">sequences_file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span><span class="w"> </span><span class="o">)</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;Missing genome file: ${genome_file}&quot;</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 1 for splitting a fasta file in multiple files</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">splitSequences</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">sequencesFile</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;seq_*&#39;</span><span class="o">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// simple awk command</span><span class="w"></span>
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    awk &#39;/^&gt;/{f=&quot;seq_&quot;++d} {print &gt; f}&#39; &lt; ${sequencesFile}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Process 2 for reversing the sequences</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">process</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">tag</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;${seq}&quot;</span><span class="w"> </span><span class="o">}</span><span class="w"></span>
+
+<span class="w">	  </span><span class="n">publishDir</span><span class="w"> </span><span class="s2">&quot;output&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">input:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="n">seq</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">output:</span><span class="w"></span>
+<span class="w">    </span><span class="n">path</span><span class="w"> </span><span class="s2">&quot;all.rev&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="nl">script:</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    	cat ${seq} | awk &#39;{if (\$1~&quot;&gt;&quot;) {print \$0} else system(&quot;echo &quot; \$0 &quot; |rev&quot;)}&#39; &gt; all.rev</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="hll"><span class="n">workflow</span><span class="w"> </span><span class="n">flow1</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="nl">main:</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">view</span><span class="o">()</span><span class="w"></span>
+</span><span class="hll"><span class="o">}</span><span class="w"></span>
+</span>
+<span class="n">workflow</span><span class="w"> </span><span class="n">flow2</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">    </span><span class="nl">take:</span><span class="w"> </span><span class="n">sequences</span><span class="w"></span>
 
 <span class="w">    </span><span class="nl">main:</span><span class="w"></span>
-<span class="w">    </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">reverseSequence</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">view</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">splitted_seq</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">splitSequences</span><span class="o">(</span><span class="n">sequences</span><span class="o">).</span><span class="na">flatten</span><span class="o">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">rev_single_seq</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">reverseSequence</span><span class="o">(</span><span class="n">splitted_seq</span><span class="o">)</span><span class="w"></span>
+<span class="o">}</span><span class="w"></span>
+
+<span class="n">workflow</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow1</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">flow2</span><span class="o">(</span><span class="n">sequences_file</span><span class="o">)</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
 </pre></div>
 </div>
