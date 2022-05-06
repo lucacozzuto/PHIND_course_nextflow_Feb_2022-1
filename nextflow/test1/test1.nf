@@ -66,7 +66,7 @@ process splitSequences {
 process reverseSequence {
     tag { "${seq}" }  					// during the execution prints the indicated variable for follow-up
     publishDir "output"
-	errorStrategy 'ignore'
+    errorStrategy 'ignore'
 
     input:
     path seq 
