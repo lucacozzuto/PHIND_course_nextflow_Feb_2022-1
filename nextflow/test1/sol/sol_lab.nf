@@ -35,7 +35,7 @@ process reverseSequence {
     tag { "${seq}" }
 
     publishDir "output"
-	  label 'ignorefail'
+    label 'ignorefail'
     
     input:
     path seq
