@@ -123,8 +123,7 @@ This is achieved labeling processes in the nextflow.config file:</p>
 </div>
 <p>The first row indicates to use the information stored in the <strong>params.config</strong> file (described later). Then follows the definition of the default resources for a process:</p>
 <p>Then we specify resources needed for a class of processes labeled <strong>bigmem</strong> (i.e., the default options will be overridden for these processes):</p>
-<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="nl">withLabel:</span><span class="w"> </span><span class="s1">&#39;bigmem&#39;</span><span class="w"></span>
-<span class="o">{</span><span class="w"></span>
+<div class="highlight-groovy notranslate"><div class="highlight"><pre><span></span><span class="nl">withLabel:</span><span class="w"> </span><span class="s1">&#39;bigmem&#39;</span><span class="w"> </span><span class="o">{</span><span class="w"></span>
 <span class="w">        </span><span class="n">memory</span><span class="o">=</span><span class="s1">&#39;0.7G&#39;</span><span class="w"></span>
 <span class="w">        </span><span class="n">cpus</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="w"></span>
 <span class="o">}</span><span class="w"></span>
@@ -271,54 +270,54 @@ In case of using a singularity container, you can indicate where to store the lo
 </pre></div>
 </div>
 <p>Let’s now launch the script <strong>test2.nf</strong>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd test2;</span>
-<span class="go">nextflow run test2.nf</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">     cd test2;</span>
+<span class="go">     nextflow run test2.nf</span>
 
-<span class="go">N E X T F L O W  ~  version 20.07.1</span>
-<span class="go">Launching `test2.nf` [distracted_edison] - revision: e3a80b15a2</span>
-<span class="go">BIOCORE@CRG - N F TESTPIPE  ~  version 1.0</span>
-<span class="go">=============================================</span>
-<span class="go">reads                           : /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/nextflow/test2/../testdata/*.fastq.gz</span>
-<span class="go">executor &gt;  local (2)</span>
-<span class="go">[df/2c45f2] process &gt; fastQC (B7_input_s_chr19.fastq.gz) [  0%] 0 of 2</span>
-<span class="go">[-        ] process &gt; multiQC                            -</span>
-<span class="go">Error executing process &gt; &#39;fastQC (B7_H3K4me1_s_chr19.fastq.gz)&#39;</span>
+<span class="go">     N E X T F L O W  ~  version 20.07.1</span>
+<span class="go">     Launching `test2.nf` [distracted_edison] - revision: e3a80b15a2</span>
+<span class="go">     BIOCORE@CRG - N F TESTPIPE  ~  version 1.0</span>
+<span class="go">     =============================================</span>
+<span class="go">     reads                           : /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/nextflow/test2/../testdata/*.fastq.gz</span>
+<span class="go">     executor &gt;  local (2)</span>
+<span class="go">     [df/2c45f2] process &gt; fastQC (B7_input_s_chr19.fastq.gz) [  0%] 0 of 2</span>
+<span class="go">     [-        ] process &gt; multiQC                            -</span>
+<span class="go">     Error executing process &gt; &#39;fastQC (B7_H3K4me1_s_chr19.fastq.gz)&#39;</span>
 
-<span class="go">Caused by:</span>
-<span class="go">  Process `fastQC (B7_H3K4me1_s_chr19.fastq.gz)` terminated with an error exit status (127)</span>
+<span class="go">     Caused by:</span>
+<span class="go">       Process `fastQC (B7_H3K4me1_s_chr19.fastq.gz)` terminated with an error exit status (127)</span>
 
-<span class="go">Command executed:</span>
+<span class="go">     Command executed:</span>
 
-<span class="go">  fastqc B7_H3K4me1_s_chr19.fastq.gz</span>
+<span class="go">       fastqc B7_H3K4me1_s_chr19.fastq.gz</span>
 
-<span class="go">Command exit status:</span>
-<span class="go">  127</span>
+<span class="go">     Command exit status:</span>
+<span class="go">       127</span>
 
-<span class="go">executor &gt;  local (2)</span>
-<span class="go">[df/2c45f2] process &gt; fastQC (B7_input_s_chr19.fastq.gz) [100%] 2 of 2, failed: 2 ✘</span>
-<span class="go">[-        ] process &gt; multiQC                            -</span>
-<span class="go">Error executing process &gt; &#39;fastQC (B7_H3K4me1_s_chr19.fastq.gz)&#39;</span>
+<span class="go">     executor &gt;  local (2)</span>
+<span class="go">     [df/2c45f2] process &gt; fastQC (B7_input_s_chr19.fastq.gz) [100%] 2 of 2, failed: 2 ✘</span>
+<span class="go">     [-        ] process &gt; multiQC                            -</span>
+<span class="go">     Error executing process &gt; &#39;fastQC (B7_H3K4me1_s_chr19.fastq.gz)&#39;</span>
 
-<span class="go">Caused by:</span>
-<span class="go">  Process `fastQC (B7_H3K4me1_s_chr19.fastq.gz)` terminated with an error exit status (127)</span>
+<span class="go">     Caused by:</span>
+<span class="go">       Process `fastQC (B7_H3K4me1_s_chr19.fastq.gz)` terminated with an error exit status (127)</span>
 
-<span class="go">Command executed:</span>
+<span class="go">     Command executed:</span>
 
-<span class="go">  fastqc B7_H3K4me1_s_chr19.fastq.gz</span>
+<span class="go">       fastqc B7_H3K4me1_s_chr19.fastq.gz</span>
 
-<span class="go">Command exit status:</span>
-<span class="go">  127</span>
+<span class="go">     Command exit status:</span>
+<span class="go">       127</span>
 
-<span class="go">Command output:</span>
-<span class="go">  (empty)</span>
+<span class="go">     Command output:</span>
+<span class="go">       (empty)</span>
 
-<span class="go">Command error:</span>
-<span class="go">  .command.sh: line 2: fastqc: command not found</span>
+<span class="hll"><span class="go">     Command error:</span>
+</span><span class="hll"><span class="go">       .command.sh: line 2: fastqc: command not found</span>
+</span>
+<span class="go">     Work dir:</span>
+<span class="go">       /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/nextflow/test2/work/c5/18e76b2e6ffd64aac2b52e69bedef3</span>
 
-<span class="go">Work dir:</span>
-<span class="go">  /home/ec2-user/git/CoursesCRG_Containers_Nextflow_May_2021/nextflow/nextflow/test2/work/c5/18e76b2e6ffd64aac2b52e69bedef3</span>
-
-<span class="go">Tip: when you have fixed the problem you can continue the execution adding the option `-resume` to the run command line</span>
+<span class="go">     Tip: when you have fixed the problem you can continue the execution adding the option `-resume` to the run command line</span>
 </pre></div>
 </div>
 <p>We will get a number of errors since no executable is found in our environment / path. This is because the executables are stored in our docker image and we have to tell Nextflow to use the docker image, using the <cite>-with-docker</cite> parameter.</p>

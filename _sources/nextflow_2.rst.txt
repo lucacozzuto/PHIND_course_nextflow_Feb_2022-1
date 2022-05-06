@@ -39,8 +39,7 @@ Then we specify resources needed for a class of processes labeled **bigmem** (i.
 
 .. code-block:: groovy
 
-	withLabel: 'bigmem'
-	{
+	withLabel: 'bigmem' {
 		memory='0.7G'
 		cpus='1'
 	}
@@ -72,6 +71,7 @@ In case of using a singularity container, you can indicate where to store the lo
 Let's now launch the script **test2.nf**.
 
 .. code-block:: console
+   :emphasize-lines: 42,43
 
 	cd test2;
 	nextflow run test2.nf
