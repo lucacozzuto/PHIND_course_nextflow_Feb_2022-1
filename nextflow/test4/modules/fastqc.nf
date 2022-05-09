@@ -4,6 +4,8 @@
 
 params.CONTAINER = "quay.io/biocontainers/fastqc:0.11.9--0"
 params.OUTPUT = "fastqc_output"
+params.LABEL = ""
+
 
 process fastqc {
     publishDir(params.OUTPUT, mode: 'copy')
