@@ -51,8 +51,8 @@ Channel
     .set {reads_for_fastqc} 											 // make the channel "reads_for_fastqc"
 
 
-include { fastqc } from "${baseDir}/modules/fastqc" addParams(OUTPUT: fastqcOutputFolder)
-include { multiqc } from "${baseDir}/lib/multiqc" addParams(OUTPUT: multiqcOutputFolder, LABEL="onecpu")
+include { multiqc } from "${baseDir}/modules/multiqc" addParams(OUTPUT: multiqcOutputFolder)
+include { fastqc } from "${baseDir}/modules/fastqc" addParams(OUTPUT: fastqcOutputFolder, LABEL="onecpu")
  
 workflow {
 	fastqc_out = fastqc(reads_for_fastqc)
