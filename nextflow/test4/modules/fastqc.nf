@@ -9,6 +9,7 @@ process fastqc {
     publishDir(params.OUTPUT, mode: 'copy')
     tag { "${reads}" }
     container params.CONTAINER
+    label (params.LABEL)
 
     input:
     path(reads)
