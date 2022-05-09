@@ -232,11 +232,11 @@ The module contains the directive **publishDir**, the tag, the container to be u
 
 A module can contain its own parameters that can be used for connecting the main script to some variables inside the module.
 
-In this example we have the declaration of two **parameters** that are defined at the beginning:
+In this example we have the declaration of three **parameters** that are defined at the beginning:
 
 .. literalinclude:: ../nextflow/test4/modules/fastqc.nf
    :language: groovy
-   :emphasize-lines: 5-6
+   :emphasize-lines: 5-7
 
 
 They can be overridden from the main script that is calling the module:
