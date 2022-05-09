@@ -9,7 +9,6 @@ params.LABEL = ""
 process multiqc {
     publishDir(params.OUTPUT, mode: 'copy')
     container params.CONTAINER
-    label (params.LABEL)
 
     input:
     path (inputfiles)
