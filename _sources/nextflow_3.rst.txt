@@ -10,7 +10,7 @@ Adding more processes
 We can build a pipeline incrementally adding more and more processes.
 Nextflow will take care of the dependencies between the input / output and of the parallelization.
 
-Let's add to the **test2.nf** pipeline two additional steps, indexing of the reference genome and the read alignment using `Bowtie <http://bowtie-bio.sourceforge.net/index.shtml>`__. For that we will have to modify the *.nf, params.config and nexflow.config files (the full solution is available in the **test3 folder**).
+Let's add to the **test2.nf** pipeline two additional steps, indexing of the reference genome and the read alignment using `Bowtie <http://bowtie-bio.sourceforge.net/index.shtml>`__. For that we will have to modify the test2.nf, params.config and nexflow.config files (the new script is available in the **test3 folder**).
 
 In **params.config**, we have to add new parameters:
 
