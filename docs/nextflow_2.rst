@@ -549,7 +549,7 @@ You noticed we specify a **profile** here. This indicates where to launch the pi
 EXERCISE
 ------------------
 
-- Look at the documentation of `Master Of Pores <https://github.com/biocorecrg/mop2>`__ and change the default mapper, skip the filtering and enable the demultiplexing.
+- Look at the documentation of `Master Of Pores <https://github.com/biocorecrg/mop2>`__ and change the default mapper and filtering. Try to skip some step.
 
 .. raw:: html
 
@@ -560,7 +560,7 @@ The params can be set on the fly like this
 
 .. code-block:: console
 
-	nextflow run mop_preprocess.nf -with-docker -bg --mapping graphmap --filtering nanofilt --demultiplexing deeplexicon > log.txt
+	nextflow run mop_preprocess.nf -with-docker -bg --mapping minimap2 --filtering nanofilt  > log.txt
 
 
 .. raw:: html
