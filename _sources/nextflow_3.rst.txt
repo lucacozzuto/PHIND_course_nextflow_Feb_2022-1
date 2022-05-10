@@ -273,11 +273,11 @@ To use this module, we have to change the main code as follows:
 
 .. literalinclude:: ../nextflow/test4/test4.nf
    :language: groovy
-   :emphasize-lines: 24,55
+   :emphasize-lines: 55
 
 The label **twocpus** is specified in the **nextflow.config** file for each profile:
 
-.. literalinclude:: ../nextflow/modules/nextflow.config
+.. literalinclude:: ../nextflow/test4/modules/nextflow.config
    :language: groovy
    :emphasize-lines: 16,32,53
 
