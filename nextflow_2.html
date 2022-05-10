@@ -1036,11 +1036,11 @@ Execution status: OK</p>
 <section id="id5">
 <h3>EXERCISE<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h3>
 <ul class="simple">
-<li><p>Look at the documentation of <a class="reference external" href="https://github.com/biocorecrg/mop2">Master Of Pores</a> and change the default mapper, skip the filtering and enable the demultiplexing.</p></li>
+<li><p>Look at the documentation of <a class="reference external" href="https://github.com/biocorecrg/mop2">Master Of Pores</a> and change the default mapper and filtering. Try to skip some step.</p></li>
 </ul>
 <details>
 <summary><a>Solution</a></summary><p>The params can be set on the fly like this</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run mop_preprocess.nf -with-docker -bg --mapping graphmap --filtering nanofilt --demultiplexing deeplexicon &gt; log.txt</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nextflow run mop_preprocess.nf -with-docker -bg --mapping minimap2 --filtering nanofilt  &gt; log.txt</span>
 </pre></div>
 </div>
 </details><div class="line-block">
